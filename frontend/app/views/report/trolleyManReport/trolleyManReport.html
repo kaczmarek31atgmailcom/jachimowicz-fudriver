@@ -1,0 +1,45 @@
+<div class = "ContainerFluid" ng-controller="TrolleyManReportCtrl">
+  <ol class="breadcrumb">
+    <li class="active">{{'report.trolleyManReport.header' | translate}}</li>
+  </ol>
+  <div growl></div>
+
+  <div class="row">
+    <div class="loading" ng-hide="loading == 0">Loading&#8230;</div>
+    <div class="form-group">
+      <div class="form-group col-xs-3">
+        <input class="form-control" ng-model="startDate" placeholder="{{startDate}}" required
+               bs-datepicker autoclose="true" data-date-format="yyyy/MM/dd" ng-change="init()">
+      </div>
+      <div class="form-group col-xs-3">
+        <input type="text" class="form-control" ng-model="endDate" placeholder="{{endDate}}"
+               required bs-datepicker autoclose="true" date-format="yyyy/MM/dd" ng-change="init()">
+      </div>
+      <div class="form-group col-xs-2">
+        <i class="fa fa-file-excel-o fa-2x hand-cursor" ng-click="export()"></i>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12 col-sm-12">
+      <table class="table table-condensed table-bordered export-table">
+        <tr>
+          <td><strong>{{'report.trolleyManReport.scaleMan' | translate}}</strong></td>
+            <td ng-repeat="type in uniqueTypes" class="text-right"><strong>{{type.name}} {{ type.weight | longToWeight}}</strong></td>
+        <td class="text-right"><strong>{{'report.trolleyManReport.total' | translate}}:</strong></td>
+        </tr>
+        <tr ng-repeat="trolleyMan in trolleyMen">
+          <td>{{trolleyMan.name}} {{trolleyMan.surname}}</td>
+          <td ng-repeat="typeWeight in trolleyMan.typesWeights track by $index" class="text-right">{{typeWeight | longToWeight}}</td>
+          <td class="text-right"><strong>{{trolleyMan.totalWeight | longToWeight}}</strong></td>
+        </tr>
+        <tr>
+          <td><strong>{{'report.trolleyManReport.total' | translate}}:</strong></td>
+          <td ng-repeat="type in uniqueTypes" class="text-right"><strong>{{type.totalWeight | longToWeight}}</strong></td>
+          <td class="text-right"><strong>{{totalWeight | longToWeight}}</strong></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+</div>

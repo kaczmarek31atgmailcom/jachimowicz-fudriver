@@ -1,0 +1,42 @@
+<div class="container-fluid" ng-controller="EastMushroomsWzHeadersCtrl">
+  <ol class="breadcrumb">
+    <li class="active">{{'eastMushrooms.wz.breadcrumb.list' | translate}}</li>
+  </ol>
+  <div growl></div>
+  <div class="row">
+    <div class="form-group col-lg-3 col-sm-3">
+      <input class="form-control" ng-model="startDate" placeholder="{{day}}" required
+             bs-datepicker autoclose="true" data-date-format="yyyy/MM/dd" data-max-date="{{day}}" ng-change="init()">
+    </div>
+    <div class="form-group col-lg-3 col-sm-3">
+      <input type="text" class="form-control" ng-model="endDate" data-min-date="{{day}}" data-min-date="{{endDate}}" placeholder="{{day}}"
+             required bs-datepicker autoclose="true" date-format="yyyy/MM/dd" ng-change="init()">
+    </div>
+    <div class="col-lg-6 col-sm-6">&nbsp;</div>
+  </div>
+  <div class="row">
+    <div class="col-lg-2 col-sm-2">&nbsp;</div>
+
+    <div class="col-lg-8 col-sm-8">
+      <table class="table table-hover">
+        <tr>
+          <td><strong>{{'eastMushrooms.wz.header.nr' | translate}}</strong></td>
+          <td><strong>{{'eastMushrooms.wz.header.date' | translate}}</strong></td>
+          <td><strong>{{'eastMushrooms.wz.header.company' | translate}}</strong></td>
+          <td><strong>{{'eastMushrooms.wz.header.customer' | translate}}</strong></td>
+          <td class="text-right"><strong>{{'eastMushrooms.wz.header.amount' | translate}}</strong></td>
+        </tr>
+        <tr ng-repeat="header in headers" class="hand-cursor" ng-click="showWz(header.id)">
+          <td>{{header.nr}}/{{header.date | date:'yyyy-MM'}}</td>
+          <td>{{header.date}}</td>
+          <td>{{header.companyName}}</td>
+          <td>{{header.customerName}}</td>
+          <td class="text-right">{{header.totalAmount | longToWeight}} {{'kg' | translate}}</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="col-lg-2 col-sm-2">&nbsp;</div>
+  </div>
+</div>
+

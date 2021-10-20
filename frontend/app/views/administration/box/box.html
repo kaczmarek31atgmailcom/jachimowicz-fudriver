@@ -1,0 +1,25 @@
+<div class = "container-fluid" ng-controller="BoxCtrl">
+  <ol class="breadcrumb">
+    <li class="active">{{'admin.box.breadcrumb.header' | translate}}</li>
+  </ol>
+  <div growl></div>
+  <div class="row">
+    <div class="col-sm-3">
+      <button class="btn btn-primary" ng-click="openCreateBoxModal()"
+              ng-bind="'admin.box.create-button' | translate"></button>
+    </div>
+    <div class="col-sm-6">
+      <table class="table">
+        <thead></thead>
+        <tbody>
+        <tr ng-repeat="box in boxes">
+          <td class="col-sm-1">{{$index + 1}}</td>
+          <td class="col-sm-6 text-left"><a href="#" editable-text="box.name" onbeforesave="updateName(box.id,$data)">{{box.name}}</a></td>
+          <td class="col-sm-1 text-right" ng-click="openDeleteModal(box)"><i class="fa fa-trash-o fa-lg hand-cursor" aria-hidden="true"></i></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-sm-3">&nbsp;</div>
+  </div>
+</div>

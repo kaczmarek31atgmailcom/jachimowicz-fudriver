@@ -1,0 +1,120 @@
+<div class="container-fluid" ng-controller="TechnologistsByCyclesCtrl" ng-init="getReport()">
+  <ol class="breadcrumb">
+    <li class="active">{{'cycle.dates.breadcrumb.cycles-summary' | translate}}</li>
+  </ol>
+  <div growl></div>
+  <div class="loading" ng-hide="loading == 0">Loading&#8230;</div>
+  <div class="row">
+    <div class="form-group">
+      <div class="form-group col-xs-3">
+        <input class="form-control text-right" ng-model="startDate" placeholder="{{startDate}}" required
+               bs-datepicker autoclose="true" data-date-format="yyyy/MM/dd" ng-change="getReport()">
+      </div>
+      <div class="form-group col-xs-3">
+        <input type="text" class="form-control text-right" ng-model="endDate" placeholder="{{endDate}}"
+               required bs-datepicker autoclose="true" date-format="yyyy/MM/dd" ng-change="getReport()">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-1 col-lg-1">&nbsp;</div>
+    <div class="col-sm-10 col-lg-10">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <strong>
+            {{'cycle.technologist.report.title' | translate}} {{startDate | date:'yyyy/MM/dd'}} - {{endDate | date:'yyyy/MM/dd'}}
+          </strong>
+        </div>
+        <div class="panel-body">
+          <table class="table table-condensed">
+            <tr>
+              <th class="text-right col-sm-4 col-lg-4">&nbsp;</th>
+              <th class="text-right col-sm-1 col-lg-1">{{'cycle.technologist.report.inne' | translate}}</th>
+              <th class="text-right col-sm-1 col-lg-1">{{'cycle.technologist.report.kraj' | translate}}</th>
+              <th class="text-right col-sm-1 col-lg-1">{{'cycle.technologist.report.export' | translate}}</th>
+              <th class="text-right col-sm-1 col-lg-1">{{'cycle.technologist.report.total' | translate}}</th>
+              <th class="text-right col-sm-1 col-lg-1">{{'cycle.technologist.report.quality' | translate}}</th>
+              <th class="text-right col-sm-1 col-lg-1">{{'cycle.technologist.report.kgM' | translate}}&sup2;</th>
+              <th class="text-right col-sm-1 col-lg-1">{{'cycle.technologist.report.kgT' | translate}}</th>
+              <th class="text-right text-nowrap col-sm-2 col-lg-2">{{'cycle.technologist.report.cyclesAmount' | translate}}</th>
+            </tr>
+            <tr>
+              <th class="col-sm-4 col-lg-4 text-left text-info">{{'cycle.technologist.report.total' | translate}}</th>
+              <th class="text-right text-info col-sm-1 col-lg-1">{{header.totalInne | longToWeight}}</th>
+              <th class="text-right text-info col-sm-1 col-lg-1">{{header.totalKraj | longToWeight}}</th>
+              <th class="text-right text-info col-sm-1 col-lg-1">{{header.totalExport | longToWeight}}</th>
+              <th class="text-right text-info col-sm-1 col-lg-1">{{header.total | longToWeight}}</th>
+              <th class="text-right text-info col-sm-1 col-lg-1">{{header.quality / 100 | dotToComma}}</th>
+              <th class="text-right text-info col-sm-1 col-lg-1">{{header.kgM | longToWeight}}</th>
+              <th class="text-right text-info col-sm-1 col-lg-1">{{header.kgT | longToWeight}}</th>
+              <th class="text-right text-info col-sm-2 col-lg-2">{{header.cyclesAmount}}</th>
+            </tr>
+          </table>
+          <table class="table table-condensed">
+            <tr ng-repeat="techSummary in header.headers">
+              <th class="col-sm-4 col-lg-4 text-left">{{techSummary.technologistName}} {{techSummary.technologisSurname}}</th>
+              <th class="text-right col-sm-1 col-lg-1">{{techSummary.totalInne | longToWeight}}</th>
+              <th class="text-right col-sm-1 col-lg-1">{{techSummary.totalKraj | longToWeight}}</th>
+              <th class="text-right col-sm-1 col-lg-1">{{techSummary.totalExport | longToWeight}}</th>
+              <th class="text-right col-sm-1 col-lg-1">{{techSummary.total | longToWeight}}</th>
+              <th class="text-right col-sm-1 col-lg-1">{{techSummary.quality / 100 | dotToComma}}</th>
+              <th class="text-right col-sm-1 col-lg-1">{{techSummary.kgM | longToWeight}}</th>
+              <th class="text-right col-sm-1 col-lg-1">{{techSummary.kgT / 100 | dotToComma}}</th>
+              <th class="text-right col-sm-2 col-lg-2">{{techSummary.cyclesAmount}}</th>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-1 col-lg-1">&nbsp;</div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-2 col-lg-2">&nbsp;</div>
+    <div class="cols-sm-8 col-lg-8">
+      <div id="day-titles">
+        <h4>
+          <strong>
+            <span class="col-sm-5 col-lg-5">{{'cycle.technologist.report.day' | translate}}</span>
+            <span class="text-right col-sm-1 col-lg-1">{{'cycle.technologist.report.inne' | translate}}</span>
+            <span class="text-right col-sm-1 col-lg-1">{{'cycle.technologist.report.kraj' | translate}}</span>
+            <span class="text-right col-sm-1 col-lg-1">{{'cycle.technologist.report.export' | translate}}</span>
+            <span class="text-right col-sm-1 col-lg-1">{{'cycle.technologist.report.total' | translate}}</span>
+            <span class="text-right col-sm-1 col-lg-1">{{'cycle.technologist.report.quality' | translate}}</span>
+            <span class="text-right col-sm-1 col-lg-1">{{'cycle.technologist.report.kgM' | translate }}&sup2;</span>
+            <span class="text-right col-sm-1 col-lg-1">{{'cycle.technologist.report.kgT' | translate}}</span>
+          </strong>
+        </h4>
+      </div>
+      <div class="row"><hr></div>
+
+
+      <div id="details" ng-repeat="day in days">
+        <strong>
+          <span class="col-sm-5 col-lg-5">{{day.date}}</span>
+          <span class="text-right col-sm-1 col-lg-1">{{day.inne | longToWeight}}</span>
+          <span class="text-right col-sm-1 col-lg-1">{{day.kraj | longToWeight}}</span>
+          <span class="text-right col-sm-1 col-lg-1">{{day.export | longToWeight}}</span>
+          <span class="text-right col-sm-1 col-lg-1">{{day.total | longToWeight}}</span>
+          <span class="text-right col-sm-1 col-lg-1">{{day.quality | dotToComma}}</span>
+          <span class="text-right col-sm-1 col-lg-1">{{day.kgM }}</span>
+          <span class="text-right col-sm-1 col-lg-1">{{day.kgT }}</span>
+        </strong>
+        <div id="technologists" ng-repeat="technologist in day.technologists">
+          <span class="col-sm-5 col-lg-5">{{technologist.technologistName}} {{technologist.technologistSurname}}</span>
+          <span class="text-right col-sm-1 col-lg-1">{{technologist.totalInne | longToWeight}}</span>
+          <span class="text-right col-sm-1 col-lg-1">{{technologist.totalKraj | longToWeight}}</span>
+          <span class="text-right col-sm-1 col-lg-1">{{technologist.totalExport | longToWeight}}</span>
+          <span class="text-right col-sm-1 col-lg-1">{{technologist.total | longToWeight}}</span>
+          <span class="text-right col-sm-1 col-lg-1">{{technologist.quality / 100 | dotToComma}}</span>
+          <span class="text-right col-sm-1 col-lg-1">{{technologist.kgM}}</span>
+          <span class="text-right col-sm-1 col-lg-1">{{technologist.kgT  | dotToComma}}</span>
+        </div>
+        <span class="col-sm-12"><hr></span>
+      <!--  <span class="row"><hr></span>-->
+      </div>
+    </div>
+    <div class="col-sm-2 col-lg-2">&nbsp;</div>
+
+  </div>
+</div>

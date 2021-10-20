@@ -1,0 +1,34 @@
+<div class="container-fluid" ng-controller="warehouseStatusCtrl" ng-init="init()">
+  <ol class="breadcrumb">
+    <li class="active" ng-bind="'warehouse.status.header' | translate"></li>
+  </ol>
+  <div growl></div>
+
+    <table class="table table-condensed table-hover">
+    <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th ng-repeat="depot in depots" ng-bind="depot.name" class="text-right"></th>
+      <th class="text-right">{{'warehouse.status.total' | translate}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="type in types">
+      <td ng-bind="type.name"></td>
+      <td ng-repeat="depot in depots" class="text-right">
+        {{findStockValue(type.id, depot.id) | dotToCommaKg}}
+        <span ng-show="findStockPcs(type.id,depot.id)"> / {{findStockPcs(type.id,depot.id)}} {{'warehouse.status.pcs' | translate}}</span>
+      </td>
+      <th class="text-right">{{rodzajTotal[type.id] | dotToCommaKg}}</th>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+      <th>{{'warehouse.status.total' | translate}}</th>
+      <th ng-repeat="depot in depots" class="text-right">{{depotTotal[depot.id] | dotToCommaKg}}</th>
+      <th ng-bind="total" class="text-right"></th>
+    </tr>
+    </tfoot>
+
+  </table>
+</div>

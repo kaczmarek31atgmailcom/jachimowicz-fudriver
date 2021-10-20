@@ -1,0 +1,82 @@
+<div class="container-fluid" ng-controller="reclassificationDetailsCtrl" ng-init="getDetails()" class="ng-cloak">
+
+    <div class="page-header">
+        <h2>{{'reclassification.details.header.1' | translate}} {{header.id}} {{'reclassification.details.header.2' |
+            translate}} {{header.created}}</h2>
+        <h4>{{header.description}}</h4>
+    </div>
+    <div class="alert alert-danger" role="alert" ng-show="showError">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Error:</span>
+        {{message | translate}}
+    </div>
+
+    <div class="alert alert-success" role="alert" ng-show="showMessage">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Error:</span>
+        {{message | translate}}
+    </div>
+
+
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th width="5%">{{'reclassification.details.barcode' | translate}}</th>
+            <th width="5%">{{'reclassification.details.hala' | translate}}</th>
+            <th width="5%">{{'reclassification.details.date' | translate}}</th>
+            <th width="15%">{{'reclassification.details.beforeTypeName' | translate}}</th>
+            <th width="15%">{{'reclassification.details.afterTypeName' | translate}}</th>
+            <th width="10%" class="text-right">{{'reclassification.details.pickerId' | translate}}</th>
+            <th width="10%" class="text-right">{{'reclassification.details.pickerNr' | translate}}</th>
+            <th width="10%">{{'reclassification.details.pickerName' | translate}}</th>
+            <th width="5%">{{'reclassification.details.pickerGroupName' | translate}}</th>
+            <th width="10%">{{'reclassification.details.wagowy' | translate}}</th>
+            <th width="5%">{{'reclassification.details.active' | translate}}</th>
+            <th width="5%">{{'reclassification.details.massage' | translate}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="detail in details">
+            <td ng-class="{'text-danger': detail.payed === true}">{{detail.barcode}}</td>
+            <td ng-class="{'text-danger': detail.payed === true}">{{detail.halaName}}</td>
+            <td ng-class="{'text-danger': detail.payed === true}">{{detail.harvestDate}}</td>
+            <td ng-class="{'text-danger': detail.payed === true}">{{detail.originalTypeName}} &nbsp; {{detail.originalTypeWeight}} kg</td>
+            <td ng-hide="disabledKeys || header.processed">
+                <a href="#" editable-select="localType"
+                   e-ng-options="localType as localType.name + ' ' + localType.weight for localType in types"
+                   onbeforesave="updateReclassificationType(detail.id,$data)">
+                    {{detail.reclassificationTypeName}} &nbsp; {{detail.reclassificationTypeWeight}} kg</a>
+            </td>
+            <td ng-show="showMessage || header.processed">
+                {{detail.reclassificationTypeName}} &nbsp; {{detail.reclassificationTypeWeight}} kg
+            </td>
+
+
+            <td class="text-right" ng-class="{'text-danger': detail.payed === true}">{{detail.pickerId}}</td>
+            <td class="text-right" ng-class="{'text-danger': detail.payed === true}">{{detail.pickerNr}}</td>
+            <td ng-class="{'text-danger': detail.payed === true}">{{detail.pickerName}} &nbsp; {{detail.pickerSurname}}</td>
+            <td ng-class="{'text-danger': detail.payed === true}">{{detail.pickerGroupName}}</td>
+            <td ng-class="{'text-danger': detail.payed === true}">{{detail.wagowyLogin}} {{detail.wagowyName}} {{detail.wagowySurname}}</td>
+
+            <td ng-hide="header.processed">
+                <toggle-switch
+                        ng-model="detail.active" ng-change="turnOff(detail)" class="switch-mini>" ng-disabled="disabledKeys"
+                        on-label="{{'reclassification.details.active.yes' | translate }}"
+                        off-label="{{'reclassification.details.active.no' | translate }}">
+                    <toggle-switch>
+            </td>
+            <td ng-show="showMessage || header.processed">
+                <span ng-hide="detail.active"><i class="fa fa-toggle-off fa-2x"></i></span>
+                <span ng-show="detail.active"><i class="fa fa-toggle-on fa-2x"></i></span>
+            </td>
+
+
+            <td><span class="text-danger" ng-show="detail.payed">{{'reclassification.details.payed' | translate}}</span></td>
+        </tr>
+        </tbody>
+    </table>
+    <div ng-hide="header.processed">
+    <button class="btn btn-primary" ng-disabled="!valid() || disabledKeys" ng-click="reclassify()" ng-hide="disabledKeys">{{'reclassification.details.submit' | translate}}</button>
+</div>
+</div>

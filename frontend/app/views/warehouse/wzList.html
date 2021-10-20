@@ -1,0 +1,50 @@
+<div class="container-fluid" ng-controller="wzListCtrl" ng-init="init()">
+
+  <ol class="breadcrumb">
+    <li class="active">{{'warehouse.breadcrumb.wzList' | translate}}</li>
+  </ol>
+
+  <div class="header text-muted">
+    <h4>{{'warehouse.wz.summary.header' | translate}}</h4>
+  </div>
+
+  <div class="loading" ng-hide="loading == 0">Loading&#8230;</div>
+
+  <div class="form-group">
+    <div class="form-group col-xs-3">
+      <input class="form-control text-right" ng-model="startDate" placeholder="{{startDate | date:'yyyy/MM/dd'}}" required
+             bs-datepicker autoclose="true" data-date-format="yyyy/MM/dd" ng-change="init()">
+    </div>
+    <div class="form-group col-xs-3">
+      <input type="text" class="form-control text-right" ng-model="endDate" placeholder="{{endDate | date:'yyyy/MM/dd'}}"
+             required bs-datepicker autoclose="true" date-format="yyyy/MM/dd" ng-change="init()">
+    </div>
+  </div>
+
+  <table class="table table-condensed table-hover">
+    <thead>
+    <tr>
+      <th>{{'warehouse.wz.summary.no' | translate}}</th>
+      <th>{{'warehouse.wz.summary.date' | translate}}</th>
+      <th>{{'warehouse.wz.summary.customer' | translate}}</th>
+      <th>{{'warehouse.wz.summary.creatorLogin' | translate}}</th>
+      <th>{{'warehouse.wz.summary.creatorName' | translate}}</th>
+      <th>{{'warehouse.wz.summary.creatorSurname' | translate}}</th>
+      <th class="text-right">{{'warehouse.wz.summary.amount' | translate}}</th>
+      <th class="text-right">{{'warehouse.wz.summary.weight' | translate}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="header in headers" ng-click="showDetails(header)" class="hand-cursor">
+      <td>{{header.number}}/{{header.date | date:'yyyy-MM'}}</td>
+      <td ng-bind="header.date"></td>
+      <td ng-bind="header.customerName"></td>
+      <td ng-bind="header.creatorLogin"></td>
+      <td ng-bind="header.creatorName"></td>
+      <td ng-bind="header.creatorSurname"></td>
+      <td ng-bind="header.totalAmount" class="text-right"></td>
+      <td ng-bind="header.totalWeight | dotToCommaKg" class="text-right"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,59 @@
+<div class="container-fluid" ng-controller="EastMushroomsChangePaletteByBoxCtrl">
+
+  <div growl></div>
+  <div class="row">
+    <div class="col-lg-4 col-sm-4">&nbsp;</div>
+    <div class="col-lg-2 col-sm-2"><button class="btn btn-default" ng-click="goToPalettes()">{{'eastMushrooms.change.palette-whole' | translate}}</button></div>
+    <div class="col-lg-2 col-sm-2"><button class="btn btn-primary">{{'eastMushrooms.change.palette-by-code' | translate}}</button></div>
+    <div class="col-lg-4 col-sm-4">&nbsp;</div>
+    <div class="col-lg-12 col-sm-12">&nbsp;</div>
+  </div>
+
+
+  <div class="row">
+    <form name="barForm">
+      <div class="form-group col-xs-4 col-lg-4">
+        <input class="form-control" focus-if="documentScreen" name="barcode" id="barcode" type="text"
+               ng-model="barcode"
+               ng-change="parseBarcode(barcode)" ng-blur="focusInputText()" autocomplete="off">
+      </div>
+
+      <div class="form-group col-xs-4 col-lg-4">
+        <select id="type" class="form-control"
+                ng-model="currentPalette"
+                ng-options="palette as palette.paletteId for palette in palettes" ng-change="focusInputText()">
+        </select>
+      </div>
+
+      <div class="form-group col-xs-1 col-lg-1">
+        <button class="btn btn-primary btn-block" ng-click="moveBoxes()">{{'eastMushrooms.change.palette.by.box.button' | translate}}</button>
+      </div>
+        <div class="form-group col-xs-1 col-lg-1">
+        <button class="btn btn-success btn-block" ng-click="addPalette()">{{'eastMushrooms.change.palette.by.box.new.palette.button' | translate}}</button>
+      </div>
+
+      <div class="form-group col-lg-2 col-xs-2 text-left">
+        <select id="paletteType" class="form-control"
+                ng-model="paletteTypeId"
+                ng-options="paletteType.paletteId as paletteType.name for paletteType in paletteTypes">
+        </select>
+      </div>
+
+    </form>
+    <table class="table table-condensed">
+      <tr ng-repeat="box in boxes">
+        <td>{{box.barcode}}</td>
+        <td>{{box.typeName}}</td>
+        <td>{{box.typeWeight}}</td>
+        <td>{{box.harvestTime}}</td>
+        <td>{{box.chamberName}}</td>
+        <td>{{box.pickerId}}</td>
+        <td>{{box.pickerName}}</td>
+        <td>{{box.pickerSurname}}</td>
+      </tr>
+    </table>
+
+  </div>
+
+
+</div>

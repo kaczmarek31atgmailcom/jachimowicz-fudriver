@@ -1,0 +1,106 @@
+<div class="container-fluid" ng-controller="massHarvestCtrl">
+    <div class="page-header">
+        <h1><small>{{'massHarvest.header' | translate}}</small></h1>
+    </div>
+    <form name="wozek">
+        <div>
+            <div class="row">
+                <!-- Grupy -->
+                <div class="col-lg-2">
+                    <div class="dropdown">
+                        <button id="dLabelGrupa" type="button" class="btn btn-primary dropdown-toggle btn-block"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{activeGroup.name}}
+                            <span class="caret"></span>
+                        </button>
+
+                        <ul class="dropdown-menu" aria-labelledby="dLabelGrupa">
+                            <li class="dropdown" ng-repeat="group in groups"><a ng-click="setActiveGroup(group)">{{group.name}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Hale -->
+                <div class="col-lg-2">
+                    <div class="dropdown">
+                        <button id="dLabelHala" type="button" class="btn btn-success dropdown-toggle btn-block"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{activeHala.name}}
+                            <span class="caret"></span>
+                        </button>
+
+                        <ul class="dropdown-menu" aria-labelledby="dLabelHala">
+                            <li class="dropdown" ng-repeat="hala in hale"><a ng-click="setActiveHala(hala)">{{hala.name}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Rodzaj -->
+                <div class="col-lg-2">
+                    <div class="dropdown">
+                        <button id="dLabelType" type="button" class="btn btn-danger dropdown-toggle btn-block"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{activeType.name}} {{activeType.weight}} kg
+                            <span class="caret"></span>
+                        </button>
+
+                        <ul class="dropdown-menu" aria-labelledby="dLabelType">
+                            <li class="dropdown" ng-repeat="type in types"><a ng-click="setActiveType(type)">{{type.name}}
+                                {{type.weight}} kg</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+              <!-- Data zbioru -->
+              <div class="form-group col-lg-3">
+                <input class="form-control" ng-model="harvestDate"  placeholder="{{harvestDate}}" required
+                       bs-datepicker autoclose="true" data-date-format="yyyy/MM/dd">
+              </div>
+
+                <!-- Wyślij -->
+                <div class="col-lg-3">
+                    <button ng-class="{'btn btn-block disabled': isWyslijButtonInactive ,'btn btn-block btn-info': !isWyslijButtonInactive}"
+                            ng-disabled="isWyslijButtonInactive" name="submit" ng-click="send();">{{'massHarvest.send' |
+                        translate }}
+                    </button>
+                </div>
+
+
+            </div>
+            <hr>
+            <table class="table table-condensed table-hover">
+                <thead>
+                <tr>
+                    <th>{{'massHarvest.nr' | translate }}</th>
+                    <th>{{'massHarvest.name' | translate }}</th>
+                    <th>{{'massHarvest.surname' | translate }}</th>
+                    <th>{{'massHarvest.amount' | translate}}</th>
+                    <th>{{'massHarvest.weight' | translate}}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="picker in pickers" ng-show="shouldBeDisplayed(picker.groupId)">
+                    <td>{{picker.nr}}</td>
+                    <td>{{picker.name}}</td>
+                    <td>{{picker.surname}}</td>
+                    <td>
+                        <div class="input-group" ng-class="{'has-error': wozek[$index].$invalid}">
+                            <input type="text" pattern="\d+" class="form-control text-right input-sm" name="{{$index}}"
+                                   ng-model="picker.amount"
+                                   ng-change="updateTotalWeightAndAmount(wozek.$invalid); updateWyslijButtonState();" placeholder="0" maxlength="4">
+                        </div>
+                    </td>
+                    <td class="text-right">{{getWeight(picker.amount,activeType.weight)}}</td>
+                </tr>
+                <tr>
+                    <th colspan="3">{{'massHarvest.total' | translate}}</th>
+                    <th class="text-right">{{totalAmount}}</th>
+                    <th class="text-right">{{totalWeight}}</th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </form>
+</div>

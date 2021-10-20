@@ -1,0 +1,35 @@
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true" ng-controller="EastMushroomsWarehouseSelectPaletteCtrl">
+  <div class="modal-dialog modal-small">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="$hide()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-muted">{{'eastMushrooms.change.palette.select.palette.header' | translate}} {{sourcePaletteId}}
+        </h4>
+
+      </div>
+      <div class="modal-body">
+        <form name="changePalette" role="form">
+          <div class="row">
+            <div class="col-lg-12 col-sm-12">
+              <select id="palette" class="form-control"
+                      ng-model="targetPaletteId"
+                      ng-options="palette for palette in palettes">
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="row">
+              <div class="text-right col-sm-12">
+                <button class="btn btn-default" ng-click="$hide()">{{'cancel' | translate}}</button>
+                <button class="btn btn-success" ng-click="joinPalettes(); $hide()" ng-disabled="!(targetPaletteId >= 0)">{{'submit' | translate}}
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

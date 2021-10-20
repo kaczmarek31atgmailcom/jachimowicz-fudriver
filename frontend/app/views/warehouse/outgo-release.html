@@ -1,0 +1,83 @@
+<div class="container-fluid" ng-controller="outgoReleaseCtrl" ng-init="init(); focusInputText();">
+  <ol class="breadcrumb">
+    <li><a href="#/outgo">{{'warehouse.outgo.breadcrumb.summary' | translate}}</a></li>
+    <li class="active">{{'warehouse.outgo.breadcrumb.details' | translate}}</li>
+  </ol>
+  <div growl></div>
+  <div class="row">
+    <div class="col-xs-2">
+      <form name="barForm">
+        <div class="form-group col-xs-12">
+          <input class="form-control" focus-if="documentScreen" name="barcode" id="barcode" type="text"
+                 ng-model="barcode"
+                 ng-change="parseBarcode()" ng-blur="focusInputText()" autocomplete="off">
+        </div>
+
+      </form>
+    </div>
+    <div ng-show="isOrderCompleted() && !hideSubmit">
+      <button class="btn btn-primary" ng-click="generateWz()"
+              ng-bind="'warehouse.outgo.release.submit' | translate "></button>
+    </div>
+    <div class="col-xs-8 alert alert-danger" ng-show="errorMessage == 'Invalid prefix'"
+         ng-bind="'warehouse.outgo.release.message.invalid-prefix' | translate"></div>
+
+    <div class="col-xs-8 alert alert-danger" ng-show="errorMessage == 'Not a digit'"
+         ng-bind="'warehouse.outgo.release.message.not.digit' | translate"></div>
+
+    <div class="col-xs-8 alert alert-danger" ng-show="errorMessage == 'PaletteAlreadyReleased'"
+         ng-bind="'warehouse.outgo.release.message.palette-released' | translate"></div>
+
+    <div class="col-xs-8 alert alert-danger" ng-show="errorMessage == 'PaletteNotFound'">
+      {{'warehouse.outgo.release.message.palette-not-found' | translate}} {{previousBarcode}}
+    </div>
+
+  </div>
+  <div>
+    <div ng-class="isOrderCompleted() ? 'panel panel-success':'panel panel-danger'">
+      <div class="panel-heading">
+        <div class="row">
+          <h4>
+            <div class="col-lg-3">{{'order-admin.order.nr' | translate}} <b>{{order.id}}</b></div>
+            <div class="col-lg-2">{{'order-admin.customer' | translate}} <b>{{order.customerName}}</b></div>
+            <div class="col-lg-2">{{'order-admin.releaseDate' | translate}} <b>{{order.requiredDate}}</b></div>
+            <div class="col-lg-2" ng-show="order.plate">{{'order-admin.plate' | translate}} <b>{{order.plate}}</b></div>
+            <div class="col-lg-2" ng-hide="order.plate">&nbsp;</div>
+            <div class="col-lg-2" ng-show="order.description">{{'order-admin.description' | translate}} <b>{{order.description}}</b></div>
+            <div class="col-lg-2" ng-hide="order.description">&nbsp;</div>
+            <div class="col-lg-1 text-right">
+              <i class="fa fa-list-ol fa-2x hand-cursor" aria-hidden="true" ng-click="openDeliveryLetter(order.id)"></i>
+            </div>
+          </h4>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div ng-repeat="palette in order.palettes">
+          <h4><strong>{{$index + 1}}. {{'order-admin.palette.nr' | translate}} {{findPaletteNo(palette.id)}}</strong>
+          </h4>
+          <ul class="list-inline list-group-item">
+            <strong>
+              <li class="col-lg-4" ng-bind="'order-admin.typeName' | translate"></li>
+              <li class="col-lg-2" ng-bind="'order-admin.typeWeight' | translate"></li>
+              <li class="col-lg-2 text-right" ng-bind="'order-admin.totalWeight' | translate"></li>
+              <li class="col-lg-2 text-right" ng-bind="'order-admin.totalAmount' | translate"></li>
+            </strong>
+          </ul>
+          <ul ng-repeat="batch in palette.batches" class="list-inline list-group-item"
+              ng-class="palette.status == 1 ? 'alert alert-success' : 'alert alert-danger'">
+            <li class="col-lg-4">{{batch.typeName}}</li>
+            <li class="col-lg-2">{{batch.typeWeight | dotToCommaKg}}</li>
+            <li class="col-lg-2 text-right">{{(batch.amount * batch.typeWeight) | round | dotToCommaKg}}</li>
+            <li class="col-lg-2 text-right">{{batch.amount}}</li>
+            <li class="col-lg-2 text-right hand-cursor" ng-show="palette.status == 1"
+                ng-click="unreleasePalette(palette.id)"><i
+              class="fa fa-undo fa-2x" aria-hidden="true"></i></li>
+            </li>
+          </ul>
+          <div>&nbsp;</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

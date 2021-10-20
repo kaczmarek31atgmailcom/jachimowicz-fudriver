@@ -1,0 +1,27 @@
+<div class="container-fluid" ng-controller="ProductionOrderCtrl">
+  <ol class="breadcrumb">
+    <li class="active">{{'orders.breadcrumb.header' | translate}}</li>
+  </ol>
+
+  <div growl></div>
+
+  <div class="row">
+    <div class="col-sm-1 col-lg-1">&nbsp;</div>
+    <div class="col-sm-10 col-lg-10">
+      <table class="table table-condensed">
+        <tr class="gray-background">
+          <th>{{'orders.warehouse.type' | translate}}</th>
+          <th>{{'orders.local.type' | translate}}</th>
+          <th ng-repeat="day in days" class="text-right">{{day}}</th>
+        </tr>
+        <tr ng-repeat="type in types">
+          <th>{{type.warehouseTypeName}} {{type.warehouseTypeWeight | longToWeight}} {{'kg' | translate}}</th>
+          <th ng-show="type.localTypeId > 0">{{type.localTypeName}} {{type.localTypeWeight | longToWeight}} {{'kg' | translate}}</th>
+          <th class="text-danger" ng-show="! type.localTypeId > 0">{{'orders.no.local.type' | translate}}</th>
+          <td ng-repeat="day in days" class="text-right">{{findOrder(day,type.warehouseTypeId,orders)}}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="col-sm-1 col-lg-1">&nbsp;</div>
+  </div>
+</div>

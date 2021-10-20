@@ -1,0 +1,37 @@
+<div class="container-fluid" ng-controller="scalesStatusCtrl" ng-init="getStatus()">
+  <ol class="breadcrumb">
+    <li class="active">{{'scale_status.header'|translate}}</li>
+  </ol>
+  <div growl></div>
+  <div class="row">
+    <div class="col-sm-2 col-lg2">&nbsp;</div>
+    <div class="col-sm-8 col-lg-8">
+    <div ng-repeat="chumber in chumbers">
+      <h3>
+        <span class="label label-primary">{{ chumber.halaName }} </span>
+      </h3>
+
+      <table class="table table-striped">
+        <tr>
+          <th class="text-left col-md-3">{{'scale_status.scaleMan'|translate}}</th>
+          <th class="text-left col-md-3">{{'scale_status.type'|translate}}</th>
+          <th class="text-right col-md-3">{{'scale_status.amount'|translate}}</th>
+          <th class="text-right col-md-3">{{'scale_status.weight'|translate}}</th>
+        </tr>
+        <tr ng-repeat="status in statusInfo" ng-show="status.halaId == chumber.halaId">
+          <td class="text-left col-md-3">{{ status.scaleManName }}</td>
+          <td class="text-left col-md-3"> {{ status.typeName }}</td>
+          <td class="text-right col-md-3">{{ status.amount}}</td>
+          <td class="text-right col-md-3">{{ getSummaryWeight(status.typeWeight, status.amount) | dotToCommaKg }}</td>
+        </tr>
+        <tr>
+          <th colspan="2" class="text-left col-md-6">{{'scale_status.total'|translate}}</th>
+          <th class="text-right col-md-3">{{ getTotalAmountInChumber(chumber.halaId) | dotToComma}}</th>
+          <th class="text-right col-md-3">{{ getTotalWeightInChumber(chumber.halaId) | dotToCommaKg}}</th>
+        </tr>
+      </table>
+    </div>
+  </div>
+  </div>
+  <div class="col-sm-2 col-lg2">&nbsp;</div>
+</div>

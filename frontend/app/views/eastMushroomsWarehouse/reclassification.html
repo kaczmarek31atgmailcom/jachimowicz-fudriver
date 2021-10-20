@@ -1,0 +1,37 @@
+<div class="container-fluid" ng-controller="EastMushroomsReclassificationCtrl">
+  <div growl></div>
+  <div class="row">
+    <form name="barForm">
+      <div class="form-group col-xs-4 col-lg-4">
+        <input class="form-control" focus-if="documentScreen" name="barcode" id="barcode" type="text"
+               ng-model="barcode"
+               ng-change="parseBarcode(barcode)" ng-blur="focusInputText()" autocomplete="off">
+      </div>
+
+      <div class="form-group col-xs-4 col-lg-4">
+        <select id="type" class="form-control"
+                ng-model="currentType"
+                ng-options="type as  type.name + ' ' + type.weight for type in types" ng-change="focusInputText()">
+        </select>
+      </div>
+
+      <div class="form-group col-xs-4 col-lg-4">
+        <button class="btn btn-primary" ng-click="reclassify()">{{'eastMushrooms.reclassification.reclassify-button' | translate}}</button>
+      </div>
+
+    </form>
+    <table class="table table-condensed">
+      <tr ng-repeat="box in boxes">
+        <td>{{box.barcode}}</td>
+        <td>{{box.typeName}}</td>
+        <td>{{box.typeWeight}}</td>
+        <td>{{box.harvestTime}}</td>
+        <td>{{box.chamberName}}</td>
+        <td>{{box.pickerId}}</td>
+        <td>{{box.pickerName}}</td>
+        <td>{{box.pickerSurname}}</td>
+      </tr>
+    </table>
+
+  </div>
+</div>

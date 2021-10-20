@@ -1,0 +1,16 @@
+create table warehouse_brc(id int not null primary key auto_increment,
+  picker_id int not null,
+  uniq_id int not null,
+  rodzaj_id int not null,
+  depot_id int not null,
+  scanned_by_id int not null,
+  accepted_by_id int not null,
+  reservation_status tinyint default 0,
+  reserved_by_id int,
+  FOREIGN KEY  (picker_id) references ludzie(id),
+  FOREIGN KEY  (rodzaj_id) references rodzaj(id),
+  FOREIGN KEY  (depot_id) REFERENCES chlodnie(id),
+  FOREIGN KEY  (scanned_by_id) REFERENCES users(id),
+  FOREIGN KEY  (accepted_by_id) REFERENCES users(id),
+  UNIQUE KEY (picker_id, uniq_id)
+);

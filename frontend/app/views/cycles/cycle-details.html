@@ -1,0 +1,169 @@
+<div class="container-fluid" ng-controller="CycleDetailsCtrl">
+  <ol class="breadcrumb">
+    <li><a href="#/cycle-headers">{{'cycle.dates.breadcrumb.cycles-summary' | translate}}</a></li>
+    <li class="active">{{'cycle.dates.breadcrumb.cycles-details' | translate}}</li>
+  </ol>
+  <div growl></div>
+  <div class="row">
+    <div class="col-sm-2 col-lg-2">&nbsp;</div>
+    <div class="col-sm-8 col-log-8">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <dospan>{{header.chamberName}}</dospan>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-lg-5">
+              <dl class="dl-horizontal">
+                <dt>{{'cycle.details.start-date' | translate}}</dt>
+                <dd>{{header.startDate }}</dd>
+                <dt ng-show="header.endDate">{{'cycle.details.end-date' | translate}}</dt>
+                <dd ng-show="header.endDate">{{header.endDate}}</dd>
+                <dt>{{'cycle.details.area' | translate}}</dt>
+                <dd>{{header.area}}{{'cycle.details.meter' | translate}}&sup2;</dd>
+                <dt>{{'cycle.details.weight' | translate}}</dt>
+                <dd>{{header.weight | longToWeight}}{{'cycle.details.ton' | translate}}</dd>
+              </dl>
+            </div>
+            <div class="col-lg-5">
+              <dl class="dl-horizontal">
+                <dt>{{'cycle.details.humidity' | translate}}</dt>
+                <dd>{{header.humidity}}%</dd>
+                <dt>{{'cycle.details.subsoil' | translate}}</dt>
+                <dd>{{header.subsoilName}}</dd>
+                <dt>{{'cycle.details.mycelium' | translate}}</dt>
+                <dd>{{header.myceliumName}}</dd>
+                <dt>{{'cycle.details.technologist' | translate}}</dt>
+                <dd>{{header.technologistName}} {{header.technologistSurname}}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <table class="table table-condensed table-hover">
+        <thead>
+        <tr>
+          <th>{{'cycle.details.day' | translate }}</th>
+          <th ng-repeat="group in groupNames" class="text-right">
+            {{group.groupName}}
+          </th>
+          <th class="text-right">{{'cycle.details.inne' | translate }}</th>
+          <th class="text-right">{{'cycle.details.kraj' | translate }}</th>
+          <th class="text-right">{{'cycle.details.export' | translate }}</th>
+          <th class="text-right">{{'cycle.details.total' | translate }}</th>
+          <th class="text-right">{{'cycle.details.quality' | translate }}</th>
+          <th class="text-right">{{'cycle.details.kgM' | translate }}&sup2;</th>
+          <th class="text-right">{{'cycle.details.kgT' | translate }}</th>
+          <th class="text-right text-nowrap">{{'cycle.details.kgDryT' | translate }}</th>
+        </tr>
+        <tr class="text-primary cycle-details-total">
+          <th>{{'cycle.details.cycleSummary' | translate}}</th>
+          <th ng-repeat="group in groupNames" class="text-right">
+            {{group.total | longToWeight}}
+          </th>
+          <th class="text-right">{{header.inne | longToWeight}}</th>
+          <th class="text-right">{{header.kraj | longToWeight}}</th>
+          <th class="text-right">{{header.export | longToWeight}}</th>
+          <th class="text-right">{{header.total | longToWeight}}</th>
+          <th class="text-right">{{(header.quality / 100 ) | dotToComma}}</th>
+          <th class="text-right">{{header.amountPerMeter | longToWeight}}</th>
+          <th class="text-right">{{header.amountPerTon | longToWeight}}</th>
+          <th class="text-right">{{header.dryAmount | longToWeight}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="text-success cycle-details-summary" ng-show="thirdPeriod.total > 0">
+          <th>{{'cycle.details.thirdPeriodSummary' | translate}}</th>
+          <th ng-repeat="group in groupNames" class="text-right">
+            {{getTypeGroupPeriodSummary(group.groupId,thirdPeriod.typeGroups) | longToWeight}}
+          </th>
+          <th class="text-right">{{thirdPeriod.totalInne | longToWeight}}</th>
+          <th class="text-right">{{thirdPeriod.totalKraj | longToWeight}}</th>
+          <th class="text-right">{{thirdPeriod.totalExport | longToWeight}}</th>
+          <th class="text-right">{{thirdPeriod.total | longToWeight}}</th>
+          <th class="text-right">{{(thirdPeriod.quality / 100) | dotToComma}}%</th>
+          <th class="text-right">{{thirdPeriod.kgM | longToWeight}}</th>
+          <th class="text-right">{{thirdPeriod.kgTon | longToWeight}}</th>
+          <th class="text-right">{{thirdPeriod.kgDryTon | longToWeight}}</th>
+        </tr>
+        <tr ng-repeat="thirdPeriodDay in thirdPeriod.cycleDates">
+          <td>{{thirdPeriodDay.date}}</td>
+          <td ng-repeat="group in groupNames" class="text-right">
+            {{getTypeGroupAmount(group.groupId,thirdPeriodDay.date,thirdPeriod.typeGroups) | longToWeight}}
+          </td>
+          <td class="text-right">{{thirdPeriodDay.summaryInne | longToWeight}}</td>
+          <td class="text-right">{{thirdPeriodDay.summaryKraj | longToWeight}}</td>
+          <td class="text-right">{{thirdPeriodDay.summaryExport | longToWeight}}</td>
+          <td class="text-right">{{thirdPeriodDay.summaryTotal | longToWeight}}</td>
+          <td class="text-right">{{(thirdPeriodDay.quality / 100) | dotToComma}}%</td>
+          <td class="text-right">{{thirdPeriodDay.kgM | longToWeight}}</td>
+          <td class="text-right">{{thirdPeriodDay.kgTon | longToWeight}}</td>
+          <td class="text-right">{{thirdPeriodDay.kgDryTon | longToWeight}}</td>
+        </tr>
+
+
+        <tr class="text-success cycle-details-summary" ng-show="secondPeriod.total > 0">
+          <th>{{'cycle.details.secondPeriodSummary' | translate}}</th>
+          <th ng-repeat="group in groupNames" class="text-right">
+            {{getTypeGroupPeriodSummary(group.groupId,secondPeriod.typeGroups) | longToWeight}}
+          </th>
+          <th class="text-right">{{secondPeriod.totalInne | longToWeight}}</th>
+          <th class="text-right">{{secondPeriod.totalKraj | longToWeight}}</th>
+          <th class="text-right">{{secondPeriod.totalExport | longToWeight}}</th>
+          <th class="text-right">{{secondPeriod.total | longToWeight}}</th>
+          <th class="text-right">{{(secondPeriod.quality /100) | dotToComma}}%</th>
+          <th class="text-right">{{secondPeriod.kgM | longToWeight}}</th>
+          <th class="text-right">{{secondPeriod.kgTon | longToWeight}}</th>
+          <th class="text-right">{{secondPeriod.kgDryTon | longToWeight}}</th>
+        </tr>
+        <tr ng-repeat="secondPeriodDay in secondPeriod.cycleDates">
+          <td>{{secondPeriodDay.date}}</td>
+          <td ng-repeat="group in groupNames" class="text-right">
+            {{getTypeGroupAmount(group.groupId,secondPeriodDay.date,secondPeriod.typeGroups) | longToWeight}}
+          </td>
+          <td class="text-right">{{secondPeriodDay.summaryInne | longToWeight}}</td>
+          <td class="text-right">{{secondPeriodDay.summaryKraj | longToWeight}}</td>
+          <td class="text-right">{{secondPeriodDay.summaryExport | longToWeight}}</td>
+          <td class="text-right">{{secondPeriodDay.summaryTotal | longToWeight}}</td>
+          <td class="text-right">{{(secondPeriodDay.quality / 100) | dotToComma}}%</td>
+          <td class="text-right">{{secondPeriodDay.kgM | longToWeight}}</td>
+          <td class="text-right">{{secondPeriodDay.kgTon | longToWeight}}</td>
+          <td class="text-right">{{secondPeriodDay.kgDryTon | longToWeight}}</td>
+        </tr>
+
+        <tr class="text-success cycle-details-summary" ng-show="firstPeriod.total > 0">
+          <th>{{'cycle.details.firstPeriodSummary' | translate}}</th>
+          <th ng-repeat="group in groupNames" class="text-right">
+            {{getTypeGroupPeriodSummary(group.groupId,firstPeriod.typeGroups) | longToWeight}}
+          </th>
+          <th class="text-right">{{firstPeriod.totalInne | longToWeight}}</th>
+          <th class="text-right">{{firstPeriod.totalKraj | longToWeight}}</th>
+          <th class="text-right">{{firstPeriod.totalExport | longToWeight}}</th>
+          <th class="text-right">{{firstPeriod.total | longToWeight}}</th>
+          <th class="text-right">{{(firstPeriod.quality / 100 ) | dotToComma}}%</th>
+          <th class="text-right">{{firstPeriod.kgM | longToWeight}}</th>
+          <th class="text-right">{{firstPeriod.kgTon | longToWeight}}</th>
+          <th class="text-right">{{firstPeriod.kgDryTon | longToWeight}}</th>
+        </tr>
+        <tr ng-repeat="firstPeriodDay in firstPeriod.cycleDates">
+          <td>{{firstPeriodDay.date}}</td>
+          <td ng-repeat="group in groupNames" class="text-right">
+            {{getTypeGroupAmount(group.groupId,firstPeriodDay.date,firstPeriod.typeGroups) | longToWeight}}
+          </td>
+          <td class="text-right">{{firstPeriodDay.summaryInne | longToWeight}}</td>
+          <td class="text-right">{{firstPeriodDay.summaryKraj | longToWeight}}</td>
+          <td class="text-right">{{firstPeriodDay.summaryExport | longToWeight}}</td>
+          <td class="text-right">{{firstPeriodDay.summaryTotal | longToWeight}}</td>
+          <td class="text-right">{{(firstPeriodDay.quality /100) | dotToComma }}%</td>
+          <td class="text-right">{{firstPeriodDay.kgM | longToWeight}}</td>
+          <td class="text-right">{{firstPeriodDay.kgTon | longToWeight}}</td>
+          <td class="text-right">{{firstPeriodDay.kgDryTon | longToWeight}}</td>
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
+    <div class="col-sm-2 col-lg-2">&nbsp;</div>
+  </div>
+</div>

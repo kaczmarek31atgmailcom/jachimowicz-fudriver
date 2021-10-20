@@ -1,0 +1,50 @@
+<div class="container-fluid" ng-controller="ReclassifyReportCtrl" ng-init="init()">
+  <div class="header text-muted"><h4>{{'audit.localReclassification.header' | translate}}</h4></div>
+  <div class="row">
+    <div class="form-group">
+      <div class="form-group col-xs-2">
+        <input class="form-control" ng-model="startDate" data-max-date="{{endDate}}" placeholder="{{startDate}}" required
+               bs-datepicker autoclose="true" data-date-format="yyyy/MM/dd" ng-change="getReclassifications()">
+      </div>
+      <div class="form-group col-xs-2">
+        <input type="text" class="form-control" ng-model="endDate" data-min-date="{{startDate}}" placeholder="{{endDate}}"
+               required bs-datepicker autoclose="true" date-format="yyyy/MM/dd" ng-change="getReclassifications()">
+      </div>
+    </div>
+  </div>
+  <table class="table table-condensed">
+    <thead>
+    <tr>
+      <th ng-bind="'audit.localReclassification.barcode'|translate"></th>
+      <th ng-bind="'audit.localReclassification.date'|translate"></th>
+      <th ng-bind="'audit.localReclassification.picker'|translate" colspan="3"></th>
+      <th ng-bind="'audit.localReclassification.user'|translate" colspan="3"></th>
+      <th ng-bind="'audit.localReclassification.sourceType'|translate" colspan="2"></th>
+      <th ng-bind="'audit.localReclassification.targetType'|translate" colspan="2"></th>
+      <th ng-bind="'audit.localReclassification.sourceChamber'|translate"></th>
+      <th ng-bind="'audit.localReclassification.targetChamber'|translate"></th>
+      <th ng-bind="'audit.localReclassification.reason'|translate"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="r in reclassifications">
+      <td ng-show="eastMode === false">{{getBarcode(r.supplierId,r.uniqId,r.pickerId)}}</td>
+      <td ng-show="eastMode === true">{{getBarcodeEastMushrooms(r.supplierId,r.uniqId,r.pickerNr)}}</td>
+      <td ng-bind="r.date | date:'yyyy/MM/dd HH:mm:ss'"></td>
+      <td ng-bind="r.pickerId"></td>
+      <td ng-bind="r.pickerName"></td>
+      <td ng-bind="r.pickerSurname"></td>
+      <td ng-bind="r.login"></td>
+      <td ng-bind="r.userName"></td>
+      <td ng-bind="r.userSurname"></td>
+      <td ng-bind="r.sourceTypeName"></td>
+      <td ng-bind="r.sourceTypeWeight | dotToCommaKg"></td>
+      <td ng-bind="r.targetTypeName"></td>
+      <td ng-bind="r.targetTypeWeight | dotToCommaKg"></td>
+      <td ng-bind="r.sourceChamberName"></td>
+      <td ng-bind="r.targetChamberName"></td>
+      <td ng-bind="r.reason"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>

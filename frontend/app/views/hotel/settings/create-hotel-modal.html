@@ -1,0 +1,35 @@
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true" ng-controller="CreateHotelCtrl">
+  <div class="modal-dialog modal-small">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="$hide()"><span
+          aria-hidden="true">&times;</span></button>
+        <h3>{{'hotel.settings.create.hotel.title' | translate}}</h3>
+      </div>
+      <div class="modal-body">
+        <form name="createHotelForm">
+          <div class="form-group" ng-class="nameInvalid === true ? 'has-error' :''">
+            <label for="name" ng-bind="'hotel.settings.create.hotel.name' | translate" class="text-muted"></label>
+            <input id="name" name="name" type="text" class="form-control" ng-model="name" autocomplete="off" ng-change="isNameInvalid(this)">
+            <p ng-show="nameInvalid === true" class="help-block">{{nameErrorMessage}}</p>
+          </div>
+          <div class="form-group">
+            <label for="roomsAmount" ng-bind="'hotel.settings.create.hotel.rooms-amount' | translate" class="text-muted"></label>
+            <input type="number" class="form-control text-right input-xs" min="0" step="1" id="roomsAmount" name="roomsAmount"
+                   ng-model="roomsAmount" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="bedsAmount" ng-bind="'hotel.settings.create.hotel.beds-amount' | translate" class="text-muted"></label>
+            <input type="number" min="0" step="1" class="form-control text-right input-xs" id="bedsAmount" name="bedsAmount"
+                   ng-model="bedsAmount" autocomplete="off">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-default" ng-click="$hide()">{{'hotel.settings.create.hotel.cancel' | translate}}</button>
+        <button type="submit" class="btn btn-success" ng-disabled="name.length === 0" ng-click="createHotel(); $hide()">{{'hotel.settings.create.hotel.save' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,1 @@
+insert into config values(25,'Chlodnia BRC',1,1);

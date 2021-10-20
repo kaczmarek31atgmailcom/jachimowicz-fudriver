@@ -1,0 +1,50 @@
+<div class="container" ng-controller="cycleCtrl" ng-init="getHale(); getHeaders();">
+  <div class="page-header">
+    <h2>{{'cycle.headers'|translate}}</h2>
+    <table class="table table-striped table-bordered table-hover table-condensed">
+      <thead>
+      <tr>
+        <th class="text-left">{{'cycleHeaders.hala_name'|translate}}</th>
+        <th nowrap class="text-right">{{'cycleHeaders.startDay'|translate}}</th>
+        <th nowrap class="text-righ">{{'cycleHeaders.endDay'|translate}}</th>
+        <th nowrap class="text-right">{{'cycleHeaders.export'|translate}}</th>
+        <th nowrap class="text-right">{{'cycleHeaders.kraj'|translate}}</th>
+        <th nowrap class="text-right">{{'cycleHeaders.total'|translate}}</th>
+        <th nowrap class="text-right">{{'cycleHeaders.quality'|translate}}</th>
+        <th nowrap class="text-right">{{'cycleHeaders.byTone'|translate}}</th>
+        <th nowrap class="text-right">{{'cycleHeaders.byMeter'|translate}}</th>
+        <th nowrap class="text-left">{{'cycleHeaders.kompostownia'|translate}}</th>
+        <th nowrap class="text-left">{{'cycleHeaders.grzybnia'|translate}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="hala in hale" ng-click="launchCycleSettings(hala)">
+        <td nowrap class="text-left">{{hala.halaName}}</td>
+        <td class="text-right">{{hala.startDate}}</td>
+        <td class="text-right">{{hala.endDate}}</td>
+        <td class="text-right">{{hala.export | number:2|dotToComma}}</td>
+        <td class="text-right">{{hala.kraj | number:2|dotToComma}}</td>
+        <td class="text-right">{{hala.suma | number:2|dotToComma}}</td>
+        <td class="text-right">{{hala.jakosc | number:2|dotToComma}}</td>
+        <td class="text-right">{{hala.wydajnoscZTony | number:2|dotToComma}}</td>
+        <td class="text-right">{{hala.wydajnoscZMetra | number:2|dotToComma}}</td>
+        <td nowrap class="text-left">{{hala.kompostownia}}</td>
+        <td nowrap class="text-left">{{hala.grzybnia}}</td>
+      </tr>
+      <tr ng-repeat="header in cycleHeaders">
+        <td nowrap class="text-left">{{header.halaName}}</td>
+        <td class="text-right">{{header.startDate}}</td>
+        <td class="text-right">{{header.endDate}}</td>
+        <td class="text-right">{{header.export | number:2|dotToComma}}</td>
+        <td class="text-right">{{header.kraj | number:2|dotToComma}}</td>
+        <td class="text-right">{{header.suma | number:2|dotToComma}}</td>
+        <td class="text-right">{{header.jakosc | number:2|dotToComma}}</td>
+        <td class="text-right">{{header.wydajnoscZTony | number:2|dotToComma}}</td>
+        <td class="text-right">{{header.wydajnoscZMetra | number:2|dotToComma}}</td>
+        <td nowrap class="text-left">{{header.kompostownia}}</td>
+        <td nowrap class="text-left">{{header.grzybnia}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

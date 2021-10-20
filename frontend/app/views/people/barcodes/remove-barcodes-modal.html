@@ -1,0 +1,22 @@
+<div class="modal-body">
+  <div class="container-fluid">
+    <div class="row">
+      <div class=" col-md-12 col-lg-12">
+      <span class="text-right"><button type="button" class="close" aria-label="Close" ng-click="cancel()">x</button></span>
+        <span class="text-muted"><h3>{{'people.barcodes.delete.modal.header' | translate}}</h3></span>
+        <rzslider
+          rz-slider-model="slider.range.floor"
+          rz-slider-high="slider.range.ceil"
+          rz-slider-options="slider.range.options">
+        </rzslider>
+      </div>
+    </div>
+    <div class="col-lg-12">&nbsp</div>
+    <div class="row">
+      <div class="col-lg-12 text-right">
+        <button type="button" ng-click="cancel()" class="btn btn-default">{{'people.barcodes.delete.modal.button.cancel' | translate}}</button>
+        <button type="button" ng-click="deleteBarcodes()" class="btn btn-danger">{{'people.barcodes.delete.modal.button.save' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,53 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Rejestracja czasu pracy">
+    <meta name="author" content="Marcin Kaczmarek marcin@fungisearch.com">
+    <link rel="stylesheet" href="css/flipclock.css"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/timeRecorder.css"/>
+    <link rel="stylesheet" href="css/angular-growl.css">
+</head>
+<body ng-app="timerApp" ng-controller="timerOutputCtrl" ng-init="focusInputText();">
+<div class="container-fluid" ng-cloak>
+    <div growl></div>
+
+    <div>
+        <div class="page-header">
+            <div class="text-muted text-warning"><h2>Rejestracja wyjść</h2></div>
+            <div class="text-muted text-warning"><h4>Proszę zbliżyć identyfikator do czytnika.</h4></div>
+        </div>
+        <div class="col-sm-2 col-lg-2 alert alert-warning">
+            <strong><h1>{{currentTime}}&nbsp;</h1></strong>
+        </div>
+        <div class="col-sm-8">&nbsp;</div>
+        <div class="col-lg-12 text-center">
+            <div class="input-group">
+                <label for="badge"></label>
+                <form name="badgeForm" autocomplete="off">
+                    <input type="text" style="display:none;">
+                    <input class="form-control" name="badge" id="badge" type="password"
+                           ng-model="badge"
+                           ng-keypress="parseBadgeOutput($event)" ng-blur="focusInputText()" autocomplete="off" autofocus>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/vendor/jquery.min.js"></script>
+<script src="js/vendor/bootstrap.min.js"></script>
+<script src="js/vendor/angular.js"></script>
+<script src="js/vendor/angular-route.min.js"></script>
+<script src="js/vendor/angular-growl.js"></script>
+<script src="js/app.js"></script>
+<script src="js/TimerService.js"></script>
+<script src="js/TimerController.js"></script>
+
+<script language="JavaScript">
+
+</script>
+</body>
+</html>

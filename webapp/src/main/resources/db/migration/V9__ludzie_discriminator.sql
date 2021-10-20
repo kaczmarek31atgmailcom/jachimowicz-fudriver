@@ -1,0 +1,1 @@
+alter table ludzie change czy_zbieraczka dtype varchar(31);

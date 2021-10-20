@@ -1,0 +1,64 @@
+<div ng-controller="UserCtrl" class="container-fluid" ng-init="getActiveUsers()">
+<div ng-show="errorMessage" ng-bind="errorMessage" class="alert alert-danger"></div>
+  <div class="row">
+    <div class="col-xs-12">
+      <table class="table table-condensed table-hover">
+        <thead>
+        <tr>
+          <th ng-bind="'users.login' | translate"></th>
+          <th ng-bind="'users.name' | translate"></th>
+          <th ng-bind="'users.surname' | translate"></th>
+          <th ng-bind="'users.panel' | translate"></th>
+          <th ng-bind="'users.dostepy' | translate"></th>
+          <th ng-bind="'users.rozliczenia' | translate"></th>
+          <th ng-bind="'users.waga' | translate"></th>
+          <th ng-bind="'users.leader' | translate"></th>
+          <th ng-bind="'users.palety' | translate"></th>
+          <th ng-bind="'users.hotel' | translate"></th>
+          <th>&nbsp;</th>
+          <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="user in users">
+          <td class="text-left" ng-bind="user.login"></td>
+          <td ng-bind="user.name"></td>
+          <td ng-bind="user.surname"></td>
+          <td class="text-left"><i class="fa fa-check fa-lg text-success"
+                                   ng-show="checkRight(user.id,'ROLE_PANEL');"></i><i
+            class="fa fa-times fa-lg text-danger" ng-show="!checkRight(user.id,'ROLE_PANEL');"></i></td>
+          <td class="text-left"><i class="fa fa-check fa-lg text-success"
+                                   ng-show="checkRight(user.id,'ROLE_DOSTEPY');"></i><i
+            class="fa fa-times fa-lg text-danger" ng-show="!checkRight(user.id,'ROLE_DOSTEPY');"></i></td>
+          <td class="text-left"><i class="fa fa-check fa-lg text-success"
+                                   ng-show="checkRight(user.id,'ROLE_ROZLICZENIA');"></i><i
+            class="fa fa-times fa-lg text-danger" ng-show="!checkRight(user.id,'ROLE_ROZLICZENIA');"></i></td>
+          <td class="text-left"><i class="fa fa-check fa-lg text-success"
+                                   ng-show="checkRight(user.id,'ROLE_WAGA');"></i><i
+            class="fa fa-times fa-lg text-danger" ng-show="!checkRight(user.id,'ROLE_WAGA');"></i></td>
+          <td class="text-left"><i class="fa fa-check fa-lg text-success"
+                                   ng-show="checkRight(user.id,'ROLE_LEADER');"></i><i
+            class="fa fa-times fa-lg text-danger" ng-show="!checkRight(user.id,'ROLE_LEADER');"></i></td>
+          <td class="text-left"><i class="fa fa-check fa-lg text-success"
+                                   ng-show="checkRight(user.id,'ROLE_PALETY');"></i><i
+            class="fa fa-times fa-lg text-danger" ng-show="!checkRight(user.id,'ROLE_PALETY');"></i></td>
+
+          <td class="text-left"><i class="fa fa-check fa-lg text-success"
+                                   ng-show="checkRight(user.id,'ROLE_HOTEL');"></i><i
+            class="fa fa-times fa-lg text-danger" ng-show="!checkRight(user.id,'ROLE_HOTEL');"></i></td>
+
+          <td><i class="fa fa-pencil-square-o fa-lg hand-cursor" ng-click="openEditUserModal(user)"></i></td>
+          <td><i class="fa fa-trash-o fa-lg hand-cursor" ng-click="deleteUser(user.id)"></i></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-xs-12 text-right">
+      <button class="btn btn-primary" ng-click="openAddUserModal()">{{'users.newUser' | translate}}</button>
+    </div>
+  </div>
+</div>
+
+
+
+

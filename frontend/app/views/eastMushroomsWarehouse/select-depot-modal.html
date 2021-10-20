@@ -1,0 +1,34 @@
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true" ng-controller="EastMushroomsWarehouseSelectDepotCtrl">
+  <div class="modal-dialog modal-small">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="$hide()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-muted">{{'eastMushrooms.change.palette.by.box.select.depot.header' | translate}}
+        </h4>
+
+      </div>
+      <div class="modal-body">
+        <form name="commitForm" role="form">
+          <div class="row">
+            <div class="col-lg-12 col-sm-12">
+              <select id="depot" class="form-control"
+                      ng-model="depotId"
+                      ng-options="depot.id as depot.name for depot in depots">
+              </select>
+            </div>
+            <div class="modal-footer">
+              <div class="row">
+                <div class="text-right col-sm-12">
+                  <button type="submit" class="btn btn-default" ng-click="$hide()">{{'cancel' | translate}}</button>
+                  <button type="submit" class="btn btn-success" ng-click="createPalette(); $hide()">{{'submit' | translate}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

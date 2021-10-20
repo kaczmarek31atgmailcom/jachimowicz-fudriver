@@ -1,0 +1,49 @@
+<div class="container-fluid" ng-controller="TypeCtrl">
+  <ol class="breadcrumb">
+    <li class="active">{{'admin.type.breadcrumb.header'
+      | translate}}</li>
+  </ol>
+  <div growl></div>
+
+  <div class="row">
+    <div class="col-sm-2">
+      <button class="btn btn-primary" ng-click="openCreateTypeModal()"
+              ng-bind="'admin.type.create.button' | translate"></button>
+    </div>
+
+    <div class="col-sm-8">
+      <table class="table table-condensed table-hover">
+        <thead>
+        <tr>
+          <th class="col-sm-2">{{'admin.type.name' | translate}}</th>
+          <th class="col-sm-1 text-right">{{'admin.type.weight' | translate}}</th>
+          <th class="col-sm-1">{{'admin.type.barcode' | translate}}</th>
+          <th class="col-sm-1">{{'admin.type.exportType' | translate}}</th>
+          <th class="col-sm-3">{{'admin.type.group' | translate}}</th>
+          <th class="col-sm-3">{{'admin.type.size' | translate}}</th>
+          <th class="col-sm-3">{{'admin.type.box' | translate}}</th>
+          <th class="col-sm-1">&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="type in types">
+          <td class="col-sm-2">  <a href="#" editable-text="type.name" e-label="Type Name" onbeforesave="updateTypeName(type,$data)">{{ type.name || 'empty' }}</a></td>
+          <td class="col-sm-1 text-right">{{type.weight | longToWeight}} {{'kg' | translate}}</td>
+          <td class="col-sm-1">99900002{{addZeroes(type.id,5)}}</td>
+          <td class="col-sm-1">{{type.exportType}}</td>
+          <td class="col-sm-2"><a href="#" editable-select="type.groupId" e-ng-options="g.id as g.name for g in groups"
+                 onbeforesave="changeGroup($data, type)">{{type.groupName || '...'}}</a></td>
+
+          <td class="col-sm-2"><a href="#" editable-select="type.sizeId" e-ng-options="s.id as s.name for s in sizes"
+                                  onbeforesave="changeSize($data, type)">{{type.sizeName || '...'}}</a></td>
+
+          <td class="col-sm-2"><a href="#" editable-select="type.boxId" e-ng-options="b.id as b.name for b in boxes" onbeforesave="changeBox($data, type)">{{type.boxName ||
+            '...'}}</a></td>
+          <td class="col-sm-1 text-right" ng-click="openDeleteTypeModal(type)"><i class="fa fa-trash-o fa-lg hand-cursor" aria-hidden="true"></i></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-sm-2"></div>
+  </div>
+</div>

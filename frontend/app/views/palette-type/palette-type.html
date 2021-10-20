@@ -1,0 +1,29 @@
+<div class="container-fluid" ng-controller="PaletteTypeCtrl">
+
+  <ol class="breadcrumb">
+    <li class="active">{{'palette-types.breadcrump.header' | translate}}</li>
+  </ol>
+
+  <div growl></div>
+
+  <div class="row">
+    <div class="col-lg-2 col-sm-2">&nbsp;</div>
+
+    <div class="dndlist col-lg-8 col-sm-8">
+      <ul dnd-list="palettes">
+        <li ng-repeat="palette in palettes"
+            dnd-draggable="palette"
+            dnd-moved="palettes.splice($index, 1); paletteMoved()"
+            dnd-effect-allowed="move"
+            dnd-selected="palettes.selected = palette"
+            ng-class="{'selected': palettes.selected === palette}">
+          {{palette.name}}
+        </li>
+      </ul>
+    </div>
+    <div class="col-lg-2 col-sm-2">&nbsp;</div>
+  </div>
+</div>
+
+
+

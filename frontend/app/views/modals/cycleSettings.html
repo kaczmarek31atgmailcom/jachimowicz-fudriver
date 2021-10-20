@@ -1,0 +1,93 @@
+  <div class="modal" tabindex="-1" role="dialog" aria-hidden="true" ng-controller="cycleSettingsCtrl" ng-init="getDetails()">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" ng-click="$hide()"><span
+            aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">{{test}} | {{ hala.id}} | {{hala.halaName}}</h4>
+          <span>{{bn.detailedDescription}}</span>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+
+            <div class="form-group col-xs-3">
+              <label class="control-label"><i class="fa fa-calendar"></i>{{'cycleDetails.startDate' | translate}}</label>
+              <input class="form-control" ng-model="details.startDate"  placeholder="{{details.startDate}}" required
+                     bs-datepicker autoclose="true" data-date-format="yyyyMMdd" data-date-type="string" model-date-format="yyyyMMdd">
+            </div>
+
+            <div class="form-group col-xs-3">
+              <label class="control-label"><i class="fa fa-calendar"></i>{{'cycleDetails.koniec1' | translate}}</label>
+              <input type="text" class="form-control" ng-model="details.koniec1" data-min-date="{{details.startDate}}" placeholder="{{details.koniec1}}"
+                     required bs-datepicker autoclose="true" data-date-format="yyyyMMdd" data-date-type="string" model-date-format="yyyyMMdd">
+            </div>
+
+
+            <div class="form-group col-xs-3">
+              <label class="control-label"><i class="fa fa-calendar"></i>{{'cycleDetails.koniec2' | translate}}</label>
+              <input type="text" class="form-control" ng-model="details.koniec2" data-min-date="{{datails.koniec1}}" date-max-date="{{details.endDate}}" placeholder="{{details.koniec2}}"
+                     required bs-datepicker autoclose="true" data-date-format="yyyyMMdd" data-date-type="string" model-date-format="yyyyMMdd">
+            </div>
+
+            <div class="form-group col-xs-3">
+              <label class="control-label"><i class="fa fa-calendar"></i>{{'cycleDetails.koniec' | translate}}</label>
+              <input type="text" class="form-control" ng-model="details.endDate" data-min-date="{{details.koniec2}}" placeholder="{{details.endDate}}"
+                     required bs-datepicker autoclose="true" data-date-format="yyyyMMdd" data-date-type="string" model-date-format="yyyyMMdd">
+            </div>
+
+            <div class="form-group col-xs-2">
+              <label for="kompost" >{{'cycleDetails.kompostownia' | translate}}</label>
+              <select id="kompost" class="form-control" ng-model = "details.kompostowniaId" ng-options="item.id as item.name for item in kompostownie" ></select>
+          </div>
+
+            <div class="form-group col-xs-2">
+              <label for="grzybnia" >{{'cycleDetails.grzybnia' | translate}}</label>
+              <select id="grzybnia" class="form-control" ng-model = "details.grzybniaId" ng-options="item.id as item.name for item in grzybnie" ></select>
+            </div>
+
+            <div class="form-group col-xs-2">
+              <label for="torf" >{{'cycleDetails.torf' | translate}}</label>
+              <select id="torf" class="form-control" ng-model = "details.torfId" ng-options="item.id as item.name for item in torfy" ></select>
+            </div>
+
+            <div class="form-group col-xs-2">
+              <label for="dok_okr" >{{'cycleDetails.dok_okr' | translate}}</label>
+              <select id="dok_okr" class="form-control" ng-model = "details.dokOkrywyId" ng-options="item.id as item.name for item in dok_okr" ></select>
+            </div>
+
+            <div class="form-group col-xs-2">
+              <label for="dok_pod" >{{'cycleDetails.dok_pod' | translate}}</label>
+              <select id="dok_pod" class="form-control" ng-model = "details.dokPodlozaId" ng-options="item.id as item.name for item in dok_pod" ></select>
+            </div>
+
+            <div class="form-group col-xs-2">
+              <label for="stopien_ubicia" >{{'cycleDetails.stopien_ubicia' | translate}}</label>
+              <select id="stopien_ubicia" class="form-control text-right" ng-model = "details.stopienUbiciaId" ng-options="item.id as item.name for item in stopien_ubicia" ></select>
+            </div>
+
+            <div class="form-group col-xs-2">
+              <label for="kaking" >{{'cycleDetails.kaking' | translate}}</label>
+              <select id="kaking" class="form-control" ng-model = "details.kakingId" ng-options="item.id as item.name for item in kaking" ></select>
+            </div>
+
+            <div class="form-group col-xs-2">
+              <label for="wilgotnosc">{{'cycleDetails.wilgotnosc' | translate}}</label>
+              <input type="text" id = "wilgotnosc" ng-model="details.wilgotnosc" class="form-control text-right"/>
+            </div>
+
+            <div class="form-group col-xs-2">
+              <label for="kg_podloza">{{'cycleDetails.kg_podloza' | translate}}</label>
+              <input type="text" id = "kg_podloza" ng-model="details.ileTon" class="form-control text-right"/>
+            </div>
+
+            <div class="form-group col-xs-2">
+              <label for="metry">{{'cycleDetails.metry' | translate}}</label>
+              <input type="text" id = "metry" ng-model="details.ileMetrow" class="form-control text-right"/>
+            </div>
+
+            <button type="submit" class="btn btn-success" ng-click="$hide()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

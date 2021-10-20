@@ -1,0 +1,70 @@
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true" ng-controller="CommitHarvestPaletteToWarehouseCtrl">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="$hide()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-muted">{{'scanner.commit.harvest.palette.to.warehouse.header.1' | translate}} {{header.wozekNr}}
+          {{'scanner.commit.harvest.palette.to.warehouse.header.2' | translate}}
+        </h4>
+
+      </div>
+      <div class="modal-body">
+        <form name="commitForm" role="form">
+          <div class="row">
+            <div class="col-lg-6 col-sm-6">
+              <select id="depot" class="form-control"
+                      ng-model="depotId"
+                      ng-options="depot.id as depot.name for depot in depots">
+              </select>
+            </div>
+                <div class="col-lg-6 col-sm-6">
+                <select id="paletteType" class="form-control"
+                        ng-model="paletteTypeId"
+                        ng-options="paletteType.paletteId as paletteType.name for paletteType in paletteTypes">
+              </select>
+            </div>
+
+            <div class="col-lg-12 col-sm-12"><h4><strong>
+              <span class="col-lg-1 col-sm-1">&nbsp;</span>
+              <span class="col-lg-2 col-sm-2">{{'scanner.commit.harvest.palette.to.warehouse.trolleyNo' | translate }}</span>
+              <span class="col-lg-3 col-sm-3 text-center">{{'scanner.commit.harvest.palette.to.warehouse.type' | translate }}</span>
+              <span class="col-lg-2 col-sm-2 text-right">{{'scanner.commit.harvest.palette.to.warehouse.totalWeight' | translate }}</span>
+              <span class="col-lg-2 col-sm-2 text-right">{{'scanner.commit.harvest.palette.to.warehouse.totalAmount' | translate }}</span>
+              <span class="col-lg-2 col-sm-2">{{'scanner.commit.harvest.palette.to_warehosue.paletteType' | translate}}</span>
+            </strong></h4>
+            </div>
+
+            <div ng-repeat="trolley in headers" class="col-lg-12 col-sm-12"><h4>
+              <span class="col-lg-1 col-sm-1"  ng-click="check(trolley.wozekNr)"><input type="checkbox" ng-checked = "trolley.checked"></span>
+              <span class="col-lg-2 col-sm-2">{{trolley.wozekNr}}</span>
+              <span class="col-lg-3 col-sm-3 text-center">{{trolley.rodzajName}} - {{trolley.rodzajWeight}} {{'kg' | translate}}</span>
+              <span class="col-lg-2 col-sm-2 text-right">{{trolley.totalWeight}} </span>
+              <span class="col-lg-2 col-sm-2 text-right">{{trolley.totalPcs}}{{trolley.paletteTypeId}}</span>
+
+              </span>
+            </h4>
+            </div>
+            <div class="col-lg-12"><hr></div>
+            <div class="col-lg-12">
+              <span class="col-lg-8 col-sm-8">{{'scanner.commit.harvest.palette.to.warehouse.totals' | translate}}: </span>
+              <span class="col-lg-2 col-sm-2 text-right"><strong>{{checkedWeight}}</strong></span>
+              <span class="col-lg-2 col-sm-2 text-right"><strong>{{checkedAmount}}</strong></span>
+            </div>
+
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="row">
+          <div class="text-right col-sm-12">
+            <button type="submit" class="btn btn-default" ng-click="$hide()">{{'cancel' | translate}}</button>
+            <button type="submit" class="btn btn-success" ng-click="commitTrolley(); $hide()" ng-disabled="checkedAmount === 0">{{'submit' | translate}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

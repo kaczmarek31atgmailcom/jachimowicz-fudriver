@@ -1,0 +1,28 @@
+<div class="container-fluid" ng-controller="warehouseAgeCtrl" ng-init="init()">
+  <div class="page-header text-muted">
+    <h2>{{'warehouse-age.status.header' | translate}}</h2>
+  </div>
+  <ul ng-repeat="stockDay in stockDays" class="list-unstyled">
+    <li ng-class="getAgeStyle(stockDay.date)"><h3>{{stockDay.date}}</h3></li>
+    <li>
+    </li>
+    <table class="table table-condensed">
+      <thead>
+      <tr>
+        <th ng-bind="'warehouse-age.status.typeName' | translate"></th>
+        <th ng-bind="'warehouse-age.status.typeWeight' | translate"></th>
+        <th ng-repeat="depot in depots">{{depot.name}}</th>
+        <th ng-bind="'warehouse-age.status.total' | translate" class="text-right"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="item in stockDay.stock" ng-class="getAgeStyle(stockDay.date)">
+        <td ng-bind="item.typeName" class="col-lg-1"></td>
+        <td ng-bind="item.typeWeight | dotToCommaKg" class="col-lg-1"></td>
+        <td ng-repeat="depot in depots">{{findStockValue(item.rodzajId, depot.id,stockDay.date) | dotToCommaKg}}</td>
+        <td ng-bind="item.total | dotToCommaKg" class="text-right"></td>
+      </tr>
+      </tbody>
+    </table>
+  </ul>
+</div>

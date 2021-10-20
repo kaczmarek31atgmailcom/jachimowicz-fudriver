@@ -1,0 +1,61 @@
+<div class="container-fluid" ng-controller="SizeByCycleCtrl">
+  <ol class="breadcrumb">
+    <li class="active">{{'size-by-cycle.breadcrumb.title' | translate}}</li>
+  </ol>
+  <div growl></div>
+
+  <div class="loading" ng-hide="loading == 0">Loading&#8230;</div>
+
+  <div class="form-group col-xs-2">
+    <input class="form-control" ng-model="startDate" data-max-date="{{endDate}}" placeholder="{{startDate}}" required
+           bs-datepicker autoclose="true" data-date-format="yyyy/MM/dd" ng-change="init()">
+  </div>
+  <div class="form-group col-xs-2">
+    <input type="text" class="form-control" ng-model="endDate" data-min-date="{{startDate}}" placeholder="{{endDate}}"
+           required bs-datepicker autoclose="true" data-date-format="yyyy/MM/dd" ng-change="init()">
+  </div>
+
+  <div class="form-group col-xs-2">
+    <i class="fa fa-file-excel-o fa-2x hand-cursor" ng-click="export()"></i>
+  </div>
+
+  <table class="table table-bordered table-hover" ng-show="cycles.length > 0">
+    <thead>
+    <tr>
+      <th>{{"size-by-cycle.cycle-name" | translate}}</th>
+      <th colspan="2" ng-repeat="cycle in cycles" class="text-center" title="{{cycle.startDate}}">{{cycle.name}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="size in data">
+      <td class="text-nowrap">{{size.name}}</td>
+      <td ng-repeat="stats in size.data track by $index" class="text-right">{{stats}}</td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+      <td><strong>{{"size-by-cycle.total" | translate}}</strong></td>
+      <td ng-repeat="total in printTotals track by $index" class="text-right"><strong>{{total}}</strong></td>
+    </tr>
+    </tfoot>
+  </table>
+
+  <div class="row" ng-show="sizes.length > 0" >
+    <div class="hiddenPrint col-sm-1" >
+    <table class="export-table hiddenPrint" ng-show="sizes.length > 0">
+    <tr>
+      <td>{{"size-by-cycle.cycle-name" | translate}}</td>
+      <td ng-repeat="cycle in cyclesForExcel track by $index" class="text-center">{{cycle}}</td>
+    </tr>
+    <tr ng-repeat="size in data">
+      <td class="text-nowrap">{{size.name}}</td>
+      <td ng-repeat="stats in size.data track by $index" class="text-right">{{stats}}</td>
+    </tr>
+    <tr>
+      <td><strong>{{"size-by-cycle.total" | translate}}</strong></td>
+      <td ng-repeat="total in printTotals track by $index" class="text-right"><strong>{{total}}</strong></td>
+    </tr>
+      </table>
+    </div>
+  </div>
+</div>

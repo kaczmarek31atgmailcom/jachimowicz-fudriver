@@ -1,0 +1,72 @@
+<div class="container-fluid" ng-controller="CreateCompanyCtrl">
+  <ol class="breadcrumb">
+    <li><a href="#/company">{{'settings.company' | translate}}</a></li>
+    <li class="active">{{'settings.company.create' | translate}}</li>
+  </ol>
+
+  <div growl></div>
+
+  <div class="row">
+    <div class="col-sm-3 col-lg-3">&nbsp;</div>
+    <div class="col-sm-6 col-lg-6">
+      <form name="companyForm" role="form">
+
+        <div class="form-group">
+          <label for="name" ng-bind="'settings.company.name' | translate" class="text-muted"></label>
+          <input type="text" class="form-control" id="name" name="name"
+                 ng-model="company.name" autocomplete="off" autofocus>
+        </div>
+
+        <div class="form-group">
+          <label for="street" ng-bind="'settings.company.street' | translate" class="text-muted"></label>
+          <input type="text" class="form-control" id="street" name="street"
+                 ng-model="company.street" autocomplete="off">
+        </div>
+
+        <div class="form-group">
+          <label for="city" ng-bind="'settings.company.city' | translate" class="text-muted"></label>
+          <input type="text" class="form-control" id="city" name="city"
+                 ng-model="company.city" autocomplete="off">
+        </div>
+
+        <div class="form-group">
+          <label for="nip" ng-bind="'settings.company.nip' | translate" class="text-muted"></label>
+          <input type="text" class="form-control" id="nip" name="nip"
+                 ng-model="company.nip" autocomplete="off">
+        </div>
+
+        <div class="form-group">
+          <label for="regon" ng-bind="'settings.company.regon' | translate" class="text-muted"></label>
+          <input type="text" class="form-control" id="regon" name="regon"
+                 ng-model="company.regon" autocomplete="off">
+        </div>
+
+        <div class="form-group">
+          <label for="phoneNo" ng-bind="'settings.company.phoneNo' | translate" class="text-muted"></label>
+          <input type="text" class="form-control" id="phoneNo" name="phoneNo"
+                 ng-model="company.phoneNo" autocomplete="off">
+        </div>
+
+        <div class="form-group">
+          <label for="email" ng-bind="'settings.company.email' | translate" class="text-muted"></label>
+          <input type="text" class="form-control" id="email" name="email"
+                 ng-model="company.email" autocomplete="off">
+        </div>
+
+        <div class="form-group">
+          <label for="ggn" ng-bind="'settings.company.ggn' | translate" class="text-muted"></label>
+          <input type="text" class="form-control" id="ggn" name="ggn"
+                 ng-model="company.ggn" autocomplete="off">
+        </div>
+
+        <div class="form-group text-right">
+          <button type="submit" class="btn btn-primary" ng-disabled="!(company.name.length >0)"
+                  ng-click="createCompany(company)">{{'settings.company.button.update' | translate}}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="col-sm-3 col-lg-3">&nbsp;</div>
+
+</div>

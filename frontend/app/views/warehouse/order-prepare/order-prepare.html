@@ -1,0 +1,144 @@
+<div class="container-fluid" ng-controller="brcOrderPrepareCtrl" ng-init="init();focusInputText()">
+  <div ng-show="activePalette">
+    <ol class="breadcrumb">
+      <li><a href="#/order-prepare" ng-click="goToMenu()">{{'create-order.breadcrumb.menu' | translate}}</a></li>
+      <li class="active">{{'warehouse.outgo.breadcrumb.summary' | translate}}</li>
+    </ol>
+  </div>
+  <div ng-show="!activePalette">
+    <ol class="breadcrumb">
+      <li class="active">{{'create-order.breadcrumb.menu' | translate}}</li>
+    </ol>
+  </div>
+  <div class="row">
+    <div class="col-xs-8">
+      <div class="row">
+        <div>
+          <form name="barForm">
+            <div class="form-group col-xs-2">
+              <input class="form-control" focus-if="documentScreen" name="barcode" id="barcode" type="text"
+                     ng-model="barcode"
+                     ng-change="parseBarcode()" ng-blur="focusInputText()" autocomplete="off">
+            </div>
+            <div class="form-group col-xs-2">
+              <button class="btn btn-primary" ng-click="openRemoveScreen()">{{'create-order.deleteButton' | translate }}</button>
+            </div>
+            <div class="col-xs-8 alert alert-danger" ng-show="errorMessage == 'Box already reserved'"
+                 ng-bind="'create-order.message.barcode.reserved' | translate"></div>
+            <div class="col-xs-8 alert alert-danger" ng-show="errorMessage == 'Batch fully reserved'"
+                 ng-bind="'create-order.message.batch.fully.reserved' | translate"></div>
+            <div class="col-xs-8 alert alert-danger" ng-show="errorMessage == 'No such box in the warehouse'"
+                 ng-bind="'create-order.message.no.such.code' | translate"></div>
+            <div class="col-xs-8 alert alert-danger" ng-show="errorMessage == 'Not a digit'"
+                 ng-bind="'create-order.message.not.digit' | translate"></div>
+            <div class="col-xs-8 alert alert-danger" ng-show="errorMessage == 'Choose palette'"
+                 ng-bind="'create-order.message.choose.palette' | translate"></div>
+            <div class="col-xs-8 alert alert-danger" ng-show="errorMessage == 'Invalid prefix'"
+                 ng-bind="'create-order.message.invalid.prefix' | translate"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="prepare" ng-show="activePalette">
+    <ul class="list-inline list-group-item">
+      <strong>
+        <li class="col-lg-4" ng-bind="'order-admin.typeName' | translate"></li>
+        <li class="col-lg-2 text-right" ng-bind="'order-admin.typeWeight' | translate"></li>
+        <li class="col-lg-2 text-right" ng-bind="'order-admin.totalWeight' | translate"></li>
+        <li class="col-lg-2 text-right" ng-bind="'order-admin.totalAmount' | translate"></li>
+        <li class="col-lg-2 text-right" ng-bind="'order-admin.preparedAmount' | translate"></li>
+      </strong>
+    </ul>
+    <ul ng-repeat="batch in currentPalette.batches" class="list-inline list-group-item">
+      <li class="col-lg-4">{{batch.typeName}}</li>
+      <li class="col-lg-2 text-right">{{batch.typeWeight | dotToCommaKg}}</li>
+      <li class="col-lg-2 text-right">{{(batch.amount * batch.typeWeight) | round | dotToCommaKg}}</li>
+      <li class="col-lg-2 text-right">{{batch.amount}}</li>
+      <li class="col-lg-2 text-right">{{batch.reservedAmount}}</li>
+      <li class="col-lg-12 text-right" ng-show="batch.reservedAmount > 0">
+        <div class="progress">
+          <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuemin="0"
+               aria-valuemax="100" style="width: {{getReservedPercent(batch.amount, batch.reservedAmount)}}%;">
+          </div>
+        </div>
+      </li>
+    </ul>
+    <div>&nbsp;</div>
+    <div id="details">
+      <ul class="list-inline list-group-item">
+        <strong>
+          <li class="col-lg-2" ng-bind="'create-order.barcode' | translate"></li>
+          <li class="col-lg-2" ng-bind="'create-order.typeName' | translate"></li>
+          <li class="col-lg-2" ng-bind="'create-order.typeWeight' | translate"></li>
+          <li class="col-lg-6 text-right" ng-bind="'create-order.delete' | translate"></li>
+        </strong>
+      </ul>
+      <div ng-repeat="batch in currentPalette.batches">
+        <ul ng-repeat="detail in batch.details" class="list-inline list-group-item">
+          <li class="col-lg-2">{{getBarcode(detail)}}</li>
+          <li class="col-lg-2" ng-bind="batch.typeName"></li>
+          <li class="col-lg-2" ng-bind="batch.typeWeight | dotToCommaKg"></li>
+          <li class="col-lg-6 text-right"><i class="fa fa-trash-o hand-cursor" aria-hidden="true"
+                                             ng-click="removeReservation(detail.uniqId,detail.pickerId);"></i></li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+  <div id="palletes" ng-show="!activePalette">
+    <div ng-repeat="order in orders">
+      <div class="panel panel-warning">
+        <div class="panel-heading">
+          <div class="row">
+            <h4>
+              <div class="col-lg-2">{{'order-admin.order.nr' | translate}} <b>{{order.id}}</b></div>
+              <div class="col-lg-2">{{'order-admin.customer' | translate}} <b>{{order.customerName}}</b></div>
+              <div class="col-lg-1">{{'order-admin.releaseDate' | translate}} <b>{{order.requiredDate}}</b></div>
+              <div class="col-lg-2">{{'order-admin.creator' | translate}} <b>{{order.creatorName}} {{order.creatorSurname}}</b></div>
+              <div class="col-lg-1" ng-show="order.plate">{{'order-admin.plate' | translate}} <b>{{order.plate}}</b></div>
+              <div class="col-lg-1" ng-hide="order.plate">&nbsp;</div>
+              <div class="col-lg-2" ng-show="order.description">{{'order-admin.description' | translate}} <b>{{order.description}}</b></div>
+              <div class="col-lg-2" ng-hide="order.description">&nbsp;</div>
+              <div class="col-lg-2 text-right">
+                <i class="fa fa-arrow-right fa hand-cursor" aria-hidden="true" ng-click="prepareOrder(order.id)" ng-show="isOrderCompleted(order)" data-toggle="tooltip" data-placement="left" title="{{'prepare-order.tooltip.complete' | translate}}"></i>
+              </div>
+            </h4>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div ng-repeat="palette in order.palettes">
+            <h4><strong>{{$index + 1}}. {{'order-admin.palette.nr' | translate}} {{findPaletteNo(palette.id)}}</strong>
+            </h4>
+            <ul class="list-inline list-group-item">
+              <strong>
+                <li class="col-lg-4" ng-bind="'order-admin.typeName' | translate"></li>
+                <li class="col-lg-2" ng-bind="'order-admin.typeWeight' | translate"></li>
+                <li class="col-lg-2 text-right" ng-bind="'order-admin.totalWeight' | translate"></li>
+                <li class="col-lg-2 text-right" ng-bind="'order-admin.totalAmount' | translate"></li>
+                <li class="col-lg-2 text-right" ng-bind="'order-admin.preparedAmount' | translate"></li>
+
+              </strong>
+            </ul>
+            <ul ng-repeat="batch in palette.batches" class="list-inline list-group-item">
+              <li class="col-lg-4">{{batch.typeName}}</li>
+              <li class="col-lg-2">{{batch.typeWeight | dotToCommaKg}}</li>
+              <li class="col-lg-2 text-right">{{(batch.amount * batch.typeWeight) | round | dotToCommaKg}}</li>
+              <li class="col-lg-2 text-right">{{batch.amount}}</li>
+              <li class="col-lg-2 text-right">{{batch.reservedAmount}}</li>
+              <li class="col-lg-12" ng-show="batch.reservedAmount > 0">
+                <div class="progress">
+                  <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuemin="0"
+                       aria-valuemax="100" style="width: {{getReservedPercent(batch.amount, batch.reservedAmount)}}%;">
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <div>&nbsp;</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

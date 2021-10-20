@@ -1,0 +1,132 @@
+<div class="container-fluid" ng-controller="CycleDatesCtrl">
+  <ol class="breadcrumb">
+    <li class="active">{{'cycle.dates.breadcrumb.dates' | translate}}</li>
+  </ol>
+  <div growl></div>
+
+  <table class="table table-condensed">
+    <thead>
+    <tr>
+      <th>{{'cycle.dates.chamberName' | translate}}</th>
+      <th>{{'cycle.dates.init' | translate}}</th>
+      <th>{{'cycle.dates.startFirstPeriod' | translate}}</th>
+      <th>{{'cycle.dates.startSecondPeriod' | translate}}</th>
+      <th>{{'cycle.dates.startThirdPeriod' | translate}}</th>
+      <th>{{'cycle.dates.end' | translate}}</th>
+      <th>{{'cycle.dates.area' | translate}}&sup2;</th>
+      <th>{{'cycle.dates.weight' | translate}}</th>
+      <th>{{'cycle.dates.humidity' | translate}}</th>
+      <th>{{'cycle.dates.mycelium' | translate}}</th>
+      <th>{{'cycle.dates.subsoil' | translate}}</th>
+      <th>{{'cycle.dates.technologist' | translate}}</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <form name="cycleForm" class="form-inline" role="form">
+      <tr ng-repeat="cycle in cycles" ng-class="cycle.isActive? 'cycle active-cycle' : 'cycle inactive-cycle'">
+
+        <td ng-class="cycle.isActive ? 'text-left text-nowrap text-primary font-bold': 'text-left text-nowrap text-muted font-bold'">{{cycle.chamberName}} <i>{{getBarcode(cycle.chamberId)}}</i>
+        </td>
+        <td class="col-sm-1 col-lg-1">
+          <div class="form-group">
+            <input class="form-control text-right cycle-input" data-date-type="number" ng-model="cycle.initDate" placeholder="{{cycle.initDate}}" required
+                   bs-datepicker autoclose="true" data-date-format="yyyy/MM/dd"
+                   ng-change="createCycle(cycle)">
+          </div>
+        </td>
+        <td class="col-sm-1 col-lg-1">
+
+          <div class="form-group">
+            <input type="text" class="form-control text-right cycle-input" ng-model="cycle.startFirstPeriod" date-min-date="cycle.initDate"
+                   placeholder="{{cycle.startFirstPeriod}}" required
+                   bs-datepicker autoclose="true" data-date-format="yyyy/MM/dd" ng-change="updateStartFirstPeriod(cycle)" ng-disabled="!cycle.isActive">
+          </div>
+
+
+        </td>
+        <td class="col-sm-1 col-lg-1">
+          <div class="form-group">
+            <input type="text" class="form-control text-right cycle-input" ng-model="cycle.startSecondPeriod" date-min-date="cycle.startFirstPeriod"
+                   placeholder="{{cycle.startSecondPeriod}}" required
+                   bs-datepicker autoclose="true" data-date-format="yyyy/MM/dd" ng-change="updateStartSecondPeriod(cycle)" ng-disabled="!cycle.isActive">
+          </div>
+        </td>
+        <td class="col-sm-1 col-lg-1">
+          <div class="form-group">
+            <input class="form-control text-right cycle-input" ng-model="cycle.startThirdPeriod" placeholder="{{cycle.startThirdPeriod}}" required
+                   bs-datepicker autoclose="true" data-date-format="yyyy/MM/dd" ng-change="updateStartThirdPeriod(cycle)"
+                   ng-disabled="(!cycle.isActive) || (!cycle.startSecondPeriod)">
+          </div>
+        </td>
+        <td class="col-sm-1 col-lg-1">
+          <div class="form-group">
+            <button class="btn btn-danger btn-sm" ng-model="cycle.endDate" required
+                    bs-datepicker autoclose="true" data-date-format="yyyy/MM/dd" ng-change="openCloseCycleConfirm(cycle)" ng-hide="!cycle.startThirdPeriod">
+              {{'cycle.closeCycle.button' | translate}}
+            </button>
+          </div>
+        </td>
+        <td class="col-sm-1 col-lg-1">
+          <form class="form-inline">
+            <div class="form-group">
+              <div class="input-group">
+                <input type="text" pattern="[0-9]{1,4}" maxlength="4" class="form-control input-sm" ng-model="cycle.area" ng-disabled="!cycle.isActive">
+                <div class="input-group-addon">
+                  <i class="fa fa-floppy-o fa-lg hand-cursor" ng-click="updateArea(cycle)" ng-show="cycle.isActive"></i>
+                </div>
+              </div>
+            </div>
+          </form>
+        </td>
+        <td class="col-sm-1 col-lg-1 text-nowrap">
+          <form class="form-inline">
+            <div class="form-group">
+              <div class="input-group">
+                <input type="text" pattern="[0-9]{1,10}" class="form-control text-right input-sm" ng-model="cycle.weight" ng-disabled="!cycle.isActive">
+                <div class="input-group-addon">
+                  <i class="fa fa-floppy-o fa-lg hand-cursor" aria-hidden="true" ng-click="updateWeight(cycle)" ng-show="cycle.isActive"></i>
+                </div>
+              </div>
+            </div>
+          </form>
+        </td>
+        <td class="col-sm-1 col-lg-1">
+          <form class="form-inline">
+            <div class="form-group">
+              <div class="input-group">
+                <input type="text" pattern="[0-9]{1,3}" class="form-control text-right input-sm" ng-model="cycle.humidity" ng-disabled="!cycle.isActive">
+                <div class="input-group-addon">
+                  <i class="fa fa-floppy-o fa-lg hand-cursor" aria-hidden="true" ng-click="updateHumidity(cycle)" ng-show="cycle.isActive"></i>
+                </div>
+              </div>
+            </div>
+          </form>
+        </td>
+
+        <td class="col-sm-1 col-lg-1">
+          <div class="form-group">
+            <select ng-model="cycle.myceliumId" class="form-control cycle-input input-sm" ng-options="mycelium.id as mycelium.name for mycelium in myceliums"
+                    ng-disabled="!cycle.isActive" ng-change="updateMycelium(cycle)"></select>
+          </div>
+        </td>
+
+        <td class="col-sm-1 col-lg-1">
+          <div class="form-group">
+            <select ng-model="cycle.subsoilId" class="form-control cycle-input input-sm" ng-options="subsoil.id as subsoil.name for subsoil in subsoils"
+                    ng-disabled="!cycle.isActive" ng-change="updateSubsoil(cycle)"></select>
+          </div>
+        </td>
+
+        <td class="col-sm-1 col-lg-1">
+          <div class="form-group">
+            <select ng-model="cycle.technologistId" class="form-control cycle-input input-sm"
+                    ng-options="technologist.id as technologist.name  + ' ' + technologinst.surname for technologist in technologists"
+                    ng-disabled="!cycle.isActive" ng-change="updateTechnologist(cycle)"></select>
+          </div>
+        </td>
+      </tr>
+    </form>
+    </tbody>
+  </table>
+</div>

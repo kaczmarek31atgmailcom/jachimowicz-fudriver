@@ -1,0 +1,45 @@
+<div class="container-fluid" ng-controller="EastMushroomsChangePaletteCtrl">
+
+  <div growl></div>
+  <div class="row">
+    <div class="col-lg-4 col-sm-4">&nbsp;</div>
+    <div class="col-lg-2 col-sm-2">
+      <button class="btn btn-primary">{{'eastMushrooms.change.palette-whole' | translate}}</button>
+    </div>
+    <div class="col-lg-2 col-sm-2">
+      <button class="btn btn-default" ng-click="goToBoxByBox()">{{'eastMushrooms.change.palette-by-code' | translate}}</button>
+    </div>
+    <div class="col-lg-4 col-sm-4">&nbsp;</div>
+    <div class="col-lg-12 col-sm-12">&nbsp;</div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-lg-2">&nbsp;</div>
+    <div class="col-lg-8">
+      <li class="list-unstyled list-group">
+        <ul ng-repeat="sourcePalette in sourcePalettes track by $index" class="list-group-item" ng-show="sourcePalette.totalAmount > 0">
+          <div class="row">
+            <h4><strong>
+              <div class="col-lg-2 text-left">{{'eastMushrooms.change.palette.paletteId' | translate }}: {{sourcePalette.paletteId}}</div>
+              <div class="col-lg-4 text-right">{{'eastMushrooms.change.palette.totalAmount' | translate }}: {{sourcePalette.totalAmount}}</div>
+              <div class="col-lg-6 text-right">
+                <button class="btn btn-primary" ng-click="openSelectPaletteModal(sourcePalette.paletteId)">{{'eastMushroom.change.palette.move-button' | translate}}</button>
+              </div>
+            </strong></h4>
+
+            <li class="list-unstyled text-left">
+              <ul ng-repeat="type in sourcePalette.types track by $index" class="text-left">
+                <div class="col-lg-4 text-left">{{type.typeName}}</div>
+                <div class="col-lg-1">{{type.typeWeight}} {{'kg' | translate}}</div>
+                <div class="col-lg-1">{{type.amount}} {{'pcs' | translate}}</div>
+                <div class="col-lg-6">&nbsp;</div>
+              </ul>
+            </li>
+          </div>
+        </ul>
+      </li>
+    </div>
+    <div class="col-lg-2">&nbsp;</div>
+  </div>
+</div>

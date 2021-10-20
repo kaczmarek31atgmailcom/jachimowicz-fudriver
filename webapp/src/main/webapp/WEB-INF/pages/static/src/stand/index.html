@@ -1,0 +1,110 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Wyniki zbieraczek">
+    <meta name="author" content="Marcin Kaczmarek marcin@fungisearch.com">
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/angular-growl.css">
+</head>
+<body ng-app="standApp" ng-controller="StandCtrl" ng-init="focusInputText();">
+<div class="container-fluid" ng-cloak>
+    <div growl></div>
+    <div class="row">
+        <div class="col-sm-2">
+            <form name="barForm">
+                <div class="form-group col-xs-12">
+                    <input class="form-control" focus-if="documentScreen" name="barcode" id="barcode" type="text"
+                           ng-model="barcode"
+                           ng-change="parseBarcode()" ng-blur="focusInputText()" autocomplete="off">
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row" ng-show="stats.personId > 0">
+        <div class="col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <ul class="list-unstyled">
+                        <li>
+                            <strong>{{stats.personName}}</strong>
+                        </li>
+                        <li>
+                            <strong>{{stats.personSurname}}</strong>
+                        </li>
+                        <li>
+                            <strong>{{stats.personId}}</strong>
+                        </li>
+                        <li>
+                            <strong>{{startPeriod}} - {{endPeriod}}</strong>
+                        </li>
+                        <li>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-12 col-lg-12 text-nowrap"><h4><strong>Eksport {{yesterday}}</strong></h4></div>
+                                <div class="col-sm-12 col-lg-12 text-center text-primary text-nowrap"><h1><strong>{{stats.lastDayExport / 100}}%</strong></h1></div>
+                            </h4>
+                            </div>
+                        </li>
+                        <li>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-12 col-lg-12 text-nowrap"><h4><strong>Eksport {{startPeriod}} - {{endPeriod}}</strong></h4></div>
+                                <div class="col-sm-12 col-lg-12 text-center text-danger text-nowrap"><h1><strong>{{stats.periodExport / 100}}%</strong></h1></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8" ng-show="stats.personId > 0">
+            <table class="table table-condensed table-bordered">
+                <tr>
+                    <th colspan="2">&nbsp;</th>
+                    <th colspan="2" class="text-center text-danger">{{yesterday}}</th>
+                    <th colspan="2" class="text-right text-primary">{{startPeriod}} - {{endPeriod}}</th>
+                </tr>
+                <tr>
+                    <th colspan="2">Rodzaj</th>
+                    <th class="text-right text-danger">Ilość sztuk</th>
+                    <th class="text-right text-danger">Łączna waga</th>
+                    <th class="text-right text-primary">Ilość sztuk</th>
+                    <th class="text-right text-primary">Łączna waga</th>
+                </tr>
+                <tr ng-repeat="type in types">
+                    <td>{{type.name}}</td>
+                    <td class="text-right">{{type.weight / 1000}}</td>
+                    <td class="text-right text-danger">{{type.yesterdayAmount}}</td>
+                    <td class="text-right text-danger">{{type.yesterdayWeight / 1000}}</td>
+
+                    <td class="text-right text-primary">{{type.periodAmount}}</td>
+                    <td class="text-right text-primary">{{type.periodWeight / 1000}}</td>
+                </tr>
+                <tr>
+                    <th colspan="2">Suma:</th>
+                    <th class="text-right text-danger">{{yesterdayTotalAmount}}</th>
+                    <th class="text-right text-danger">{{yesterdayTotalWeight / 1000}}</th>
+                    <th class="text-right text-primary">{{periodTotalAmount}}</th>
+                    <th class="text-right text-primary">{{periodTotalWeight / 1000}}</th>
+                </tr>
+            </table>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+</div>
+<script src="js/vendor/jquery.min.js"></script>
+<script src="js/vendor/bootstrap.min.js"></script>
+<script src="js/vendor/angular.js"></script>
+<script src="js/vendor/angular-route.min.js"></script>
+<script src="js/vendor/angular-growl.js"></script>
+<script src="js/vendor/moment/moment.js"></script>
+<script src="js/app.js"></script>
+<script src="js/StandService.js"></script>
+<script src="js/StandController.js"></script>
+
+<script language="JavaScript">
+
+</script>
+</body>
+</html>

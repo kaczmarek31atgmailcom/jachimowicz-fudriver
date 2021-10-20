@@ -1,0 +1,125 @@
+<div class="container-fluid" ng-controller="brcByBarcodeCtrl" ng-init="init(); focusInputText()">
+  <ol class="breadcrumb">
+    <li class="active" ng-bind="'warehouse.brcByBarcode.breadcrumb.summary' | translate"></li>
+  </ol>
+
+  <header class="text-muted">
+    <h3 ng-bind="'warehouse.brcByBarcode.header' | translate"></h3>
+  </header>
+  <form name="barForm">
+    <div class="form-group col-xs-12">
+      <input class="form-control" focus-if="documentScreen" name="barcode" id="barcode" type="text"
+             ng-model="barcode"
+             ng-change="parseBarcode()" autocomplete="off">
+    </div>
+  </form>
+  <div class="row">
+    <div class="col-lg-3" ng-show="theBox">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h4 class="panel-title" ng-bind="'warehouse.brcByBarcode.barcodeHeader' | translate"></h4>
+        </div>
+        <div class="panel-body">
+          <dl class="dl-horizontal">
+
+            <dt ng-bind="'warehouse.brcByBarcode.barcode' | translate" ng-show="previousBarcode"></dt>
+            <dd ng-bind="previousBarcode"></dd>
+
+            <dt ng-bind="'warehouse.brcByBarcode.typeName' | translate" ng-show="theBox.name"></dt>
+            <dd ng-bind="theBox.name"></dd>
+
+            <dt ng-bind="'warehouse.brcByBarcode.typeWeight' | translate" ng-show="theBox.weight"></dt>
+            <dd ng-bind="theBox.weight | dotToCommaKg"></dd>
+
+            <dt ng-bind="'warehouse.brcByBarcode.pickerName' | translate" ng-show="theBox.pickerName"></dt>
+            <dd ng-bind="theBox.pickerName"></dd>
+
+            <dt ng-bind="'warehouse.brcByBarcode.pickerSurname' | translate" ng-show="theBox.pickerSurname"></dt>
+            <dd ng-bind="theBox.pickerSurname"></dd>
+
+            <dt ng-bind="'warehouse.brcByBarcode.harvestDate' | translate" ng-show="theBox.harvestDate"></dt>
+            <dd ng-bind="theBox.harvestDate"></dd>
+
+            <dt ng-bind="'warehouse.brcByBarcode.halaName' | translate" ng-show="theBox.halaName"></dt>
+            <dd ng-bind="theBox.halaName"></dd>
+
+            <dt ng-bind="'warehouse.brcByBarcode.wzId' | translate" ng-show="theBox.wzId"></dt>
+            <dd ng-show="theBox.wzId">{{theBox.wzId}}/{{theBox.wzDate | date:'yyyy-MM'}}</dd>
+
+            <dt ng-bind="'warehouse.brcByBarcode.paletteId' | translate" ng-show="theBox.paletteId"></dt>
+            <dd ng-bind="toPaletteNo(theBox.paletteId)" ng-show="theBox.paletteId"></dd>
+
+            <dt ng-bind="'warehouse.brcByBarcode.customerName' | translate" ng-show="theBox.customerName"></dt>
+            <dd ng-bind="theBox.customerName" ng-show="theBox.customerName"></dd>
+
+            <dt ng-bind="'warehouse.brcByBarcode.wzDate' | translate" ng-show="theBox.wzDate"></dt>
+            <dd ng-bind="theBox.wzDate" ng-show="theBox.wzDate"></dd>
+
+            <dt ng-bind="'warehouse.brcByBarcode.depotName' | translate" ng-show="theBox.depotName"></dt>
+            <dd ng-bind="theBox.depotName" ng-show="theBox.depotName"></dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <div ng-show="warehouseHeaders.length > 0" class="col-lg-9">
+      <div class="row">
+        <div class="header col-lg-12">
+          <h4>{{'warehouse.brcByDate.warehouseStock' | translate}}</h4>
+        </div>
+      </div>
+      <table class="table table-condensed table-hover">
+        <thead></thead>
+        <tr>
+          <th class="col-lg-1">{{'warehouse.brcByDate.typeName' | translate}}</th>
+          <th class="col-lg-1">{{'warehouse.brcByDate.typeWeight' | translate}}</th>
+          <th class="col-lg-1">{{'warehouse.brcByDate.depotName' | translate}}</th>
+          <th class="text-right col-lg-1">{{'warehouse.brcByDate.totalAmount' | translate}}</th>
+          <th class="text-right col-lg-1">{{'warehouse.brcByDate.totalWeight' | translate}}</th>
+        </tr>
+        <tbody>
+        <tr ng-repeat="header in warehouseHeaders | filter:searchText" ng-click="stockDetails(header)">
+          <td ng-bind="header.typeName"></td>
+          <td ng-bind="header.typeWeight | dotToCommaKg"></td>
+          <td ng-bind="header.depotName"></td>
+          <td ng-bind="header.totalAmount" class="text-right"></td>
+          <td ng-bind="header.totalWeight | dotToCommaKg" class="text-right"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div ng-show="wzHeaders.length > 0">
+    <div class="row">
+      <div class="header col-lg-12">
+        <h4>{{'warehouse.brcByDate.sold' | translate}}</h4>
+      </div>
+    </div>
+    <table class="table table-condensed table-hover">
+      <thead>
+      <tr>
+        <th ng-bind="'warehouse.brcByDate.typeName' | translate"></th>
+        <th ng-bind="'warehouse.brcByDate.typeWeight' | translate"></th>
+        <th ng-bind="'warehouse.brcByDate.customerName' | translate"></th>
+        <th ng-bind="'warehouse.brcByDate.wzNr' | translate"></th>
+        <th ng-bind="'warehouse.brcByDate.transactionDate' | translate"></th>
+        <th class="text-right" ng-bind="'warehouse.brcByDate.totalAmount' | translate"></th>
+        <th class="text-right" ng-bind="'warehouse.brcByDate.totalWeight' | translate"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="header in wzHeaders | filter:searchText" ng-click="wzDetails(header)">
+        <td ng-bind="header.typeName"></td>
+        <td ng-bind="header.typeWeight | dotToCommaKg"></td>
+        <td ng-bind="header.customerName"></td>
+        <td>{{header.headerNr}}/{{header.transactionDate | date:'yyyy-MM'}}</td>
+        <td ng-bind="header.transactionDate"></td>
+        <td ng-bind="header.totalAmount" class="text-right"></td>
+        <td ng-bind="header.totalWeight | dotToCommaKg" class="text-right"></td>
+
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

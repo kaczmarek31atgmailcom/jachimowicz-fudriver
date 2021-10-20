@@ -1,0 +1,31 @@
+<div ng-controller="waitingBoardCtrl" ng-init="getHeaders()" class="container-fluid">
+<div class="page-header text-muted">
+  <h2>{{'waitingBoard.header' | translate}}</h2>
+  <h4>{{'waitingBoard.header1' | translate}}</h4>
+</div>
+  <table class="table table-condensed table-hover">
+    <thead>
+    <tr>
+      <th class="col-lg-1">{{'waitingBoard.nr' | translate}}</th>
+      <th class="col-lg-2">{{'waitingBoard.typeName' | translate}}</th>
+      <th class="col-lg-2">{{'waitingBoard.typeWeight' | translate}}</th>
+      <th class="col-lg-2">{{'waitingBoard.cycle' | translate}}</th>
+      <th class="col-lg-2">{{'waitingBoard.scaleMan' | translate}}</th>
+      <th class="text-right col-lg-1">{{'waitingBoard.reject' | translate}}</th>
+      <th class="text-right col-lg-2">{{'waitingBoard.amount' | translate}}</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="header in headers">
+
+      <td ng-bind="header.trolleyId"></td>
+      <td ng-bind="header.typeName"></td>
+      <td ng-bind="header.typeWeight"></td>
+      <td ng-bind="header.chamberName"></td>
+      <td ng-bind="header.scaleManLogin"></td>
+      <td class="text-danger text-right" ng-click="reject(header.trolleyId)"><i class="fa fa-arrow-left hand-cursor" aria-hidden="true"></i></td>
+      <td class="text-right"><a href="#" editable-number="user.name" onbeforesave="commit(header.trolleyId, $data)">{{ header.amount || "......" }}</a></td>
+    </tr>
+    </tbody>
+  </table>
+</div>

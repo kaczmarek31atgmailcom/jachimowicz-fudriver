@@ -1,0 +1,44 @@
+<div class="container-fluid" ng-controller="CompanyDataCtrl">
+  <ol class="breadcrumb">
+    <li class="active">{{'settings.company.menu' | translate}}</li>
+  </ol>
+  <div growl></div>
+
+
+  <div class="row">
+    <div class="col-sm-1 col-lg-1 text-left">
+      <button class="btn btn-primary" ng-click="openCreatePage()"
+              ng-bind="'settings.company.create-button' | translate"></button>
+    </div>
+
+    <div class="col-sm-10 col-lg-10">
+      <table class="table table-hover">
+        <tr>
+          <th>&nbsp;</th>
+          <th>{{'settings.company.name' | translate}}</th>
+          <th>{{'settings.company.street' | translate}}</th>
+          <th>{{'settings.company.city' | translate}}</th>
+          <th>{{'settings.company.nip' | translate}}</th>
+          <th>{{'settings.company.regon' | translate}}</th>
+          <th>{{'settings.company.phoneNo' | translate}}</th>
+          <th>{{'settings.company.email' | translate}}</th>
+          <th>{{'settings.company.ggn' | translate}}</th>
+          <th>&nbsp;</th>
+        </tr>
+        <tr ng-repeat="company in companies">
+          <td>{{company.id}}</td>
+          <td>{{company.name}}</td>
+          <td>{{company.street}}</td>
+          <td>{{company.city}}</td>
+          <td>{{company.nip}}</td>
+          <td>{{company.regon}}</td>
+          <td>{{company.phoneNo}}</td>
+          <td>{{company.email}}</td>
+          <td>{{company.ggn}}</td>
+          <td class="col-sm-1 text-right" ng-click="openEditPage(company)"><i class="fa fa-pencil-square-o fa-lg hand-cursor" aria-hidden="true"></i></td>
+        </tr>
+      </table>
+    </div>
+    <div class="col-sm-1 col-lg-1">&nbsp;</div>
+  </div>
+</div>

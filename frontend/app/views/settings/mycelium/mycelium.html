@@ -1,0 +1,27 @@
+<div class="container-fluid" ng-controller="MyceliumCtrl">
+  <ol class="breadcrumb">
+    <li class="active">{{'settings.mycelium.bradcrump.header' | translate}}</li>
+  </ol>
+  <div growl></div>
+
+
+  <div class="row">
+    <div class="col-sm-3">
+      <button class="btn btn-primary" ng-click="openCreateMyceliumModal()"
+              ng-bind="'settings.mycelium.create-button' | translate"></button>
+    </div>
+    <div class="col-sm-6">
+      <table class="table">
+        <thead></thead>
+        <tbody>
+        <tr ng-repeat="mycelium in myceliums">
+          <td class="col-sm-1">{{$index + 1}}</td>
+          <td class="col-sm-6 text-left"><a href="#" editable-text="mycelium.name" onbeforesave="updateName(mycelium.id,$data)">{{mycelium.name}}</a></td>
+          <td class="col-sm-1 text-right" ng-click="deleteMycelium(mycelium.id)"><i class="fa fa-trash-o fa-lg hand-cursor" aria-hidden="true"></i></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-sm-3">&nbsp;</div>
+  </div>
+</div>

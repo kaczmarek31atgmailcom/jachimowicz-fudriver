@@ -1,0 +1,156 @@
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true" ng-controller="PickerEditCtrl">
+
+
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="$hide()"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"></h4>
+        <toggle-switch ng-model="pickerModal.active" on-label="{{'pickerEdit.active'|translate}}"
+                       off-label="{{'pickerEdit.inactive'|translate}}" ng-click="activate(pickerModal)"></toggle-switch>
+
+
+        <form class="form-horizontal" role="form">
+          <div class="form-group">
+
+            <div class="control-group col-lg-3">
+              <label for="name">{{'pickerEdit.id' | translate }}: {{pickerModal.id}}</label>
+            </div>
+
+            <div class="control-group col-xs-3">
+              <label for="name">{{'pickerEdit.nr' | translate }}: {{pickerModal.nr}}</label>
+            </div>
+
+            <div class="control-group col-xs-3">
+              <label for="name">{{'pickerEdit.dataZameldowania' | translate }}: {{pickerModal.dataZameldowania | date:
+                'yyyy-MM-dd'}}</label>
+            </div>
+
+            <div class="control-group col-xs-3">
+              <label for="name">{{'pickerEdit.dataWymeldowania' | translate }}: {{pickerModal.dataWymeldowania | date:
+                'yyyy-MM-dd'}}</label>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-body">
+        <form class="form-horizontal" role="form">
+          <div class="form-group">
+
+            <div class="control-group col-xs-2">
+              <label for="name">{{'pickerEdit.name' | translate}}</label>
+              <input type="text" id="name" ng-model="pickerModal.imie" class="form-control text-right"/>
+            </div>
+
+            <div class="control-group col-xs-2">
+              <label for="surname">{{'pickerEdit.surname' | translate}}</label>
+              <input type="text" id="surname" ng-model="pickerModal.nazwisko" class="form-control text-right"/>
+            </div>
+
+            <div class="control-group col-xs-2">
+              <label for="mobile">{{'pickerEdit.mobile' | translate}}</label>
+              <input type="text" id="mobile" ng-model="pickerModal.mobile" class="form-control text-right"/>
+            </div>
+
+
+            <div class="control-group col-xs-2">
+              <label for="address">{{'pickerEdit.address' | translate}}</label>
+              <input type="text" id="address" ng-model="pickerModal.adres" class="form-control text-right"/>
+            </div>
+
+            <div class="control-group col-xs-2">
+              <label class="control-label"><i class="fa fa-calendar"></i>{{'pickerEdit.birthDate' | translate}}</label>
+              <input type="text" class="form-control" ng-model="pickerModal.birthDate"
+                     placeholder="{{pickerModal.birthDate | date: 'yyyy-MM-dd'}}"
+                     required bs-datepicker autoclose="true" data-date-format="yyyy-MM-dd" data-date-type="string"
+                     model-date-format="yyyy-MM-dd">
+            </div>
+
+            <div class="control-group col-xs-2">
+              <label class="control-label"><i class="fa fa-calendar"></i>{{'pickerEdit.dataWaznosciZezwolenia' |
+                translate}}</label>
+              <input type="text" class="form-control" ng-model="pickerModal.dataWaznosciZezwolenia"
+                     placeholder="{{pickerModal.dataWaznosciZezwolenia | date: 'yyyy-MM-dd'}}"
+                     required bs-datepicker autoclose="true" data-date-format="yyyy-MM-dd" data-date-type="string"
+                     model-date-format="yyyy-MM-dd">
+            </div>
+
+            <div class="control-group col-xs-2">
+              <label for="group">{{'pickerEdit.group' | translate}}</label>
+              <select id="group" class="form-control text-right" ng-model="pickerModal.groupId"
+                      ng-options="group.id as group.name for group in groups"></select>
+            </div>
+
+            <div class="control-group col-xs-2">
+              <label for="city">{{'pickerEdit.city' | translate}}</label>
+              <input type="text" id="city" ng-model="pickerModal.city" class="form-control text-right"/>
+            </div>
+
+
+            <div class="control-group col-xs-2">
+              <label for="rejon">{{'pickerEdit.rejon' | translate}}</label>
+              <input type="text" id="rejon" ng-model="pickerModal.rejon" class="form-control text-right"/>
+            </div>
+
+            <div class="control-group col-xs-2">
+              <label for="indeks">{{'pickerEdit.indeks' | translate}}</label>
+              <input type="text" id="indeks" ng-model="pickerModal.indeks" class="form-control text-right"/>
+            </div>
+
+            <div class="control-group col-xs-2">
+              <label for="rejon">{{'pickerEdit.imionaRodzicow' | translate}}</label>
+              <input type="text" id="imionaRodzicow" ng-model="pickerModal.imionaRodzicow"
+                     class="form-control text-right"/>
+            </div>
+
+            <div class="control-group col-xs-2">
+              <label for="pesel">{{'pickerEdit.pesel' | translate}}</label>
+              <input type="text" id="pesel" ng-model="pickerModal.pesel" class="form-control text-right"/>
+            </div>
+
+            <div class="control-group col-xs-2">
+              <label for="nrWizy">{{'pickerEdit.nrWizy' | translate}}</label>
+              <input type="text" id="nrWizy" ng-model="pickerModal.nrWizy" class="form-control text-right"/>
+            </div>
+
+            <div class="control-group col-xs-2">
+              <label for="nrSzafkiStolowka">{{'pickerEdit.nrSzafkiStolowka' | translate}}</label>
+              <input type="text" id="nrSzafkiStolowka" ng-model="pickerModal.nrSzafkiStolowka"
+                     class="form-control text-right"/>
+            </div>
+
+            <div class="control-group col-xs-2">
+              <label for="nrSzafkiSzatnia">{{'pickerEdit.nrSzafkiSzatnia' | translate}}</label>
+              <input type="text" id="nrSzafkiSzatnia" ng-model="pickerModal.nrSzafkiSzatnia"
+                     class="form-control text-right"/>
+            </div>
+
+            <div class="control-group col-xs-2">
+              <label for="nrWagi">{{'pickerEdit.nrWagi' | translate}}</label>
+              <input type="text" id="nrWagi" ng-model="pickerModal.nrWagi" class="form-control text-right"/>
+            </div>
+
+
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+
+        <button type="submit" class="btn btn-default" ng-click="$hide()">{{'pickerEdit.close' | translate}}</button>
+        <button type="submit" class="btn btn-success" ng-click="savePicker(pickerModal); $hide()">{{'pickerEdit.save' |
+          translate}}
+        </button>
+
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+</div>
+
+

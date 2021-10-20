@@ -1,0 +1,31 @@
+<div class="container-fluid" ng-controller="EastMushroomsWarehouseStatusCtrl">
+  <ol class="breadcrumb">
+    <li class="active">{{'eastMushrooms.warehouse.stock.breadcrumb' | translate}}</li>
+  </ol>
+  <div class="growl"></div>
+  <div class="row">
+
+    <div class="col-lg-2 col-sm-2">&nbsp;</div>
+    <div class="col-lg-8 col-ms-8">
+      <span class="text-right"><h3>{{'eastMushrooms.warehouse.stock.palettes.amount' | translate}}:  {{palettesTotalAmount}}</h3></span>
+      <table class="table">
+        <tr>
+          <th>{{'eastMushrooms.warehouse.stock.typeName' | translate}}</th>
+          <th class="text-right">{{'eastMushrooms.warehouse.stock.amount' | translate}}</th>
+          <th class="text-right">{{'eastMushrooms.warehouse.stock.weight' | translate}}</th>
+        </tr>
+        <tr ng-repeat="type in stock">
+          <td>{{type.typeName}} {{type.typeWeight}}</td>
+          <td class="text-right">{{type.amount}}</td>
+          <td class="text-right">{{type.totalWeight}}</td>
+        </tr>
+        <tr>
+          <th>{{'eastMushrooms.warehouse.stock.total' | translate}}:</th>
+          <th class="text-right">{{totalAmount}}</th>
+          <th class="text-right">{{totalWeight}}</th>
+        </tr>
+      </table>
+    </div>
+    <div class="col-lg-2 col-sm-2">&nbsp;</div>
+  </div>
+</div>

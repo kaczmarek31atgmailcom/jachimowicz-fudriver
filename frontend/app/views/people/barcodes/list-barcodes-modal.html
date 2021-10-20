@@ -1,0 +1,29 @@
+<div class="modal-body">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12">&nbsp</div>
+      <div class=" col-md-12 col-lg-12">
+        <span class="text-right"><button type="button" class="close" aria-label="Close" ng-click="cancel()">x</button></span>
+        <span class="text-muted"><h3>{{'people.barcodes.list.modal.header' | translate}}</h3></span>
+      </div>
+      <div class=" col-md-12 col-lg-12">
+        <hr>
+      </div>
+      <div class="col-md-12 col-sm-12">
+        <hr>
+      </div>
+    </div>
+    <div class="col-lg-12">&nbsp</div>
+    <div class="row">
+      <span class="col-sm-1" ng-repeat="barcode in barcodes">
+        {{barcode}}
+      </span>
+    </div>
+    <div class="col-sm-12">
+      <hr>
+    </div>
+    <div class="col-sm-12 text-right">
+      <button type="button" ng-click="cancel()" class="btn btn-primary">{{'people.barcodes.list.modal.button.close' | translate}}</button>
+    </div>
+  </div>
+</div>

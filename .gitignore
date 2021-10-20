@@ -1,0 +1,10 @@
+webapp/target
+.idea
+*iml
+.project
+.classpath
+.settings
+webapp/src/main/webapp/WEB-INF/pages/static/src/version/git.properties
+git.properties
+webapp/logs/fudriver.log
+frontend/units.html

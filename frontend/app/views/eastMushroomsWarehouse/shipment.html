@@ -1,0 +1,207 @@
+<div class="container-fluid" ng-controller="EastMushroomsShipmentDetailsCtrl">
+
+  <ol class="breadcrumb">
+    <li><a href="#/warehouse-east/shipment">{{'eastMushrooms.shipment.breadcrumb.list' | translate}}</a></li>
+    <li class="active">{{'eastMushrooms.shipment.breadcrumb.document' | translate}}: <b>{{header.nr}}/{{header.date | date:'yyyy-MM'}}</b></li>
+  </ol>
+
+  <div growl></div>
+  <div class="row">
+    <div class="header col-lg-12 col-sm-12">
+      <h3>{{'eastMushrooms.shipment.title' | translate }} {{header.nr}}/{{header.date | date : "yyyy-MM"}}
+        {{'eastMushrooms.shipment.date' | translate}} {{header.date}}
+        {{'eastMushrooms.shipment.toCustomer' | translate}} {{header.customerName}}</h3>
+    </div>
+
+    <div class="col-lg-2 col-sm-2">
+      <i class="fa fa-print fa-2x hand-cursor" ng-print print-element-id="shipment-print"></i>
+    </div>
+    <div id="shipment-list" class="col-lg-8 col-sm-8">
+      <div class="panel panel-default">
+        <div class="panel-heading"><strong>{{'eastMushrooms.shipment.wz-list' | translate}}</strong></div>
+        <div class="panel-body">
+          <table class="table table-hover table-condensed">
+            <tr>
+              <th>{{'eastMushrooms.shipment.wznr' | translate}}</th>
+              <th>{{'eastMushrooms.shipment.company' | translate}}</th>
+              <th class="text-right">{{'eastMushrooms.shipment.totalWeight' | translate}}</th>
+            </tr>
+            <tr class="hand-cursor" ng-repeat="wzHeader in header.wzHeaders" ng-click="showWz(wzHeader.id,header)">
+              <td>{{wzHeader.nr}}/{{wzHeader.date | date : "yyyyMM"}}</td>
+              <td>{{wzHeader.companyName}}</td>
+              <td class="text-right">{{wzHeader.totalAmount | longToWeight}} {{'kg' | translate}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-2 offset-sm-2"></div>
+  </div>
+  <div class="row">
+    <div class="col-sm-2 offset-sm-2"></div>
+    <div class="col-lg-5 col-sm-5">
+      <table class="table table-bordered table-condensed">
+        <tr class="gray-background">
+          <th>{{'eastMushrooms.shipment.type.name' | translate}}</th>
+          <th class="text-right">{{'eastMushrooms.shipment.type.amount' | translate}}</th>
+          <th class="text-right">{{'eastMushrooms.shipment.type.weight' | translate}}</th>
+        </tr>
+        <tr ng-repeat="typeTotal in typeTotals">
+          <td>{{typeTotal.typeName}} - {{typeTotal.typeWeight | longToWeight}} {{'kg'|translate}}</td>
+          <td class="text-right">{{typeTotal.amount}}</td>
+          <td class="text-right">{{typeTotal.weight | longToWeight}}</td>
+        </tr>
+        <tr>
+          <th>{{'eastMushrooms.shipment.total' | translate}}:</th>
+          <th class="text-right">{{totalNumberOfBoxes}}</th>
+          <th class="text-right">{{totalWeight | longToWeight}}</th>
+        </tr>
+      </table>
+    </div>
+
+
+    <div class="col-lg-3 col-sm-3">
+      <table class="table table-bordered table-condensed">
+        <tr class="gray-background">
+          <th>{{'eastMushrooms.shipment.paletteType.name' | translate}}</th>
+          <th class="text-right">{{'eastMushrooms.shipment.paletteType.amount' | translate}}</th>
+        </tr>
+        <tr ng-repeat="paletteType in paletteTypeTotals">
+          <td>{{paletteType.paletteTypeName}}</td>
+          <td class="text-right">{{paletteType.amount}}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="col-sm-2 offset-sm-2"></div>
+  </div>
+  <div class="row">
+    <div class="col-sm-2 offset-sm-2"></div>
+    <div class="col-lg-8 col-sm-8">
+      <div class="panel panel-default">
+        <div class="panel-heading">{{'eastMushrooms.shipment.palette-list' | translate}} {{palettes.length}} {{'pcs' | translate}}</div>
+        <div class="panel-body">
+          <div ng-repeat="palette in palettes" class="col-lg-12 col-sm-12">
+            <table class="table table-condensed table-bordered">
+              <tr class="bg-info">
+                <th>
+                  {{'eastMushroooms.shipment.paletteNo' | translate}}: {{palette.warehousePaletteId}}
+                </th>
+                <th class="text-right" colspan="3">{{palette.paletteTypeName}}</th>
+              </tr>
+              <tr ng-repeat="type in palette.types">
+                <td class="col-lg-9 col-sm-9">{{type.typeName}}</td>
+                <td class="col-lg-1 col-sm-1">{{type.typeWeight | longToWeight}} {{'kg' | translate}}</td>
+                <td class="col-lg-1 col-sm-1 text-right">{{type.amount}} {{'pcs' | translate}}</td>
+                <td class="col-lg-2 col-sm-2 text-right">{{type.weight | longToWeight}} {{'kg' | translate}}</td>
+              </tr>
+
+            </table>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-2 offset-sm-2"></div>
+
+
+    <div class="visible-print col-lg-12 col-sm-12" id="shipment-print">
+
+      <div class="header col-lg-12 col-sm-12">
+        <h3>{{'eastMushrooms.shipment.title' | translate }} {{header.nr}}/{{header.date | date : "yyyy-MM"}}
+          {{'eastMushrooms.shipment.date' | translate}} {{header.date}}
+          {{'eastMushrooms.shipment.toCustomer' | translate}} {{header.customerName}}</h3>
+      </div>
+
+
+      <div class="panel panel-default">
+        <div class="panel-heading"><strong>{{'eastMushrooms.shipment.wz-list' | translate}}</strong></div>
+        <div class="panel-body">
+          <table class="table table-hover table-condensed">
+            <tr>
+              <th>{{'eastMushrooms.shipment.wznr' | translate}}</th>
+              <th>{{'eastMushrooms.shipment.company' | translate}}</th>
+              <th class="text-right">{{'eastMushrooms.shipment.totalWeight' | translate}}</th>
+            </tr>
+            <tr class="hand-cursor" ng-repeat="wzHeader in header.wzHeaders" ng-click="showWz(wzHeader.id,header)">
+              <td>{{wzHeader.nr}}/{{wzHeader.date | date : "yyyyMM"}}</td>
+              <td>{{wzHeader.companyName}}</td>
+              <td class="text-right">{{wzHeader.totalAmount | longToWeight}} {{'kg' | translate}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-2 offset-sm-2"></div>
+        <div class="col-lg-5 col-sm-5">
+          <table class="table table-bordered table-condensed">
+            <tr class="gray-background">
+              <th>{{'eastMushrooms.shipment.type.name' | translate}}</th>
+              <th class="text-right">{{'eastMushrooms.shipment.type.amount' | translate}}</th>
+              <th class="text-right">{{'eastMushrooms.shipment.type.weight' | translate}}</th>
+            </tr>
+            <tr ng-repeat="typeTotal in typeTotals">
+              <td>{{typeTotal.typeName}} - {{typeTotal.typeWeight | longToWeight}} {{'kg'|translate}}</td>
+              <td class="text-right">{{typeTotal.amount}}</td>
+              <td class="text-right">{{typeTotal.weight | longToWeight}}</td>
+            </tr>
+            <tr>
+              <th>{{'eastMushrooms.shipment.total' | translate}}:</th>
+              <th class="text-right">{{totalNumberOfBoxes}}</th>
+              <th class="text-right">{{totalWeight | longToWeight}}</th>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="col-lg-3 col-sm-3">
+          <table class="table table-bordered table-condensed">
+            <tr class="gray-background">
+              <th>{{'eastMushrooms.shipment.paletteType.name' | translate}}</th>
+              <th class="text-right">{{'eastMushrooms.shipment.paletteType.amount' | translate}}</th>
+            </tr>
+            <tr ng-repeat="paletteType in paletteTypeTotals">
+              <td>{{paletteType.paletteTypeName}}</td>
+              <td class="text-right">{{paletteType.amount}}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="col-sm-2 offset-sm-2"></div>
+      </div>
+      <div class="row">
+        <div class="col-sm-2 offset-sm-2"></div>
+        <div class="col-lg-8 col-sm-8">
+          <div class="panel panel-default">
+            <div class="panel-heading">{{'eastMushrooms.shipment.palette-list' | translate}} {{palettes.length}} {{'pcs' | translate}}</div>
+            <div class="panel-body">
+              <div ng-repeat="palette in palettes" class="col-lg-12 col-sm-12">
+                <table class="table table-condensed table-bordered">
+                  <tr class="bg-info">
+                    <th>
+                      {{'eastMushroooms.shipment.paletteNo' | translate}}: {{palette.warehousePaletteId}}
+                    </th>
+                    <th class="text-right" colspan="3">{{palette.paletteTypeName}}</th>
+                  </tr>
+                  <tr ng-repeat="type in palette.types">
+                    <td class="col-lg-9 col-sm-9">{{type.typeName}}</td>
+                    <td class="col-lg-1 col-sm-1">{{type.typeWeight | longToWeight}} {{'kg' | translate}}</td>
+                    <td class="col-lg-1 col-sm-1 text-right">{{type.amount}} {{'pcs' | translate}}</td>
+                    <td class="col-lg-2 col-sm-2 text-right">{{type.weight | longToWeight}} {{'kg' | translate}}</td>
+                  </tr>
+
+                </table>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+  </div>
+
+</div>
+
+

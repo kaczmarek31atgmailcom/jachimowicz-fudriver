@@ -1,0 +1,37 @@
+<div class="container-fluid" ng-controller="SalaryAccountsCtrl">
+  <ol class="breadcrumb">
+    <li class="active">{{'payroll.salary.account.status.breadcrumb.header' | translate}}</li>
+  </ol>
+<div growl></div>
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+      <table class="table table-condensed table-hover">
+        <thead>
+        <tr>
+          <th>{{'payroll.salary.account.status.personId' | translate}}</th>
+          <th>{{'payroll.salary.account.status.personNr' | translate}}</th>
+          <th>{{'payroll.salary.account.status.personName' | translate}}</th>
+          <th>{{'payroll.salary.account.status.personSurname' | translate}}</th>
+          <th class="text-right">{{'payroll.salary.account.status.amount' | translate}}</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="account in accounts">
+          <td class="hand-cursor" ng-click="showAccountHistory(account)">{{account.personId}}</td>
+          <td class="hand-cursor" ng-click="showAccountHistory(account)">{{account.personNr}}</td>
+          <td class="hand-cursor" ng-click="showAccountHistory(account)">{{account.personName}}</td>
+          <td class="hand-cursor" ng-click="showAccountHistory(account)">{{account.personSurname}}</td>
+          <td class="text-right hand-cursor" ng-click="showAccountHistory(account)">{{account.moneyAmount | longToCurrency}}</td>
+          <td class="text-right">
+            <button class="btn btn-sm btn-danger" ng-click="openPayoffModal(account)"><i class="fa fa-arrow-right" aria-hidden="true"></i> {{'payroll.salary.account.status.payoff-button'|translate}}</button>
+            <button class="btn btn-sm btn-success" ng-click="openPaymentModal(account)">{{'payroll.salary.account.status.payment-button'|translate}} <i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-sm-2"></div>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+<div class="container-fluid" ng-controller="reclassificationHistoryDetailsCtrl" ng-init="getDetails()" class="ng-cloak">
+    <div class="page-header">
+        <h2>{{'reclassification.history.details.header.1' | translate}} {{header.id}} {{'reclassification.history.details.header.2' |
+            translate}} {{header.created}} {{'reclassification.history.details.header.3' | translate}} {{header.processedDate}}</h2>
+        <h4>{{header.description}}</h4>
+    </div>
+    <table class="table table-condensed">
+        <thead>
+        <tr>
+            <th width="5%">{{'reclassification.history.details.barcode' | translate}}</th>
+            <th width="5%">{{'reclassification.history.details.hala' | translate}}</th>
+            <th width="5%">{{'reclassification.history.details.date' | translate}}</th>
+            <th width="15%">{{'reclassification.history.details.beforeTypeName' | translate}}</th>
+            <th width="15%">{{'reclassification.history.details.afterTypeName' | translate}}</th>
+            <th width="10%" class="text-right">{{'reclassification.history.details.pickerId' | translate}}</th>
+            <th width="10%" class="text-right">{{'reclassification.history.details.pickerNr' | translate}}</th>
+            <th width="10%">{{'reclassification.history.details.pickerName' | translate}}</th>
+            <th width="5%">{{'reclassification.history.details.pickerGroupName' | translate}}</th>
+            <th width="10%">{{'reclassification.history.details.wagowy' | translate}}</th>
+            <th width="5%">{{'reclassification.history.details.active' | translate}}</th>
+
+        </tr>
+
+        </thead>
+        <tbody>
+        <tr ng-repeat="detail in details">
+            <td ng-class="{'text-muted': detail.active === false}">{{detail.barcode}}</td>
+            <td ng-class="{'text-muted': detail.active === false}">{{detail.halaName}}</td>
+            <td ng-class="{'text-muted': detail.active === false}">{{detail.harvestDate}}</td>
+            <td ng-class="{'text-muted': detail.active === false}">{{detail.originalTypeName}} &nbsp; {{detail.originalTypeWeight}} kg</td>
+            <td ng-class="{'text-muted': detail.active === false}"> {{detail.reclassificationTypeName}} &nbsp; {{detail.reclassificationTypeWeight}} kg </td>
+            <td class="text-right" ng-class="{'text-muted': detail.active === false}">{{detail.pickerId}}</td>
+            <td class="text-right" ng-class="{'text-muted': detail.active === false}">{{detail.pickerNr}}</td>
+            <td ng-class="{'text-muted': detail.active === false}">{{detail.pickerName}} &nbsp; {{detail.pickerSurname}}</td>
+            <td ng-class="{'text-muted': detail.active === false}">{{detail.pickerGroupName}}</td>
+            <td ng-class="{'text-muted': detail.active === false}">{{detail.wagowyLogin}} {{detail.wagowyName}} {{detail.wagowySurname}}</td>
+            <td >
+                <span ng-hide="detail.active"><i class="fa fa-toggle-off fa-2x"></i></span>
+                <span ng-show="detail.active"><i class="fa fa-toggle-on fa-2x"></i></span>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+

@@ -1,0 +1,1 @@
+ALTER TABLE warehouse_brc ADD harvest_date DATE;

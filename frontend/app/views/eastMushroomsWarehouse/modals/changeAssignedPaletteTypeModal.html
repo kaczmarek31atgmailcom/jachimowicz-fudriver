@@ -1,0 +1,29 @@
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true" ng-controller="ChangeAssignedPaletteTypeCtrl">
+  <div class="modal-dialog modal-small">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="$hide()"><span
+          aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title text-muted">{{'eastMushrooms.warehouse.reception.change.palette.type.modal.header' | translate }}</h3>
+      </div>
+      <div class="modal-body">
+        <select id="paletteType" class="form-control"
+                ng-model="paletteTypeId"
+                ng-options="paletteType.paletteId as paletteType.name for paletteType in paletteTypes">
+        </select>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-default" ng-click="$hide()">{{'eastMushrooms.warehouse.reception.change.palette.type.modal.cancel' |
+          translate}}
+        </button>
+        <button type="submit" class="btn btn-primary" ng-disabled="!(paletteTypeId > 0)"
+                ng-click="changePaletteType(); $hide()"><i class="fa fa-plus" aria-hidden="true"></i>
+          {{'eastMushrooms.warehouse.reception.change.palette.type.modal.save' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

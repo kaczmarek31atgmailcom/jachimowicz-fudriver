@@ -1,0 +1,74 @@
+<div class="container-fluid" ng-controller="reclassifyDetailCtrl" ng-init="init()">
+  <div class="header text-muted">
+    <h2>{{'reclassify.detail.header' | translate }} {{paletaNr}}</h2>
+    <h4>{{header.rodzajName}} {{header.rodzajWeight | dotToCommaKg}}</h4>
+  </div>
+  <div growl></div>
+  <div class="row">
+    <div class="control-group col-xs-2">
+      <label for="type">{{'reclassify.detail.editType' | translate}}</label>
+      <select id="type" class="form-control" ng-model="selectedType.id"
+              ng-options="type.id as type.name + type.weight for type in types"></select>
+    </div>
+
+    <div class="control-group col-xs-2">
+      <label for="cycle">{{'reclassify.detail.editCycle' | translate}}</label>
+      <select id="cycle" class="form-control" ng-model="selectedCycle.id"
+              ng-options="cycle.id as cycle.name + cycle.weight for cycle in cycles"></select>
+    </div>
+
+    <div class="form-group col-xs-2">
+      <label for="trolleyManId">{{'reclassify.detail.trolleyMan' | translate}}</label>
+      <select id="trolleyManId" class="form-control" ng-model="trolleyManId"
+              ng-options="trolleyMan.id as trolleyMan.name + ' ' + trolleyMan.surname for trolleyMan in trolleyMen"
+              ng-mouseleave="focusInputText()"></select>
+    </div>
+
+    <div class="col-xs-4 form-group">
+      <div>&nbsp;</div>
+      <button id="button" class="btn btn-primary btn-lg" ng-click="performUpdate();"><i class="fa fa-check fa" aria-hidden="true"></i>
+        {{'reclassify.detail.submit' | translate}}
+      </button>
+    </div>
+
+    <div class="col-lg-12">
+      <hr/>
+    </div>
+  </div>
+
+  <table class="table table-condensed">
+    <thead>
+    <tr>
+      <th>{{'reclassify.detail.barcode' | translate}}</th>
+      <th>{{'reclassify.detail.picker.id' | translate}}</th>
+      <th>{{'reclassify.detail.picker.name' | translate}}</th>
+      <th>{{'reclassify.detail.picker.surname' | translate}}</th>
+      <th>{{'reclassify.detail.user.login' | translate}}</th>
+      <th>{{'reclassify.detail.trolleyMan' | translate}}</th>
+      <!--<th>{{'reclassify.detail.user.name' | translate}}</th>-->
+      <!--<th>{{'reclassify.detail.user.surname' | translate}}</th>-->
+      <!--<th>{{'reclassify.detail.user.name' | translate}}</th>-->
+      <th>{{'reclassify.detail.date' | translate}}</th>
+      <th>{{'reclassify.detail.cycle' | translate}}</th>
+      <th>&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="detail in details">
+      <td ng-show="eastMode == false">{{findBarcode(detail.uniqId, detail.pickerId);}}</td>
+      <td ng-show="eastMode == true">{{findBarcodeEastMushrooms(detail.uniqId, detail.pickerNr);}}</td>
+      <td ng-bind="detail.pickerId"></td>
+      <td ng-bind="detail.pickerName"></td>
+      <td ng-bind="detail.pickerSurname"></td>
+      <td ng-bind="detail.createdByLogin"></td>
+      <td>{{detail.trolleyManName}} {{detail.trolleyManSurname}}</td>
+      <!--<td ng-bind="detail.createdByName"></td>-->
+      <!--<td ng-bind="detail.createdBySurname"></td>-->
+      <td ng-bind="detail.harvestDate"></td>
+      <td ng-bind="detail.halaName"></td>
+      <td><i class="fa fa-trash-o hand-cursor" aria-hidden="true" ng-click="remove(detail.id)"></i></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+

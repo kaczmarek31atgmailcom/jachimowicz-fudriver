@@ -1,0 +1,73 @@
+<div class="container-fluid" ng-controller="DeliveryLetterEditCtrl">
+  <ol class="breadcrumb">
+    <li><a href="#/order-admin">{{'order-admin.breadcrumb.summary' | translate}}</a></li>
+    <li><a href="#/edit-order/{{orderId}}">{{'order-admin.breadcrumb.edit' | translate}} {{orderId}}</a></li>
+    <li class="active">{{'order-admin.breadcrumb.delivery-letter' | translate}}</li>
+  </ol>
+  <div growl></div>
+  <div class="panel panel-info">
+    <div class="panel-body">
+      <h4>
+        <span class="col-lg-4 text-muted text-primary">{{'delivery-letter.id'| translate}} <strong>{{deliveryLetter.deliveryLetterId}}</strong></span>
+        <span class="col-lg-4 text-muted text-primary">{{'delivery-letter.plate' | translate}} <strong>{{deliveryLetter.plate}}</strong></span>
+        <span class="col-lg-4 text-muted text-primary">{{'delivery-letter.release-date'|translate}} <strong>{{deliveryLetter.releaseDate}}</strong></span>
+      </h4>
+    </div>
+  </div>
+
+  <div class="dndlist row">
+    <div class="panel panel-success">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-lg-1">&nbsp;</div>
+          <div class="col-lg-2 text-left">
+            <strong>
+              {{'delivery-letter.position' | translate}}
+            </strong>
+          </div>
+          <div class="col-lg-2 text-center">
+            <strong>
+              {{'delivery-letter.palette-id' | translate}}
+            </strong>
+          </div>
+          <div class="col-lg-3 text-center text-nowrap">
+            <strong>
+              {{'delivery-letter.order-id' | translate}}
+            </strong>
+          </div>
+          <div class="col-lg-4 text-nowrap">
+            <strong>
+              {{'delivery-letter.customer' | translate}}
+            </strong>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <ul dnd-list="palettes">
+          <li ng-repeat="palette in palettes"
+              dnd-effect-allowed="move"
+              dnd-selected="models.selected = palette"
+              dnd-moved=paletteMoved($index)
+              dnd-draggable="palette"
+              ng-class="{'selected': models.selected === palette}">
+              <span class="col-lg-1">
+              <i class="fa fa-bars" aria-hidden="true"></i>
+                </span>
+            <span class="col-lg-2 text-left">
+                    {{$index + 1}}
+                    </span>
+            <span class="col-lg-2 text-center">
+                    {{palette.paletteId}}
+                    </span>
+            <span class="col-lg-3 text-center">
+                      {{palette.orderId}}
+                    </span>
+            <span >
+                      {{palette.customerName}}
+                    </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

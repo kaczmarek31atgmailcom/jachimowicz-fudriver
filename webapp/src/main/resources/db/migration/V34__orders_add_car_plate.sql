@@ -1,0 +1,1 @@
+ALTER TABLE orders add plate varchar(50);

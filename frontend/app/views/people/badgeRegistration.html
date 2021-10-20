@@ -1,0 +1,54 @@
+<div class="container-fluid" ng-controller="badgeCtrl" ng-init="focusInputText()">
+  <ol class="breadcrumb">
+    <li><a href="#/people">{{'people.breadcrumb.people' | translate}}</a></li>
+    <li class="active">{{'people.breadcrumb.badge' | translate}}</li>
+  </ol>
+  <div class="row">
+    <div class="header">
+      <h4>
+        {{'people.badgeRegistration.header' | translate }}
+        {{employee.imie}} {{employee.nazwisko}}
+      </h4>
+    </div>
+    <div class="col-lg-10">
+      <div ng-hide="successMessage || errorMessage" class="alert alert-info">{{'people.badgeRegistration.message' |
+        translate }}
+      </div>
+      <div ng-show="successMessage=='badgeRegistered'" class="alert alert-success">
+        {{'people.badgeRegistration.message.success' |
+        translate}}
+      </div>
+      <div ng-show="successMessage=='badgeNotChanged'" class="alert alert-warning">
+        {{'people.badgeRegistration.message.notChanged' |
+        translate}}
+      </div>
+      <div ng-show="successMessage=='badgeRemoved'" class="alert alert-warning">
+        {{'people.badgeRegistration.message.badgeRemoved' |
+        translate}}
+      </div>
+      <div ng-show="errorMessage=='RfidDuplication'" class="alert alert-danger">
+        {{'people.badgeRegistration.message.error.duplication' | translate }} <a
+        ng-href="#/badgeRegistration/{{badgeOwner.id}}">{{badgeOwner.name}} {{badgeOwner.surname}}</a></div>
+      <div ng-show="errorMessage=='concurrentWrite'" class="alert alert-danger">
+        {{'people.badgeRegistration.message.error.concurrentWrite' | translate }}
+      </div>
+    </div>
+
+
+    <div class="col-lg-2" ng-show="employee.rfid">
+      <button class="btn btn-danger btn-lg" ng-click="removeBadge();"><i class="fa fa-trash-o fa-lg"></i>
+        {{'people.badgeRegistration.remove' | translate}}
+      </button>
+    </div>
+  </div>
+
+  <div class="col-lg-12">
+
+    <form name="badgeForm" autocomplete="off">
+      <input type="text" style="display:none;">
+      <input class="form-control" name="badge" id="badge" type="text"
+             ng-model="badge"
+             ng-keypress="parseBadge($event)" ng-blur="focusInputText()" autocomplete="off" autofocus>
+    </form>
+  </div>
+</div>

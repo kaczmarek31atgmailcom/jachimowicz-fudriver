@@ -1,0 +1,38 @@
+<div class="container-fluid" ng-controller="CustomerCtrl">
+  <ol class="breadcrumb">
+    <li class="active">{{'settings.customer.menu' | translate}}</li>
+  </ol>
+  <div growl></div>
+  <div class="row">
+
+      <div class="col-lg-2">
+        <button class="btn btn-primary" ng-click="openCreateCustomerModal()"
+                ng-bind="'settings.customer.create-button' | translate"></button>
+      </div>
+
+    </div>
+  <div class = "row">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
+
+      <table class="table table-condensed table-hover">
+        <thead>
+        <tr>
+          <th>{{'settings.customer.name' | translate}}</th>
+          <th>{{'settings.customer.address' | translate}}</th>
+          <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="customer in customers">
+          <td ng-bind="customer.name" ng-click="openEditCustomerModal(customer)" class="hand-cursor"></td>
+          <td ng-bind="customer.address" ng-click="openEditCustomerModal(customer)" class="hand-cursor"></td>
+          <td class="col-lg-1 text-right"><i class="fa fa-trash-o hand-cursor" ng-click="openDeleteCustomerPrompt(customer)"></i></td>
+        </tr>
+        </tbody>
+      </table>
+
+    </div>
+    <div class="col-lg-2"></div>
+  </div>
+</div>

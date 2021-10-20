@@ -1,0 +1,62 @@
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-small">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="$hide()"><span
+          aria-hidden="true">&times;</span></button>
+        <h3>{{'admin.type.create-modal-title' | translate}}</h3>
+      </div>
+      <div class="modal-body">
+        <form name="createTypeGroup">
+          <div class="form-group">
+            <label for="name" ng-bind="'admin.type.name' | translate" class="text-muted"></label>
+            <input type="text" class="form-control text-right input-xs " id="name" name="name"
+                   ng-model="type.name" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="weight" ng-bind="'admin.type.weight' | translate" class="text-muted"></label>
+            <input type="number" pattern="[0-9]+([\.,][0-9]+)?" step="0.001" class="form-control text-right input-xs" id="weight" name="weight"
+                   ng-model="type.weight" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="export" ng-bind="'admin.type.exportType' | translate" class="text-muted"></label>
+            <select id="export" class="form-control text-right" ng-model="type.exportType"
+                    ng-options="exportType for exportType in exportTypes">
+
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="group" ng-bind="'admin.type.group' | translate" class="text-muted"></label>
+            <select id="group" class="form-control text-right" ng-model="type.groupId"
+                    ng-options="group.id as group.name for group in groups">
+
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="size" ng-bind="'admin.type.size' | translate" class="text-muted"></label>
+            <select id="size" class="form-control text-right" ng-model="type.sizeId"
+                    ng-options="size.id as size.name for size in sizes">
+
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="box" ng-bind="'admin.type.box' | translate" class="text-muted"></label>
+            <select id="box" class="form-control text-right" ng-model="type.boxId"
+                    ng-options="box.id as box.name for box in boxes">
+
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-default" ng-click="$hide()">{{'admin.type.modal.cancel' | translate}}</button>
+        <button type="submit" class="btn btn-success" ng-disabled="!(type.name.length > 0) || ! type.weight > 0"
+                ng-click="create(); $hide()">{{'admin.type.modal.save' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

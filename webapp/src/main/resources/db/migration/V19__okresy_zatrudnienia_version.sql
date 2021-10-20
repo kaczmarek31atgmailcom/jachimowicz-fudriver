@@ -1,0 +1,1 @@
+alter table okresy_zatrudnienia add column version int default 1;

@@ -1,0 +1,1 @@
+insert into config (id, name, value, enabled) values (22, 'Masowe wprowadzanie zbiorów',1,1);

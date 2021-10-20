@@ -1,0 +1,65 @@
+<div class="container-fluid" ng-controller="collectedByChamberCtrl" ng-init="init()">
+  <ol class="breadcrumb">
+    <li class="active">{{'collected_by_chamber.title' | translate}}</li>
+  </ol>
+  <div growl></div>
+  <div class="loading" ng-hide="loading == 0">Loading&#8230;</div>
+
+  <div class="form-group">
+
+    <div class="form-group col-xs-2">
+      <input class="form-control" ng-model="startDate" data-max-date="{{endDate}}" placeholder="{{startDate}}" required
+             bs-datepicker autoclose="true" data-date-format="yyyy/MM/dd" ng-change="init()">
+    </div>
+    <div class="form-group col-xs-2">
+      <input type="text" class="form-control" ng-model="endDate" data-min-date="{{startDate}}" placeholder="{{endDate}}"
+             required bs-datepicker autoclose="true" data-date-format="yyyy/MM/dd" ng-change="init()">
+    </div>
+
+    <div class="form-group col-xs-2">
+      <i class="fa fa-file-excel-o fa-2x hand-cursor" ng-click="export()"></i>
+    </div>
+  </div>
+
+  <table class="table table-condensed export-table table-bordered">
+    <tr>
+      <td class="text-left"><strong>{{'collected_by_chamber.name'|translate}}</strong></td>
+      <td ng-repeat="exportType in exportTypes track by $index" nowrap><strong>{{exportType.name}} {{exportType.weight}}</strong></td>
+      <td class="text-right" ng-show="exportSummary > 0"><strong>{{'collected_by_chamber.export'|translate}}</strong></td>
+      <td class="text-right" nowrap ng-show="exportSummary > 0"><strong>{{'collected_by_chamber.exportRatio'|translate}}</strong></td>
+      <td ng-repeat="krajType in krajTypes track by $index" nowrap><strong>{{krajType.name}} {{krajType.weight}}</strong></td>
+      <td class="text-right" nowrap ng-show="krajSummary > 0"><strong>{{'collected_by_chamber.kraj'|translate}}</strong></td>
+      <td ng-repeat="inneType in inneTypes track by $index"><strong>{{inneType.name}} {{inneType.weight}}</strong></td>
+      <td class="text-right" nowrap ng-show="inneSummary > 0"><strong>{{'collected_by_chamber.inne'|translate}}</strong></td>
+      <td class="text-right" ng-show="allTotal > 0"><strong>{{'collected_by_chamber.total'|translate}}</strong></td>
+    </tr>
+    <tr ng-repeat="cycle in cycles">
+      <td title="{{cycle.startDate | date:'yyyy-MM-dd'}}" nowrap><strong>{{cycle.name}}</strong></td>
+      <td ng-repeat="export in cycle.export track by $index" class="alert alert-info text-right"
+          title="{{cycle.name}} {{export.typeName}} {{export.typeWeight}} kg">{{export.value | dotToComma}}
+      </td>
+      <td ng-show="exportSummary > 0" class="alert alert-info text-right"><strong>{{cycle.exportSummary | roundDecimal:3 | dotToComma}}</strong></td>
+      <td ng-show="exportSummary > 0" class="alert alert-info text-right"><strong>{{cycle.exportRatio | roundDecimal:2 | dotToComma}}</strong></td>
+      <td ng-repeat="kraj in cycle.kraj track by $index" class="alert alert-warning text-right" title="{{cycle.name}} {{kraj.typeName}} {{kraj.typeWeight}} kg">
+        {{kraj.value | dotToComma}}
+      </td>
+      <td ng-show="krajSummary > 0" class="alert alert-warning text-right"><strong>{{cycle.krajSummary | dotToComma}}</strong></td>
+      <td ng-repeat="inne in cycle.inne track by $index" class="alert alert-danger text-right" title="{{cycle.name}} {{inne.typeName}} {{inne.typeWeight}} kg">
+        {{inne.value | dotToComma}}
+      </td>
+      <td ng-show="inneSummary > 0" class="alert alert-danger text-right"><strong>{{cycle.inneSummary | dotToComma}}</strong></td>
+      <td class="text-right"><strong>{{cycle.total | roundDecimal:3 | dotToComma}}</strong></td>
+    </tr>
+    <tr>
+      <td><strong>{{'collected_by_chamber.total' | translate}}</strong></td>
+      <td ng-repeat="exportTotal in exportTotals track by $index" class="alert alert-info text-right"><strong>{{exportTotal | roundDecimal:3 | dotToComma}}</strong></td>
+      <td class="alert alert-info text-right" ng-show="exportSummary > 0"><strong>{{exportSummary | roundDecimal:3 | dotToComma}}</strong></td>
+      <td ng-show="exportSummary > 0" class="alert alert-info text-right"><strong>{{totalExportRatio | roundDecimal:2 | dotToComma}}</strong></td>
+      <td ng-repeat="krajTotal in krajTotals track by $index" class="alert alert-warning text-right"><strong>{{krajTotal | roundDecimal:3 | dotToComma}}</strong></td>
+      <td class="alert alert-warning text-right" ng-show="krajSummary > 0"><strong>{{krajSummary | roundDecimal:3 | dotToComma}}</strong></td>
+      <td ng-repeat="inneTotal in inneTotals track by $index" class="alert alert-danger text-right"><strong>{{inneTotal | roundDecimal:3 | dotToComma}}</strong></td>
+      <td class="alert alert-danger text-right" ng-show="inneSummary > 0"><strong>{{inneSummary | dotToComma}}</strong></td>
+      <td ng-show="allTotal > 0" class="text-right"><strong>{{allTotal | roundDecimal:3 | dotToComma}}</strong></td>
+    </tr>
+  </table>
+</div>

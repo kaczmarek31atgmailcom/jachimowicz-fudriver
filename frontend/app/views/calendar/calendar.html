@@ -1,0 +1,40 @@
+<div class="container-fluid" ng-controller="calendarCtrl" ng-init="openCalendar();">
+  <div class="row text-muted">
+    <div class="col-lg-2">
+      <i class="fa fa-arrow-left fa-3x hand-cursor" aria-hidden="true" ng-click="subtractMonth()"></i>
+    </div>
+    <div class="col-lg-8 text-center">
+      <h2><strong>{{currentMonthName}}</strong></h2>
+    </div>
+    <div class="col-lg-2 text-right">
+      <i class="fa fa-arrow-right fa-3x hand-cursor" aria-hidden="true" ng-click="addMonth()"></i>
+    </div>
+    <table class="table table-bordered table-responsive table-condensed">
+      <thead>
+      <tr>
+        <th ng-bind="'payroll.sunday' | translate" class="text-center"></th>
+        <th ng-bind="'payroll.monday' | translate" class="text-center"></th>
+        <th ng-bind="'payroll.tuesday' | translate" class="text-center"></th>
+        <th ng-bind="'payroll.wednesday' | translate" class="text-center"></th>
+        <th ng-bind="'payroll.thursday' | translate" class="text-center"></th>
+        <th ng-bind="'payroll.friday' | translate" class="text-center"></th>
+        <th ng-bind="'payroll.saturday' | translate" class="text-center"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="week in month track by $index">
+        <td ng-repeat="day in week track by $index">
+          <!--<div ng-show="day.dayOfMonth > 0">-->
+          <div ng-show="day.date" ng-class="getDateStatus(day.date);">
+            <h4>{{day.shortDate}}</h4>
+            <button ng-click="setSunday(day.date)" class="btn btn-danger btn-sm"
+                    ng-bind="'payroll.sunday' | translate"></button>
+            <button ng-click="setBonusDay(day.date)" class="btn btn-warning btn-sm"
+                    ng-bind="'payroll.bonusDay' | translate"></button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+

@@ -1,0 +1,47 @@
+<div class="container-fluid" ng-controller="TrolleysSummaryCtrl">
+  <ol class="breadcrumb">
+    <li><a href="#/scanner">{{'scanner.breadcrumb.scanner' | translate}}</a></li>
+    <li><a href="#/scannerSummary">{{'scanner.breadcrumb.total' | translate}}</a></li>
+    <li class="active">{{'scanner.breadcrumb.summary' | translate}}</li>
+  </ol>
+
+  <div class="row">
+    <div class="col-sm-2 col-lg-2">
+      <button class="btn btn-default" ng-print print-element-id="summary"><i class="fa fa-print fa-3x"></i></button>
+    </div>
+    <div class="col-sm-8 col-lg-8" id="summary">
+      <table class="table table-condensed">
+        <thead>
+        <tr>
+        <th colspan="4">{{'scanner.total.summary.picker' | translate}}</th>
+        <th colspan="2">{{'scanner.total.summary.type' | translate}}</th>
+        <th>{{'scanner.total.summary.chamber' | translate}}</th>
+        <th class="text-right">{{'scanner.total.summary.totalAmount' | translate}}</th>
+        <th class="text-right">{{'scanner.total.summary.totalWeight' | translate}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in summary">
+          <td>{{item.pickerId}}</td>
+          <td>{{item.pickerNr}}</td>
+          <td>{{item.pickerName}}</td>
+          <td>{{item.pickerSurname}}</td>
+          <td>{{item.typeName}} </td>
+          <td>{{item.typeWeight|longToWeight}}</td>
+          <td>{{item.chamberName}}</td>
+          <td class="text-right">{{item.totalAmount}}</td>
+          <td class="text-right">{{item.totalWeight | longToWeight}}</td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+          <th colspan="7">{{'scanner.total.summary.summary' | translate}}</th>
+          <th class="text-right">{{totalAmount}}</th>
+          <th class="text-right">{{totalWeight | longToWeight}}</th>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="col-sm-2 col-lg-2">&nbsp;</div>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<div class = "container-fluid" ng-controller="TypeGroupCtrl">
+  <ol class="breadcrumb">
+    <li class="active">{{'admin.typeGroup.breadcrumb.header' | translate}}</li>
+  </ol>
+  <div growl></div>
+  <div class="row">
+    <div class="col-sm-3">
+      <button class="btn btn-primary" ng-click="openCreateTypeGroupModal()"
+              ng-bind="'admin.typeGroup.create-button' | translate"></button>
+    </div>
+    <div class="col-sm-6">
+      <table class="table">
+        <thead></thead>
+        <tbody>
+        <tr ng-repeat="group in groups">
+          <td class="col-sm-1">{{$index + 1}}</td>
+          <td class="col-sm-6 text-left"><a href="#" editable-text="group.name" onbeforesave="updateName(group.id,$data)">{{group.name}}</a></td>
+          <td class="col-sm-1 text-right" ng-click="openDeleteModal(group)"><i class="fa fa-trash-o fa-lg hand-cursor" aria-hidden="true"></i></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-sm-3">&nbsp;</div>
+  </div>
+</div>

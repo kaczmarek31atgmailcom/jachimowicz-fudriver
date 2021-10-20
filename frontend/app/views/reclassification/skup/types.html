@@ -1,0 +1,26 @@
+<div class="container-fluid" ng-controller="reclassificationCtrl" ng-init="loadRodzaje()" class="ng-cloak">
+  <div class="page-header">
+    <h3 class="text-muted">{{'reclassification.rodzaj.header' | translate}}</h3>
+  </div>
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th class="col-lg-2" colspan="2">{{'reclassification.rodzaj.name' | translate}}</th>
+      <th class="text-left col-lg-1">{{'reclassification.rodzaj.weight' | translate}}</th>
+            <th class="col-lg-3">{{'reclassification.rodzaj.assigned' | translate}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="rodzajLocal in rodzajeLocal">
+      <td>{{$index + 1}}</td>
+      <td>{{rodzajLocal.name}}</td>
+      <td class="text-left col-lg-1 col-sm-1">{{rodzajLocal.weight}}</td>
+      <td>
+        <a href="#" editable-select="rodzajSkup" ng-init="getRodzajSkupById(rodzajLocal,rodzajeSkup)"
+           e-ng-options="rodzajSkup.id as rodzajSkup.name + ' ' + rodzajSkup.weight / 1000 for rodzajSkup in rodzajeSkup" onbeforesave="assignRodzajSkup(rodzajLocal,$data)">
+          {{getRodzajSkupById(rodzajLocal,rodzajeSkup)}}</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

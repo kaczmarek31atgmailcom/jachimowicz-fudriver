@@ -1,0 +1,71 @@
+<div class="container-fluid" ng-controller="wageDetailsCtrl" ng-init="init()">
+  <ol class="breadcrumb">
+    <li><a href="#/wage">{{'wage.breadcrumb.wage' | translate}}</a></li>
+    <li class="active">{{'wage.breadcrumb.wageDetails' | translate}}</li>
+  </ol>
+  <div class="header text-muted">
+  <h3>{{'wages.detail.header' | translate }} {{typeName}}</h3>
+  </div>
+  <div class="row">
+    <div class="alert alert-danger col-lg-12 text-center"
+         ng-show="regularErrorMessage || sundayErrorMessage || bonusErrorMessage">
+      <h4>{{'wages.detail.validation.error' | translate}}</h4>
+    </div>
+    </div>
+  <div class="row">
+    <form class="form-inline">
+      <div class="col-lg-3 form-group">
+        <label class="control-label"><i class="fa fa-calendar"></i> {{'wages.detail.startDate' |
+          translate}}</label>
+        <input type="text" class="form-control" ng-model="startDate"
+               placeholder="{{today | date: 'yyyy-MM-dd'}}"
+               required bs-datepicker autoclose="true" data-date-format="yyyy-MM-dd" data-date-type="string"
+               model-date-format="yyyy-MM-dd" data-min-date="{{minDate}}">
+      </div>
+      <div class="col-lg-2 form-group" ng-class="{'has-error': regularErrorMessage}">
+        <label for="regular" n>{{'wages.detail.regular' | translate}}</label>
+        <input type="text" id="regular" ng-model="regularValue" required class="form-control" ng-blur="valueChanged()">
+      </div>
+      <div class="col-lg-2 form-group" ng-class="{'has-error': sundayErrorMessage}">
+        <label for="sunday">{{'wages.detail.sunday' | translate}}</label>
+        <input type="text" id="sunday" ng-model="sundayValue" required class="form-control" ng-blur="valueChanged()">
+      </div>
+      <div class="col-lg-2 form-group" ng-class="{'has-error': bonusErrorMessage}">
+        <label for="bonus">{{'wages.detail.bonus' | translate}}</label>
+        <input type="text" id="bonus" ng-model="bonusValue" required class="form-control" ng-blur="valueChanged()">
+      </div>
+      <div class="col-lg-3 form-group">
+        <button class="btn btn-primary" ng-bind="'wages.detail.submit' | translate" ng-disabled="submitButtonDisabled()"
+                ng-click="submit()"></button>
+      </div>
+    </form>
+  </div>
+
+    <div class="row top-space">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
+      <table class="table table-hover" ng-show="wages.length > 0">
+        <thead>
+        <tr>
+          <th ng-bind="'wages.detail.startDate' | translate"></th>
+          <th ng-bind="'wages.detail.regular' | translate" class="text-right"></th>
+          <th ng-bind="'wages.detail.sunday' | translate" class="text-right"></th>
+          <th ng-bind="'wages.detail.bonus' | translate" class="text-right"></th>
+          <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="wage in wages">
+          <td ng-bind="wage.startDate"></td>
+          <td ng-bind="wage.regularValue | longToCurrency" class="text-right"></td>
+          <td ng-bind="wage.sundayValue | longToCurrency" class="text-right"></td>
+          <td ng-bind="wage.bonusValue | longToCurrency" class="text-right"></td>
+          <td><i class="fa fa-trash-o fa-lg hand-cursor text-right" ng-show="isWageEditable(wage.startDate)" aria-hidden="true" ng-click="deleteWage(wage.startDate)"></i></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-lg-2"></div>
+  </div>
+</div>
+

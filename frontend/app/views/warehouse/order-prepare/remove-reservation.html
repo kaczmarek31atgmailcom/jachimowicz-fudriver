@@ -1,0 +1,49 @@
+<div class="container-fluid" ng-controller="RemoveReservationCtrl">
+  <ol class="breadcrumb">
+    <li><a href="#/order-prepare">{{'create-order-remove-reservation.breadcrumb.menu' | translate}}</a></li>
+    <li class="active">{{'create-order-remove-reservation.breadcrumb.remove' | translate}}</li>
+  </ol>
+<div growl></div>
+  <div class="row">
+    <div class="col-xs-8">
+      <div class="row">
+        <div>
+          <form name="barForm">
+            <div class="form-group col-xs-2">
+              <input class="form-control" focus-if="documentScreen" name="barcode" id="barcode" type="text"
+                     ng-model="barcode"
+                     ng-change="parseBarcode()" ng-blur="focusInputText()" autocomplete="off">
+            </div>
+            <div class="form-group col-xs-1">
+              <button class="btn btn-default" ng-click="cancel()">{{'create-order-remove-reservation.cancel' | translate }}</button>
+            </div>
+
+            <div class="form-group col-xs-1">
+              <button class="btn btn-danger" ng-click="removeReservation()" ng-disabled="boxes.length == 0">{{'create-order-remove-reservation.submit' | translate }}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <table class="table table-condensed table-hover" ng-show="boxes.length>0">
+    <thead>
+    <tr>
+      <th ng-bind="'create-order-remove-reservation.barcode' | translate"></th>
+      <th ng-bind="'create-order-remove-reservation.type' | translate"></th>
+      <th ng-bind="'create-order-remove-reservation.customer' | translate" ></th>
+      <th ng-bind="'create-order-remove-reservation.order' | translate" class="text-right"></th>
+      <th ng-bind="'create-order-remove-reservation.palette' | translate" class="text-right"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="box in boxes">
+      <td ng-bind="getBarcode(box.supplierId,box.uniqId,box.pickerId)"></td>
+      <td ng-bind="box.typeName + ' ' + box.typeWeight | dotToCommaKg"></td>
+      <td ng-bind="box.customerName"></td>
+      <td ng-bind="box.orderId" class="text-right"></td>
+      <td ng-bind="getPaletteNo(box.paletteId)" class="text-right"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>

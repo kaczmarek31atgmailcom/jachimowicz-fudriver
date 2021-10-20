@@ -1,0 +1,27 @@
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true" ng-controller="barcodesCtrl">
+  <div class="modal-dialog modal-small">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="$hide()"><span
+          aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title text-muted">{{'person.barcode.removeBarcodes.title' | translate }}</h3>
+      </div>
+      <div class="modal-body">
+        <form name="removeBarcodeForm">
+          {{deleteMin}} - {{deleteMax}}
+          <div class="form-group">
+            <div range-slider min="rangeMin" max="rangeMax" model-min="deleteMin" model-max="deleteMax"></div>
+          </div>
+        </form>
+      </div>
+
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-default" ng-click="$hide()">{{'person.barcode.removeBarcodes.cancel' | translate}}</button>
+        <button type="submit" class="btn btn-danger"
+                ng-click="deleteBarcodes(); $hide()">{{'person.barcode.removeBarcodes.submit' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

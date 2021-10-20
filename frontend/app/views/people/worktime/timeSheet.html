@@ -1,0 +1,104 @@
+<div class="container-fluid" ng-controller="timeSheetCtrl" ng-init="init()">
+  <ol class="breadcrumb">
+    <li><a href="#/people/worktime">{{'people.worktime.breadcrumb' | translate}}</a></li>
+    <li class="active">{{'people.breadcrumb.timeSheet' | translate}}</li>
+  </ol>
+  <div class="row">
+    <div class="form-group">
+      <div class="col-xs-4">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <ul class="list-unstyled list-inline">
+              <li><strong>{{person.id}}</strong></li>
+              <li><strong>{{person.imie}}</strong></li>
+              <li><strong>{{person.nazwisko}}</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-xs-2">
+        <input class="form-control" ng-model="dateFrom" data-max-date="{{dateTo}}" placeholder="{{dateFrom}}" required
+               bs-datepicker autoclose="true" data-date-format="yyyy/MM/dd" ng-change="init()">
+      </div>
+      <div class="form-group col-xs-2">
+        <input type="text" class="form-control" ng-model="dateTo" data-min-date="{{dateFrom}}" placeholder="{{dateTo}}"
+               required bs-datepicker autoclose="true" date-format="yyyy/MM/dd" ng-change="init()">
+      </div>
+    </div>
+  </div>
+  <table class="table table-condensed">
+    <thead>
+    <tr>
+      <td class="col-lg-12 text-nowrap" nowrap>
+        <div class="row">
+          <div class="col-sm-2">
+            <span>
+              <Strong>{{'people.timesheet.date'|translate}}</Strong>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+              </span>
+            <span>|</span>
+            <span>
+              <strong>{{'people.timesheet.all'|translate}}</strong>
+              <span>|</span>
+              <strong class="text-primary">{{'people.timesheet.work'|translate}}</strong>
+              <span>|</span>
+              <strong class="text-warning">{{'people.timesheet.pause'|translate}}</strong>
+            </span>
+          </div>
+          <div class="col-sm-10">
+            <div class="row" nowrap>
+              <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 0:00</h6></div>
+              <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 2:00</h6></div>
+              <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 4:00</h6></div>
+              <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 6:00</h6></div>
+              <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 8:00</h6></div>
+              <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 10:00</h6></div>
+              <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 12:00</h6></div>
+              <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 14:00</h6></div>
+              <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 16:00</h6></div>
+              <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 18:00</h6></div>
+              <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 20:00</h6></div>
+              <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 22:00</h6></div>
+            </div>
+          </div>
+        </div>
+      </td>
+    </thead>
+
+    <tbody>
+    <tr ng-repeat="day in dayBars">
+      <td class="col-lg-12">
+        <div class="row">
+          <div class="col-sm-2 text-nowrap">
+            <span>
+            {{day.day | date: 'yyyy-MM-dd'}}
+              </span>
+            <span>|</span>
+            <span>
+              <strong> &nbsp; {{day.workTime | minutesToHours}}</strong>
+              <span> &nbsp;|</span>
+              <strong class="text-primary"> &nbsp;{{day.busyTime | minutesToHours}}</strong>
+              <span> &nbsp;|</span>
+              <strong class="text-warning"> &nbsp;{{day.pauseTime | minutesToHours}}</strong>
+            </span>
+            <span class="text-right">
+               &nbsp;
+              <i class="fa fa-pencil-square-o fa-lg text-danger hand-cursor" aria-hidden="true" ng-click="edit(day.day)"></i>
+            </span>
+          </div>
+          <div class="col-lg-10 text-nowrap">
+            <div class="progress">
+              <div data-ng-repeat="barPeriod in day.barPeriods">
+                <div ng-show="barPeriod.percentOfTheDay > 0"
+                     ng-class="getBarClass(barPeriod.barType)"
+                     role="progressbar" style="width: {{barPeriod.percentOfTheDay}}%">&nbsp;
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<!--ng-class="(barPeriod.barType == 'ACTIVE')? 'progress-bar progress-bar-success' : 'progress-bar transparent'"-->

@@ -1,0 +1,77 @@
+<div class="container-fluid" ng-controller="PeopleWagesCtrl">
+  <ol class="breadcrumb">
+    <li class="active">{{'payroll.people.wages.breadcrumb' | translate}}</li>
+  </ol>
+  <div growl></div>
+
+  <div class="row">
+    <div class="col-sm-2 col-lg-2">&nbsp;</div>
+    <div class="col-sm-8 col-lg-8">
+      <table class="table">
+        <thead>
+        <tr>
+          <th class="text-left col-sm-1 col-lg-1">{{'payroll.people.wages.person' | translate}}</th>
+          <th class="text-left col-sm-1 col-lg-1">{{'payroll.people.wages.payrollType' | translate}}</th>
+          <th class="col-sm-10 col-lg-10">
+            <ul class="list-inline list-unstyled">
+              <li class="text-center text-primary col-sm-4 col-lg-4">{{'payroll.people.wages.regularWage' | translate}}</li>
+              <li class="text-center text-danger col-sm-4 col-lg-4">{{'payroll.people.wages.sundayWage' | translate}}</li>
+              <li class="text-center text-warning col-sm-4 col-lg-4">{{'payroll.people.wages.bonusWage' | translate}}</li>
+            </ul>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="person in people" ng-class="person.payrollType === 'ACCORD' ? 'red-background text-danger':'blue-background text-primary'">
+          <th class="col-sm-1 col-lg-1 text-left text-nowrap" ng-class="person.payrollType === 'ACCORD' ? 'text-danger':'text-primary'">{{person.id}}
+            {{person.name}} {{person.surname}}
+          </th>
+          <td class="col-sm-1 col-lg-1 text-left text-nowrap">
+            <label>
+              <input type="radio" ng-model="person.payrollType" value="ACCORD" ng-change="updatePayrollType(person.id,'ACCORD')">
+              <i class="fa fa-bolt fa-lg text-danger" ng-class="person.payrollType === 'HOURLY' ? 'text-muted' : ''" aria-hidden="true"></i>
+            </label>
+            <label>
+              <input type="radio" ng-model="person.payrollType" value="HOURLY" ng-change="updatePayrollType(person.id,'HOURLY')">
+              <i class="fa fa-clock-o fa-lg text-primary" ng-class="person.payrollType === 'ACCORD' ? 'text-muted' : ''" aria-hidden="true"></i>
+            </label>
+          </td>
+
+          <td ng-show="person.payrollType == 'ACCORD'" class="col-sm-10 col-lg-10 text-nowrap">
+            <select id="wageHeader" class="form-control"
+                    ng-model="person.wageHeaderId"
+                    ng-options="item.id as item.name for item in accordHeaders"
+                    ng-change="updateAccordHeader(person)">
+            </select>
+          </td>
+          <td ng-show="person.payrollType == 'HOURLY'" class="col-sm-10 col-lg-10">
+
+            <div class="input-group-sm col-sm-4">
+              <div class="input-group-sm form-inline">
+                <input type="text" class="form-control text-right input-sm" ng-model="person.hourlyRegularWage"
+                                                                  value="person.hourlyRegularWage">
+                <i class="fa fa-floppy-o fa-lg hand-cursor text-primary" aria-hidden="true" ng-click="updateRegularWage(person.id,person.hourlyRegularWage)"></i>
+                </div>
+            </div>
+            <div class="input-group-sm col-sm-4">
+              <div class="input-group-sm form-inline">
+                <input type="text" class="form-control text-right input-sm" ng-model="person.hourlySundayWage"
+                                                                  value="person.sundayRegularWage">
+                <i class="fa fa-floppy-o fa-lg hand-cursor text-danger" aria-hidden="true" ng-click="updateSundayWage(person.id,person.hourlySundayWage)"></i>
+              </div>
+            </div>
+            <div class="input-group-sm col-sm-4">
+              <div class="input-group-sm form-inline">
+                <input type="text" class="form-control text-right input-sm" ng-model="person.hourlyBonusWage"
+                                                                  value="person.hourlyBonusWage">
+              <i class="fa fa-floppy-o fa-lg hand-cursor text-warning" aria-hidden="true" ng-click="updateBonusWage(person.id,person.hourlyBonusWage)"></i>
+              </div>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-sm-2 col-lg-2">&nbsp;</div>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<div class="container-fluid" ng-controller="ChamberListCtrl">
+  <ol class="breadcrumb">
+    <li class="active">{{'settings.chamber.bradcrump.header' | translate}}</li>
+  </ol>
+  <div growl></div>
+  <div class="row">
+    <div class="col-sm-2">
+      <button class="btn btn-primary" ng-click="openCreateChamberModal()"
+              ng-bind="'settings.chamber.create-button' | translate"></button>
+    </div>
+    <div class="col-sm-8">
+      <table class="table table-hover table-stripped">
+        <thead>
+        <tr>
+          <th class="col-sm-4 text-left">{{'settings.chamber.name'| translate}}</th>
+          <th class="col-sm-4 text-left">{{'settings.chamber.area' | translate}}</th>
+          <th class="col-sm-2 text-left">{{'settings.chamber.depot' | translate}}</th>
+          <th class="col-sm-2 text-left">{{'settings.chamber.company' | translate}}</th>
+          <th class="col-sm-1">&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="chamber in chambers">
+          <td class="col-sm-4 text-left"><a href="#" editable-text="chamber.name" onbeforesave="updateName(chamber.id,$data)">{{chamber.name}}</a></td>
+          <td class="col-sm-4 text-left"><a href="#" editable-text="chamber.area" onbeforesave="updateArea(chamber.id,$data)">{{chamber.area}}</a></td>
+          <td class="col-sm-2 text-left"><a href="#" editable-select="chamber.depotId" e-ng-options="depot.id as depot.name for depot in depots"
+                                            onbeforesave="updateDepot(chamber.id,$data)">{{chamber.depotName}}</a></td>
+          <td class="col-sm-2 text-left"><a href="#" editable-select="chamber.companyId" e-ng-options="company.id as company.name for company in companies"
+                                            onbeforesave="updateCompany(chamber.id,$data)">{{chamber.companyName}}</a></td>
+          <td class="col-sm-1 text-right" ng-click="openConfirmDeletePrompt(chamber.id,chamber.name)"><i class="fa fa-trash-o fa-lg hand-cursor"
+                                                                                                         aria-hidden="true"></i></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-sm-2">&nbsp;</div>
+  </div>
+</div>

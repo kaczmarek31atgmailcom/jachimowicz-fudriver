@@ -1,0 +1,1 @@
+alter table rozliczenia_month add UNIQUE ludzie_month_bonus (ludzie_id,timeshort,bonus_id);

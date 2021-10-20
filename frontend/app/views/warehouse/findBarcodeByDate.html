@@ -1,0 +1,81 @@
+<div class="container-fluid" ng-controller="findBarcodeByDateCtrl" ng-init="init()">
+  <ol class="breadcrumb">
+    <li class="active">{{'warehouse.findBarcodeByDate'|translate }}</li>
+  </ol>
+  <div growl></div>
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="form-group">
+        <form name="barForm">
+          <div class="form-group col-xs-4">
+            <label for="date" ng-bind="'warehouse.findBarcode.date.placeholder' | translate"></label>
+            <input class="form-control text-right" ng-model="date" id="date"
+                   placeholder="{{'warehouse.findBarcode.date.placeholder' | translate}}"
+                   required
+                   bs-datepicker autoclose="true" data-date-format="yyyy/MM/dd"
+                   ng-change="findCycles(); focusInputText();">
+          </div>
+          <div class="form-group col-xs-4">
+            <label for="cycle">{{'warehouse.findBarcode.cycle' | translate}}</label>
+            <select id="cycle" class="form-control text-right" ng-model="cycleId"
+                    ng-options="cycle.cycleId as cycle.name for cycle in cycles"
+                    ng-mouseleave="focusInputText()"></select>
+          </div>
+
+          <div class="form-group col-xs-4">
+            <label for="barcode">&nbsp;</label>
+            <input class="form-control" name="barcode" id="barcode" type="text"
+                   ng-model="barcode"
+                   ng-change="parseBarcode()" autocomplete="off">
+          </div>
+        </form>
+      </div>
+    </div>
+    <label for="notADigit">&nbsp;</label>
+    <div id="notADigit" class="col-lg-5 alert alert-danger" role="alert" ng-show="message=='notADigit'"
+         ng-bind="'warehouse.findBarcode.message.notADigit' | translate"></div>
+
+    <label for="invalidCustomer">&nbsp;</label>
+    <div id="invalidCustomer" class="col-lg-5 alert alert-danger" role="alert" ng-show="message=='invalidSupplier'"
+         ng-bind="'warehouse.findBarcode.message.invalidSupplier' | translate"></div>
+
+
+    <label for="noHarvestDate">&nbsp;</label>
+    <div id="noHarvestDate" class="col-lg-5 alert alert-danger" role="alert" ng-show="message=='noHarvestDate'"
+         ng-bind="'warehouse.findBarcode.message.noHarvestDate' | translate"></div>
+
+    <label for="notOnStock">&nbsp;</label>
+    <div id="notOnStock" class="col-lg-5 alert alert-danger" role="alert" ng-show="message=='notOnStock'"
+         ng-bind="'warehouse.findBarcode.message.notOnStock' | translate"></div>
+
+    <label for="different">&nbsp;</label>
+    <div id="different" class="col-lg-5 alert alert-warning" role="alert" ng-show="message=='different'">
+      <dl class="dl-horizontal">
+        <dt ng-bind="'warehouse.findBarcode.message.typeName' | translate"></dt>
+        <dd ng-bind="box.typeName"></dd>
+        <dt ng-bind="'warehouse.findBarcode.message.typeWeight' | translate"></dt>
+        <dd ng-bind="box.typeWeight | dotToCommaKg"></dd>
+        <dt ng-bind="'warehouse.findBarcode.message.chamber' | translate"></dt>
+        <dd ng-bind="box.chamberName"></dd>
+        <dt ng-bind="'warehouse.findBarcode.message.harvestDate' | translate"></dt>
+        <dd ng-bind="box.harvestDate"></dd>
+      </dl>
+    </div>
+
+    <label for="equal">&nbsp;</label>
+    <div id="equal" class="col-lg-5 alert alert-success" role="alert" ng-show="message=='equal'">
+      <dl class="dl-horizontal">
+        <dt ng-bind="'warehouse.findBarcode.message.typeName' | translate"></dt>
+        <dd ng-bind="box.typeName"></dd>
+        <dt ng-bind="'warehouse.findBarcode.message.typeWeight' | translate"></dt>
+        <dd ng-bind="box.typeWeight | dotToCommaKg"></dd>
+        <dt ng-bind="'warehouse.findBarcode.message.chamber' | translate"></dt>
+        <dd ng-bind="box.chamberName"></dd>
+        <dt ng-bind="'warehouse.findBarcode.message.harvestDate' | translate"></dt>
+        <dd ng-bind="box.harvestDate"></dd>
+      </dl>
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,1 @@
+ALTER TABLE warehouse_brc add cycle_id int;

@@ -1,0 +1,53 @@
+<div class="container-fluid" role="main" ng-controller="reclassifyCtrl" ng-init="getHeaders()">
+
+  <div ng-show="!loading" ng-hide="loading">
+    <div class="page-header text-muted">
+     <h2> {{'reclassify.header' | translate}}</h2>
+      {{'reclassify.subheader' | translate}}
+    </div>
+    <div class="row">
+    <div class="form-group">
+      <div class="form-group col-xs-2">
+        <input class="form-control" ng-model="dateFrom" data-max-date="{{dateTo}}" placeholder="{{dateFrom}}" required
+               bs-datepicker autoclose="true" data-date-format="yyyy/MM/dd" ng-change="getHeaders()">
+      </div>
+      <div class="form-group col-xs-2">
+        <input type="text" class="form-control" ng-model="dateTo" data-min-date="{{dateFrom}}" placeholder="{{dateTo}}"
+               required bs-datepicker autoclose="true" date-format="yyyy/MM/dd" ng-change="getHeaders()">
+      </div>
+    </div>
+    </div>
+
+    <table class="table table-condensed table-hover" ng-show="headers.length > 0">
+      <thead>
+      <tr>
+        <th>{{'reclassify.nr' | translate}}</th>
+        <th>{{'reclassify.type' | translate}}</th>
+        <th>{{'reclassify.typeWeight' | translate}}</th>
+        <th>{{'reclassify.totalPcs' | translate}}</th>
+        <th>{{'reclassify.totalWeight' | translate}}</th>
+        <th>{{'reclassify.date' | translate}}</th>
+        <th>{{'reclassify.chamber' | translate}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="header in headers" ng-click="showDetails(header.nr)" class="hand-cursor">
+        <td ng-bind="header.nr"></td>
+        <td ng-bind="header.rodzajName"></td>
+        <td >{{header.rodzajWeight | dotToCommaKg}}</td>
+        <td ng-bind="header.totalPcs"></td>
+        <td>{{header.totalWeight | dotToCommaKg }}</td>
+        <td ng-bind="header.harvestDate"></td>
+        <td>
+          <div ng-repeat="hala in header.hale">
+            <span>{{hala}}</span>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div ng-show="loading" ng-hide="!loading" class="spinner">
+    <img src="/fudriver/images/spinner.gif">
+  </div>
+</div>

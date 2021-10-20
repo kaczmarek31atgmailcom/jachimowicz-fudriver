@@ -1,0 +1,51 @@
+<div class="container-fluid" ng-controller="foreignerAlertCtrl">
+  <ol class="breadcrumb">
+    <li><a href="#/people">{{'people.alert.breadcrumb.people' | translate}}</a></li>
+    <li class="active">{{'people.alert.breadcrumb.config' | translate}}</li>
+  </ol>
+
+  <div growl></div>
+
+
+
+  <div class="row">
+    <div class="col-lg-3 col-sm-3">&nbsp;</div>
+    <div class="col-lg-6 col-sm-6">
+
+      <div class="page-header">
+        <h1>{{'people.alert.breadcrumb.config' | translate}}
+        <br>
+        <small>
+          {{'people.alert.breadcrumb.config.subtitle' | translate}}
+        </small></h1>
+      </div>
+
+      <form>
+          <div class=form-group>
+            <label for="visaDays">{{'people.alert.visaDays' | translate}}</label>
+            <input type="number" step="1" min="0" class="form-control" id="visaDays" ng-model="alerts.visaDays" required>
+          </div>
+
+          <div class="form-group">
+            <label for="statementDays">{{'people.alert.statementDays' | translate}}</label>
+            <input type="number" step = "1" class="form-control" id="statementDays" ng-model="alerts.statementDays" required>
+          </div>
+
+          <div class="form-group">
+            <label for="passportDays">{{'people.alert.passportDays' | translate}}</label>
+            <input type="number" step = "1" class="form-control" id="passportDays" ng-model="alerts.passportDays" required>
+          </div>
+
+          <div class="form-group">
+            <label for="stayDays">{{'people.alert.stayDays' | translate}}</label>
+            <input type="number" step = "1" class="form-control" id="stayDays" ng-model="alerts.stayDays" required>
+          </div>
+
+        <div class="form-group text-right">
+          <button class="btn btn-primary" ng-click="save()">{{'people.alert.save' | translate}}</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-lg-3 col-sm-3">&nbsp;</div>
+  </div>
+</div>

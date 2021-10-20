@@ -1,0 +1,45 @@
+<div class="container-fluid" ng-controller="HotelBookingCtrl">
+  <ol class="breadcrumb">
+    <li class="active">{{'hotel.booking.breadcrumb.header' | translate}}</li>
+  </ol>
+  <div growl></div>
+  <div class="row">
+    <div class="loading" ng-hide="loading === 0">Loading&#8230;</div>
+    <div class="form-group">
+      <div class="form-group col-xs-3">
+        <input class="form-control" ng-model="startDate" placeholder="{{day}}" required
+               bs-datepicker autoclose="true" data-date-format="yyyy/MM/dd" data-max-date="{{day}}" ng-change="init()">
+      </div>
+      <div class="form-group col-xs-3">
+        <input type="text" class="form-control" ng-model="endDate" data-min-date="{{day}}" data-min-date="{{endDate}}" placeholder="{{day}}"
+               required bs-datepicker autoclose="true" date-format="yyyy/MM/dd" ng-change="init()">
+      </div>
+
+      <div class="form-group col-xs-3">
+        <select id="hotel" class="form-control"
+                ng-model="hotelId"
+                ng-options="hotel.id as hotel.name for hotel in hotels"
+                ng-change="init()">
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <table class="table table-condensed table-bordered">
+    <tr>
+      <th>{{'hotel.room.name' | translate}}</th>
+      <th>{{'hotel.bed.name' | translate}}</th>
+      <th ng-repeat="day in days" ng-class="day.weekDay % 6 === 0 ? 'red-background text-center':'text-center'" title="{{day.date}} {{'hotel.day.utilization'|translate}} {{day.utilization}}">{{day.short}}<div class="text-muted"><i>{{day.utilization}}</i></div></th>
+    </tr>
+    <tr ng-repeat-start="room in rooms">
+      <th rowspan="{{room.beds.length + 1}}">{{room.name}} </th>
+    </tr>
+    <tr ng-repeat="bed in room.beds">
+      <td>{{bed.bedName}}</td>
+      <td ng-repeat="day in daysTable[bed.bedId]" ng-click="editDay(day)" title="{{day.personName}} {{day.personSurname}} {{day.description}} {{day.date}}" ng-class="day.weekDay % 6 === 0 ? 'red-background':''"><i class="{{day.class}}"></i></td>
+    </tr>
+
+    <tr ng-repeat-end></tr>
+  </table>
+
+</div>

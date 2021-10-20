@@ -1,0 +1,192 @@
+<div ng-controller="addEmployeeCtrl">
+
+  <ol class="breadcrumb">
+    <li><a href="#/people">{{'people.breadcrumb.people' | translate}}</a></li>
+    <li class="active">{{'people.breadcrumb.add' | translate}}</li>
+  </ol>
+
+
+  <div ng-show="createdEmployee.id" class="alert alert-success">
+    <strong>{{'personAdd.success.message'|translate}}</strong><br/>
+    {{'personAdd.success.message.id' | translate}} <strong>{{createdEmployee.id}}</strong>
+    {{'personAdd.success.message.name' | translate}} <strong>{{createdEmployee.imie}}</strong>
+    {{'personAdd.success.message.surname' | translate}} <strong>{{createdEmployee.nazwisko}}</strong>
+  </div>
+
+  <form>
+    <div class="row">
+      <div class="form-group col-sm-4">
+        <label for="name">{{'personAdd.name' | translate}}</label>
+        <input type="text" id="name" ng-model="employee.imie" class="form-control text-right"/>
+      </div>
+
+      <div class="form-group col-sm-4">
+        <label for="surname">{{'personAdd.surname' | translate}}</label>
+        <input type="text" id="surname" ng-model="employee.nazwisko" class="form-control text-right"/>
+      </div>
+
+      <div class="form-group col-sm-4">
+        <label for="nr">{{'personAdd.nr' | translate}}</label>
+        <select id="nr" class="form-control text-right" ng-model="employee.nr"
+                ng-options="nr as nr for nr in freeNumbers"></select>
+      </div>
+
+      <div class="form-group col-sm-4">
+        <label for="group">{{'personAdd.group' | translate}}</label>
+        <select id="group" class="form-control text-right" ng-model="employee.groupId"
+                ng-options="group.id as group.name for group in groups"></select>
+      </div>
+
+      <div class="form-group col-sm-4">
+        <label for="mobile">{{'personAdd.mobile' | translate}}</label>
+        <input type="text" id="mobile" ng-model="employee.mobile" class="form-control text-right"/>
+      </div>
+
+
+      <div class="form-group col-sm-4">
+        <label for="address">{{'personAdd.address' | translate}}</label>
+        <input type="text" id="address" ng-model="employee.adres" class="form-control text-right"/>
+      </div>
+
+      <div class="form-group col-sm-4">
+        <label class="control-label"><i class="fa fa-calendar"></i> {{'personAdd.birthDate' | translate}}</label>
+        <input type="text" class="form-control text-right" ng-model="employee.birthDate"
+               placeholder="{{employee.birthDate | date: 'yyyy-MM-dd'}}"
+               required bs-datepicker autoclose="true" data-date-format="yyyy-MM-dd" data-date-type="string"
+               model-date-format="yyyy-MM-dd">
+      </div>
+
+      <div class="form-group col-sm-4">
+        <label for="pesel">{{'personAdd.pesel' | translate}}</label>
+        <input type="text" id="pesel" ng-model="employee.pesel" class="form-control text-right"/>
+      </div>
+
+      <div class="form-group col-sm-4">
+        <label class="control-label"></i> {{'personAdd.isForeigner' | translate}}</label>
+        <div>
+          <i class="fa fa-toggle-off fa-2x" aria-hidden="true" ng-show="employee.isForeigner == false" ng-click="employee.isForeigner = true"></i>
+          <i class="fa fa-toggle-on fa-2x" aria-hidden="true" ng-show="employee.isForeigner == true" ng-click="employee.isForeigner = false"></i>
+        </div>
+      </div>
+    </div>
+    <hr>
+
+    <div class="row" ng-show="employee.isForeigner">
+
+
+      <div class="form-group col-lg-4">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group">
+              <label for="nrWizy">{{'personAdd.nrWizy' | translate}}</label>
+              <input type="text" id="nrWizy" ng-model="employee.nrWizy" class="form-control text-right"/>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label"><i class="fa fa-calendar"></i> {{'personAdd.koniecWaznosciWizy' |
+                translate}}</label>
+              <input type="text" class="form-control text-right" ng-model="employee.koniecWaznosciWizy"
+                     placeholder="{{employee.koniecWaznosciWizy | date: 'yyyy-MM-dd'}}"
+                     required bs-datepicker autoclose="true" data-date-format="yyyy-MM-dd" data-date-type="string"
+                     model-date-format="yyyy-MM-dd">
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="form-group col-lg-4">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group">
+              <label for="nrOswiadczenia">{{'personAdd.nrOswiadczenia' | translate}}</label>
+              <input type="text" id="nrOswiadczenia" ng-model="employee.nrOswiadczenia"
+                     class="form-control text-right"/>
+            </div>
+            <div class="form-group">
+              <label for="nrZezwolenia">{{'personAdd.nrZezwolenia' | translate}}</label>
+              <input type="text" id="nrZezwolenia" ng-model="employee.nrZezwolenia" class="form-control text-right"/>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label"><i class="fa fa-calendar"></i> {{'personAdd.poczatekWaznosciZezwolenia' |
+                translate}}</label>
+              <input type="text" class="form-control text-right" ng-model="employee.poczatekWaznosciZezwolenia"
+                     placeholder="{{employee.poczatekWaznosciZezwolenia | date: 'yyyy-MM-dd'}}"
+                     required bs-datepicker autoclose="true" data-date-format="yyyy-MM-dd" data-date-type="string"
+                     data-max-date="{{employee.koniecWaznosciZezwolenia}}"
+                     model-date-format="yyyy-MM-dd">
+            </div>
+
+            <div class="form-group">
+              <label class="control-label"><i class="fa fa-calendar"></i> {{'personAdd.koniecWaznosciZezwolenia' |
+                translate}}</label>
+              <input type="text" class="form-control text-right" ng-model="employee.koniecWaznosciZezwolenia"
+                     placeholder="{{employee.koniecWaznosciZezwolenia | date: 'yyyy-MM-dd'}}"
+                     required bs-datepicker autoclose="true" data-date-format="yyyy-MM-dd" data-date-type="string"
+                     data-min-date="{{employee.poczatekWaznosciZezwolenia}}"
+                     model-date-format="yyyy-MM-dd">
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="form-group col-lg-4">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group" ng-show="employee.isForeigner">
+              <label for="nrPaszportu">{{'personAdd.nrPaszportu' | translate}}</label>
+              <input type="text" id="nrPaszportu" ng-model="employee.nrPaszportu"
+                     class="form-control text-right"/>
+            </div>
+            <div class="form-group" ng-show="employee.isForeigner">
+              <label class="control-label"><i class="fa fa-calendar"></i> {{'personAdd.koniecWaznosciPaszportu' |
+                translate}}</label>
+              <input type="text" class="form-control text-right" ng-model="employee.koniecWaznosciPaszportu"
+                     placeholder="{{employee.koniecWaznosciPaszportu | date: 'yyyy-MM-dd'}}"
+                     required bs-datepicker autoclose="true" data-date-format="yyyy-MM-dd" data-date-type="string"
+                     model-date-format="yyyy-MM-dd">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group col-lg-4">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div class="form-group">
+              <label class="control-label"><i class="fa fa-calendar"></i> {{'personAdd.poczatekZameldowania' |
+                translate}}</label>
+              <input type="text" class="form-control text-right" ng-model="employee.dataZameldowania"
+                     placeholder="{{employee.dataZameldowania | date: 'yyyy-MM-dd'}}"
+                     required bs-datepicker autoclose="true" data-date-format="yyyy-MM-dd" data-date-type="string" data-max-date="{{employee.dataWymeldowania}}"
+                     model-date-format="yyyy-MM-dd">
+            </div>
+
+            <div class="form-group">
+              <label class="control-label"><i class="fa fa-calendar"></i> {{'personAdd.koniecZameldowania' |
+                translate}}</label>
+              <input type="text" class="form-control text-right" ng-model="employee.dataWymeldowania"
+                     placeholder="{{employee.dataWymeldowania | date: 'yyyy-MM-dd'}}"
+                     required bs-datepicker autoclose="true" data-date-format="yyyy-MM-dd" data-date-type="string" data-min-date="{{employee.dataZameldowania}}"
+                     model-date-format="yyyy-MM-dd">
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+    <hr ng-show="employee.isForeigner">
+  </form>
+
+  <div class="text-right col-sm-12">
+    <button type="submit" class="btn btn-success" ng-click="addEmployee(employee)">{{'personAdd.save' | translate}}
+    </button>
+  </div>
+</div>
+
+
+

@@ -1,0 +1,122 @@
+<div class="container-fluid" ng-controller="wzDetailsCtrl" ng-init="init()">
+  <ol class="breadcrumb">
+    <li><a href="#/outgo">{{'warehouse.breadcrumb.wzList' | translate}}</a></li>
+    <li class="active">{{'warehouse.breadcrumb.wzDetails' | translate}}</li>
+  </ol>
+
+  <div class="row">
+    <div class="col-lg-1">
+      <button class="btn btn-default" ng-print print-element-id="wz"><i class="fa fa-print"></i></button>
+    </div>
+    <div class="wz col-lg-10" id="wz">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <div class="row">
+                <div class="col-lg-10">
+                  <h3>{{'warehouse.wz.detail.header' | translate}} {{header.number}}/{{header.date |
+                    date:'yyyy-MM'}}</h3>
+                </div>
+                <div class="col-lg-2">
+                  <h5>{{'warehouse.wz.detail.date' | translate}} {{header.date}}</h5>
+                </div>
+              </div>
+            </div>
+            <div class="panel-body">
+
+              <ul class="list-inline">
+                <li>
+                  <h4>{{'warehouse.wz.detail.customer' | translate}}</h4>
+                </li>
+                <li>
+                  <h3>{{header.customerName}}</h3>
+                </li>
+              </ul>
+              <ul class="list-inline" ng-show="header.description">
+                <li>
+                  <h4>{{'warehouse.wz.detail.description' | translate}}</h4>
+                </li>
+                <li>
+                  <h3>{{header.description}}</h3>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-lg-12">
+        <table class="table table-condensed table-bordered">
+          <thead>
+          <tr>
+            <th>{{'warehouse.wz.detail.position' | translate}}</th>
+            <th>{{'warehouse.wz.detail.typeName' | translate}}</th>
+            <th class="text-right">{{'warehouse.wz.detail.typeWeight' | translate}}</th>
+            <th class="text-right" ng-show="showPrices">{{'warehouse.wz.detail.price' | translate}}</th>
+            <th class="text-right">{{'warehouse.wz.detail.totalAmount' | translate}}</th>
+            <th class="text-right">{{'warehouse.wz.detail.totalWeight' | translate}}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="detail in details">
+            <td ng-bind="$index + 1"></td>
+            <td ng-bind="detail.typeName"></td>
+            <td ng-bind="detail.typeWeight | dotToCommaKg" class="text-right"></td>
+            <td ng-show="showPrices" class="text-right">{{detail.price | longToCurrency}} {{detail.currency}}</td>
+            <td ng-bind="detail.totalAmount" class="text-right"></td>
+            <td ng-bind="detail.totalWeight | dotToCommaKg" class="text-right"></td>
+          </tr>
+          </tbody>
+          <tfoot>
+          <tr>
+            <th colspan="3">{{'warehouse.wz.detail.total'| translate}}</th>
+            <th ng-bind="totalAmount" class="text-right"></th>
+            <th ng-show="showPrices">&nbsp;</th>
+            <th ng-bind="totalWeight | dotToCommaKg" class="text-right"></th>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
+
+
+      <div class="row">
+        <div class="col-lg-6"></div>
+        <div class="col-lg-4">
+          <table class="table table-condensed">
+            <thead>
+            <tr>
+              <th ng-bind="'warehouse.wz.detail.paletteName' | translate"></th>
+              <th ng-bind="'warehouse.wz.detail.paletteAmount' | translate" class="text-right"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="palette in palettes">
+              <td ng-bind="palette.name"></td>
+              <td ng-bind="palette.amount" class="text-right"></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-8">
+          <ul class="list-inline">
+            <li>
+              {{'warehouse.wz.detail.user' | translate}}
+            </li>
+            <li>
+              {{ header.creatorName }} {{header.creatorSurname}}
+            </li>
+          </ul>
+          <span>{{'warehouse.wz.detail.release-time' | translate}}: {{header.releaseStartTime | date:'yyyy-MM-dd HH:ss'}} - {{header.releaseEndTime | date:'yyyy-MM-dd HH:ss'}}</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="col-lg-1"></div>
+
+</div>

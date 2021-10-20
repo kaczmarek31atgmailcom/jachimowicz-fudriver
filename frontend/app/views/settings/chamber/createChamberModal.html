@@ -1,0 +1,39 @@
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true" ng-controller="ChamberCreateCtrl">
+  <div class="modal-dialog modal-small">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="$hide()"><span
+          aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title text-muted" ng-bind="'settings.chamber.create.header' | translate"></h3>
+      </div>
+
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="name">{{'settings.chamber.create.name' | translate}}</label>
+            <input type="text" class="form-control" ng-model="name" id="name">
+          </div>
+          <div class="form-group">
+            <label for="area">{{'settings.chamber.create.area' | translate}}</label>
+            <input type="number" class="form-control" ng-model="area" id="area">
+          </div>
+          <div class="form-group">
+            <label for="depots">{{'settings.chamber.create.depot' | translate}}</label>
+            <select id = "depots" class="form-control" ng-model="depotId" ng-options="depot.id as depot.name for depot in depots"></select>
+          </div>
+          <div class="form-group">
+            <label for="companies">{{'settings.chamber.create.company' | translate}}</label>
+            <select id = "companies" class="form-control" ng-model="companyId" ng-options="company.id as company.name for company in companies"></select>
+          </div>
+        </form>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-default" ng-click="$hide()">{{'settings.chamber.create.prompt.cancel' | translate}}
+          </button>
+          <button type="submit" class="btn btn-primary" ng-disabled="(!area) || (!depotId) || (!name)"
+                  ng-click="createChamber(); $hide()">{{'settings.chamber.create.prompt.submit' | translate}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

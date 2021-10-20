@@ -1,0 +1,68 @@
+<div class="container-fluid" ng-controller="ScannerManController">
+  <ol class="breadcrumb">
+    <li class="active">{{'scannerManReport.header' | translate}}</li>
+  </ol>
+  <div growl></div>
+
+
+  <div class="row">
+    <div class="loading" ng-hide="loading == 0">Loading&#8230;</div>
+    <div class="form-group">
+      <div class="form-group col-xs-3">
+        <input class="form-control text-right" ng-model="startDate" placeholder="{{startDate}}" required
+               bs-datepicker autoclose="true" data-date-format="yyyy/MM/dd" ng-change="getReport()">
+      </div>
+      <div class="form-group col-xs-3">
+        <input type="text" class="form-control text-right" ng-model="endDate" placeholder="{{endDate}}"
+               required bs-datepicker autoclose="true" date-format="yyyy/MM/dd" ng-change="getReport()">
+      </div>
+      <div class="form-group col-xs-2">
+        <i class="fa fa-file-excel-o fa-2x hand-cursor" ng-click="export()"></i>
+      </div>
+    </div>
+  </div>
+  <div ng-show="report.length > 0">
+  <table class="table table-condensed table-bordered table-striped export-table">
+
+    <tr>
+      <td><strong>{{'scannerManReport.person' | translate}}</strong></td>
+      <td ng-repeat="type in report[0].details" ng-class="getClass(type.exportType)"><strong>
+        {{type.typeName}} {{type.typeWeight | longToWeight}}
+      </strong>
+      </td>
+      <td class="text-right"><strong>{{'scannerManReport.inne' | translate}}</strong></td>
+      <td class="text-right"><strong>{{'scannerManReport.kraj' | translate}}</strong></td>
+      <td class="text-right"><strong>{{'scannerManReport.export' | translate}}</strong></td>
+      <td class="text-right"><strong>{{'scannerManReport.quality' | translate}}</strong></td>
+      <td class="text-right"><strong>{{'scannerManReport.total' | translate}}</strong></td>
+      <td class="text-right"><strong>{{'scannerManReport.total.kg' | translate}}</strong></td>
+    </tr>
+
+
+    <tr ng-repeat="person in report">
+      <td>{{person.login}} {{person.name}} {{person.surname}}</td>
+      <td ng-repeat="harvest in person.details" ng-class="getClass(harvest.exportType)">{{harvest.numberPcs}}</td>
+      <td class="text-right">{{person.innePcs }}</td>
+      <td class="text-right">{{person.krajPcs}}</td>
+      <td class="text-right">{{person.exportPcs}}</td>
+      <td class="text-right">{{person.quality}}%</td>
+      <td class="text-right">{{person.totalPcs}}</td>
+      <td class="text-right">{{person.totalKg | longToWeight}}</td>
+    </tr>
+
+    <tr>
+      <td><strong>{{'scannerManReport.total' | translate}}</strong></td>
+      <td ng-repeat="typeTotal in typeTotals" ng-class="getClass(typeTotal.exportType)"><strong>{{typeTotal.totalPcs}}</strong></td>
+      <td class="text-right"><strong>{{totalInnePcs}}</strong></td>
+      <td class="text-right"><strong>{{totalKrajPcs}}</strong></td>
+      <td class="text-right"><strong>{{totalExportPcs}}</strong></td>
+      <td class="text-right"><strong>{{totalQuality}}%</strong></th>
+      <td class="text-right"><strong>{{totalTotalPcs}}</strong></td>
+      <td class="text-right"><strong>{{totalTotal | longToWeight}}</strong></td>
+    </tr>
+
+  </table>
+
+
+</div>
+</div>

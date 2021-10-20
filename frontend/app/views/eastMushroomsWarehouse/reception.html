@@ -1,0 +1,92 @@
+<div class="container-fluid" ng-controller="EastMushroomsReceptionCtrl">
+
+
+  <div class="row">
+    <div class="form-group col-xs-1">
+      <button type="submit" id="new-palette" class="btn btn-success" ng-click="createWarehousePalette()">{{'eastMushrooms.warehouse.reception.button.create-palette' | translate}}</button>
+    </div>
+    <div class="form-group col-xs-2">
+      <select id="paletteType" class="form-control"
+              ng-model="paletteTypeId"
+              ng-options="paletteType.paletteId as paletteType.name for paletteType in paletteTypes">
+      </select>
+    </div>
+
+    <div class="form-group col-xs-2">
+      <select id="depot" class="form-control"
+              ng-model="depotId"
+              ng-options="depot.id as depot.name for depot in depots">
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-6">
+      <div ng-repeat="(listName, list) in models.lists" class=" dndlist" ng-hide="listName === 'eastMushroomsWarehouseReceptionNotAssignedHarvestPalettes'">
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <div class="row">
+              <div class="col-sm-12">
+                <h3 class="panel-title">{{'eastMushrooms.warehouse.reception.palette.nr' | translate}} <strong>{{listName}}</strong>
+                  {{'eastMushrooms.warehouse.reception.palette.total.amount' | translate}} <strong>{{countWarehousePaletteTotal(list)}}</strong></h3>
+              </div>
+              <div class="col-sm-12">&nbsp;</div>
+              <div class="col-sm-6 text-right text-nowrap"><button class="btn btn-small btn-default btn-block" ng-click="showChangeAssignedPaletteTypeModal(listName)">{{showAssignedPaletteType(listName)}}</button></div>
+              <div class="col-sm-6 text-right">
+                <button class="btn btn-small btn-success btn-block" ng-show="(disabledAcceptKeys[listName] === undefined) && (list.length > 0)" ng-click="acceptWarehousePalette(listName)">{{'eastMushrooms.warehouse.reception.accept-warehouse-palette' | translate}}
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+          <div class="panel-body">
+            <ul dnd-list="list">
+              <li ng-repeat="item in list"
+                  dnd-draggable="item"
+                  dnd-moved="list.splice($index, 1);itemMovedFromWarehousePalette(item);"
+                  dnd-effect-allowed="move"
+                  dnd-selected="models.selected = item"
+                  ng-class="{'selected': models.selected === item}">
+                {{item.paletteId}} {{item.typeName}} {{item.typeWeight}} - {{item.amount}} {{'eastMushrooms.warehouse.reception.pcs' | translate}}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-lg-6">
+      <div ng-repeat="(listName, list) in models.lists" class=" dndlist" ng-hide="listName !== 'eastMushroomsWarehouseReceptionNotAssignedHarvestPalettes'">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">{{listName|translate}}
+              {{'eastMushrooms.warehouse.reception.palette.total.amount' | translate}} <strong>{{countWarehousePaletteTotal(list)}}
+
+            </h3>
+          </div>
+          <div class="panel-body">
+
+            <ul dnd-list="list">
+              <li ng-repeat="item in list"
+                  dnd-draggable="item"
+                  dnd-moved="list.splice($index, 1); itemMovedFromHarvestPalette(item);"
+                  dnd-effect-allowed="move"
+                  dnd-selected="models.selected = item"
+                  ng-class="{'selected': models.selected === item}">
+                <div class="row">
+                  <div class="col-xs-9 text-left">{{item.paletteId}} {{item.creatorLogin}} {{item.typeName}} {{item.typeWeight}} - {{item.amount}} {{'eastMushrooms.warehouse.reception.pcs' |
+                    translate}}
+                  </div>
+                  <div class="col-xs-3 text-right">
+                    <button class="btn btn-danger btn-sm" ng-click="rejectHarvestPalette(item.paletteId)">{{'eastMushrooms.warehouse.reception.reject-harvest-palette' | translate}}</button>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

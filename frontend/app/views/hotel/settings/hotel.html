@@ -1,0 +1,27 @@
+<div class="container-fluid" ng-controller="HotelSettingsCtrl">
+  <ol class="breadcrumb">
+    <li class="active">{{'hotel.settings.breadcrumb.header' | translate}}</li>
+  </ol>
+  <div growl></div>
+
+  <div class="row">
+    <div class="col-sm-3">
+      <button class="btn btn-primary" ng-click="openCreateHotelModal()"
+              ng-bind="'hotel.settings.create.hotel.add-hotel-button' | translate"></button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-3">&nbsp;</div>
+    <div class="col-sm-6">
+      <ul class="list-unstyled list-inline hand-cursor" ng-repeat="header in headers">
+        <i class="fa fa-home fa-2x"></i>
+        <li><h3>{{header.name}}</h3></li>
+        <li class="text-muted"><h4>{{'hotel.settings.hotel.rooms-amount' | translate}}</h4></li>
+        <li><h3>{{header.roomsAmount}}</h3></li>
+        <li class="text-muted"><h4>{{'hotel.settings.hotel.beds-amount' | translate}}</h4></li>
+        <li><h3>{{header.bedsAmount}}</h3></li>
+      </ul>
+    </div>
+    <div class="col-sm-3">&nbsp;</div>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<div class="container-fluid" ng-controller="findByBarcodeCtrl">
+  <ol class="breadcrumb">
+    <li class="active">{{'warehouse.findBarcode'|translate }}</li>
+  </ol>
+  <div growl></div>
+
+  <div class="row">
+    <form name="barForm" role="form">
+      <div class="form-group col-xs-4">
+        <label for="barcode">&nbsp;</label>
+        <input class="form-control" name="barcode" id="barcode" type="text"
+               ng-model="barcode"
+               ng-change="parseBarcode()" autocomplete="off" ng-blur="focusInputText()">
+      </div>
+    </form>
+
+  </div>
+
+
+  <div class="row">
+    <div class="col-lg-5" ng-show="box">
+      <div class="panel panel-info" ng-show="box.uniqId > 0">
+        <div class="panel-heading text-center">
+          <h4><strong>{{previousBarcode}}</strong></h4>
+        </div>
+        <div class="panel-body">
+          <dl class="dl-horizontal">
+            <h4>
+              <dt ng-bind="'warehouse.findBarcode.message.typeName' | translate"></dt>
+              <dd ng-bind="box.typeName"></dd>
+              <dt ng-bind="'warehouse.findBarcode.message.typeWeight' | translate"></dt>
+              <dd ng-bind="box.typeWeight | dotToCommaKg"></dd>
+              <dt ng-bind="'warehouse.findBarcode.message.chamber' | translate"></dt>
+              <dd ng-bind="box.chamberName"></dd>
+              <dt ng-bind="'warehouse.findBarcode.message.harvestDate' | translate"></dt>
+              <dd ng-bind="box.harvestDate"></dd>
+              <dt ng-bind="'warehouse.findBarcode.message.picker' | translate"></dt>
+              <dd> {{box.pickerName}} {{box.pickerSurname}}</dd>
+            </h4>
+          </dl>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-lg-5">
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          <io-barcode code="{{previousBarcode}}" type="CODE128B" ng-show="box.uniqId > 0"></io-barcode>
+        </div>
+        <div class="col-sm-12 text-center" ng-show="box.uniqId > 0"><h3>{{previousBarcode}}</h3></div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<div class="container-fluid" ng-controller="OutgoDeliverLetterCtrl">
+  <ol class="breadcrumb">
+    <li><a href="#/outgo">{{'warehouse.outgo.breadcrumb.summary' | translate}}</a></li>
+    <li class="active">{{'warehouse.outgo.breadcrumb.delivery-letter' | translate}}</li>
+  </ol>
+  <div growl></div>
+  <div class="panel panel-info">
+    <div class="panel-body">
+      <h4>
+        <span class="col-lg-4 text-muted text-primary">{{'delivery-letter.id'| translate}} <strong>{{deliveryLetter.deliveryLetterId}}</strong></span>
+        <span class="col-lg-4 text-muted text-primary">{{'delivery-letter.plate' | translate}} <strong>{{deliveryLetter.plate}}</strong></span>
+        <span class="col-lg-4 text-muted text-primary">{{'delivery-letter.release-date'|translate}} <strong>{{deliveryLetter.releaseDate}}</strong></span>
+      </h4>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>{{'delivery-letter.position' | translate}}</th>
+        <th>{{'delivery-letter.palette-id' | translate}}</th>
+        <th>{{'delivery-letter.order-id' | translate}}</th>
+        <th>{{'delivery-letter.customer' | translate}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="palette in palettes">
+        <td>{{$index + 1}}</td>
+        <td>{{palette.paletteId}}</td>
+        <td>{{palette.orderId}}</td>
+        <td>{{palette.customerName}}</td>
+      </tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="col-lg-2"></div>
+  </div>
+</div>
+
+

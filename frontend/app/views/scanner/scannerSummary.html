@@ -1,0 +1,57 @@
+<div ng-controller="scannerSummaryCtrl" ng-init="loadHeaders()" ng-cloak>
+  <ol class="breadcrumb">
+    <li><a href="#/scanner">{{'scanner.breadcrumb.scanner' | translate}}</a></li>
+    <li class="active">{{'scanner.breadcrumb.total' | translate}}</li>
+  </ol>
+  <div growl></div>
+  <div class="alert alert-success" ng-show="commitedTrolley" ng-hide="!commitedTrolley">{{'scanner.total.commit.success.message' | translate}}
+    {{commitedTrolley}}
+  </div>
+  <div class="alert alert-danger" ng-show="commitError" ng-hide="!commitError">{{'scanner.total.commit.error.message' | translate}}</div>
+  <div ng-hide="commitError || commitedTrolley" class="page-header">
+    <h3>{{'scanner.total.commit.header' | translate}}</h3>
+  </div>
+  <table class="table table-hover" ng-show="headers.length > 0" ng-cloak>
+    <thead>
+    <tr>
+      <th ng-bind="'scanner.total.trolleyId' | translate"></th>
+      <th ng-bind="'scanner.total.type' | translate"></th>
+      <th ng-bind="'scanner.total.weight' | translate"></th>
+      <th ng-bind="'scanner.total.totalPcs' | translate"></th>
+      <th ng-bind="'scanner.total.totalWeight' | translate"></th>
+
+      <th class="text-right">
+        <button class="btn btn-primary" ng-click="openCommitToWarehouseModal(header.wozekNr)" ng-cloak ng-show="activeEastMushrooms">{{'scanner.total.commit-to-warehouse.submit' | translate}}</button>
+        <button class="btn btn-default" ng-click="showSummary()" ng-cloak>{{'scanner.total.commit.summary' | translate}}</button>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="header in headers" ng-class="header.spaceId == 3 ? 'danger':''">
+      <td ng-bind="header.wozekNr"></td>
+      <td ng-bind="header.rodzajName"></td>
+      <td ng-bind="header.rodzajWeight"></td>
+      <td ng-bind="header.totalPcs"></td>
+      <td>{{header.totalWeight}}</td>
+      <td class="text-right" ng-cloak>
+        <div ng-show="header.spaceId == 0" ng-hide="header.spaceId != 0" ng-cloak>
+          <button class="btn btn-danger" ng-click="onHold(header.wozekNr)" ng-cloak>{{'scanner.total.commit.wait' | translate}}</button>
+          <button class="btn btn-warning" ng-click="edit(header.wozekNr)" ng-cloak>{{'scanner.total.commit.edit' | translate}}</button>
+          <button class="btn btn-primary" ng-click="commit(header.wozekNr)" ng-cloak>{{'scanner.total.commit.submit' | translate}}</button>
+        </div>
+        <div ng-show="header.spaceId == 3" ng-hide="header.spaceId != 3">
+          <button class="btn btn-danger" ng-click="activate(header.wozekNr)" ng-cloak ng-disabled="isActivationDisabled(header.rodzajId)">
+            {{'scanner.total.commit.restore' | translate}}
+          </button>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th colspan="3">{{'scanner.total.total' | translate}}</th>
+      <th>{{totalAmount}}</th>
+      <th>{{totalWeight}}</th>
+      <th>&nbsp;</th>
+    </tr>
+    </tbody>
+  </table>
+</div>

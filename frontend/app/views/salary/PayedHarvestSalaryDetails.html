@@ -1,0 +1,131 @@
+<div class="container-fluid" ng-controller="PayedSalaryHarvestDetailsCtrl">
+  <ol class="breadcrumb">
+    <li><a href="#/salary">{{'salary.breadcrumb.main' | translate}}</a></li>
+    <li class="active">{{'salary.breadcrumb.person-details' | translate}}</li>
+  </ol>
+  <div class="growl"></div>
+
+  <div class="row">
+    <div class="col-lg-1 col-sm-1">
+      <div>
+        <button class="btn btn-default" ng-print print-element-id="salary-table"><i class="fa fa-print"></i></button>
+      </div>
+
+    </div>
+    <div class="col-lg-11 col-sm-11" id="salary-table">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <h3>
+            <strong>{{'salary.payed.person.message1' | translate}} {{person.imie}} {{person.nazwisko}} id {{person.id}} {{'salary.payed.person.message2' | translate}} {{firstDay}} -
+              {{lastDay}}</strong>
+          </h3>
+        </div>
+      </div>
+      <table class="table table-condensed">
+        <thead>
+        <tr>
+          <th colspan="1" rowspan="2">{{'salary.payed.person.detail.type-name' | translate}}</th>
+          <th colspan="3" class="text-center">{{'salary.payed.person.detail.regular-days' | translate}}</th>
+          <th colspan="3" class="text-center text-danger">{{'salary.payed.person.detail.sundays' | translate}}</th>
+          <th colspan="3" class="text-center text-primary">{{'salary.payed.person.detail.bonus-days' | translate}}</th>
+          <th rowspan="2" class="text-right">{{'salary.payed.person.detail.total' | translate}}</th>
+        </tr>
+        <tr>
+          <th rowspan="1" class="text-right">{{'salary.payed.person.detail.kg-amount' | translate}}</th>
+          <th rowspan="1" class="text-right">{{'salary.payed.person.detail.wage' | translate }}</th>
+          <th rowspan="1" class="text-right">{{'salary.payed.person.detail.money-amount' | translate}}</th>
+
+          <th rowspan="1" class="text-danger text-right">{{'salary.payed.person.detail.kg-amount' | translate}}</th>
+          <th rowspan="1" class="text-danger text-right">{{'salary.payed.person.detail.wage' | translate}}</th>
+          <th rowspan="1" class="text-danger text-right">{{'salary.payed.person.detail.money-amount' | translate}}</th>
+
+          <th rowspan="1" class="text-primary text-right">{{'salary.payed.person.detail.kg-amount' | translate}}</th>
+          <th rowspan="1" class="text-primary text-right">{{'salary.payed.person.detail.wage' | translate}}</th>
+          <th rowspan="1" class="text-primary text-right">{{'salary.payed.person.detail.money-amount' | translate}}</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="detail in details">
+          <td>{{detail.name}} {{detail.weight | longToWeight}}</td>
+          <td class="text-right">{{detail.regularKgAmount | longToWeight}}</td>
+          <td class="text-right">{{detail.regularWage | longToCurrency}}</td>
+          <td class="text-right">{{detail.regularMoneyAmount | longToCurrency}}</td>
+
+          <td class="text-danger text-right">{{detail.sundayKgAmount | longToWeight}}</td>
+          <td class="text-danger text-right">{{detail.sundayWage | longToCurrency}}</td>
+          <td class="text-danger text-right">{{detail.sundayMoneyAmount | longToCurrency}}</td>
+
+          <td class="text-primary text-right">{{detail.bonusKgAmount | longToWeight}}</td>
+          <td class="text-primary text-right">{{detail.bonusWage | longToCurrency}}</td>
+          <td class="text-primary text-right">{{detail.bonusMoneyAmount | longToCurrency}}</td>
+
+          <th class="text-right">{{detail.totalMoneyAmount | longToCurrency}}</th>
+
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+          <th>{{'salary.payed.person.detail.harvest-total' | translate}}</th>
+          <th class="text-right">{{totals.regularKg | longToWeight}}</th>
+          <th>&nbsp;</th>
+          <th class="text-right">{{totals.regularSalary | longToCurrency}}</th>
+          <th class="text-right">{{totals.sundayKg | longToWeight}}</th>
+          <th>&nbsp;</th>
+          <th class="text-danger text-right">{{totals.sundaySalary | longToCurrency}}</th>
+          <th class="text-primary text-right">{{totals.bonusKg | longToWeight}}</th>
+          <th>&nbsp;</th>
+          <th class="text-primary text-right">{{totals.bonusSalary | longToCurrency}}</th>
+          <th class="text-primary text-right">{{totals.totalSalary | longToCurrency}}</th>
+        </tr>
+        </tfoot>
+      </table>
+
+      <div name="bonuses" ng-show="bonuses.length > 0">
+        <hr>
+        <table class="table table-condensed">
+          <thead>
+          <tr>
+            <th>{{'salary.payed.person.detail.bonus-name' | translate }}</th>
+            <th class="text-right">{{'salary.payed.person.detail.bonus-amount' | translate }}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="bonus in bonuses">
+            <td>{{bonus.bonusName}}</td>
+            <td class="text-right">{{bonus.moneyAmount | longToCurrency}}</td>
+          </tr>
+          </tbody>
+          <tfoot>
+          <tr ng-show="bonuses.length > 1">
+            <th>{{'salary.payed.person.detail.bonus-total' | translate}}</th>
+            <th class="text-right">{{bonusTotal | longToCurrency}}</th>
+          </tr>
+          <tr>
+            <th><h3>{{'salary.payed.person.detail.total-salary' | translate}}</h3></th>
+            <th class="text-right"><h3>{{salaryTotal | longToCurrency}}</h3></th>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div>
+        <table class="table table-condensed">
+          <tr>
+            <th>{{'salary.payed.person.detail.day' | translate}}</th>
+            <th>{{'salary.payed.person.detail.worktime' | translate}}</th>
+          </tr>
+          <tr ng-repeat="day in workTime">
+            <td>{{day.date}}</td>
+            <td>{{day.seconds | secondsToHours}}</td>
+          </tr>
+          <tr>
+            <th>{{'salary.payed.person.detail.total' | translate }}:</th>
+            <th>{{workSecondsTotal | secondsToHours}}</th>
+          </tr>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>

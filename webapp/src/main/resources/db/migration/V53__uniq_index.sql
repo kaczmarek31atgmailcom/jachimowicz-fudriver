@@ -1,0 +1,1 @@
+alter table uniq add index ludzie_uniq_used (ludzie_id,uniq_id,used);

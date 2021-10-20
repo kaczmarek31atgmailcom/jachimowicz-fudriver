@@ -1,0 +1,47 @@
+<div class="container-fluid" ng-controller="WorkTimeReportCtrl">
+  <div growl></div>
+  <div class="loading" ng-hide="loading == 0">Loading&#8230;</div>
+  <div class="form-group">
+    <div class="form-group col-xs-3">
+      <input class="form-control text-right" ng-model="startDay" placeholder="{{startDay}}" required
+             bs-datepicker autoclose="true" data-date-format="yyyy/MM/dd" ng-change="init()">
+    </div>
+    <div class="form-group col-xs-3">
+      <input type="text" class="form-control text-right" ng-model="endDay" placeholder="{{endDay}}"
+             required bs-datepicker autoclose="true" date-format="yyyy/MM/dd" ng-change="init()">
+    </div>
+
+    <div class="form-group col-xs-2">
+      <i class="fa fa-file-excel-o fa-2x hand-cursor" ng-click="export()"></i>
+    </div>
+  </div>
+  <table class="table table-condensed export-table">
+    <thead>
+    <tr>
+      <th>{{'workTime.report.id' | translate}}</th>
+      <th>{{'workTime.report.nr' | translate}}</th>
+      <th>{{'workTime.report.name' | translate}}</th>
+      <th>{{'workTime.report.surname' | translate}}</th>
+      <th ng-repeat="day in days">{{day | date:"yyyy-MM-dd"}}</th>
+    <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="person in people | filter:searchText">
+      <td>{{person.id}}</td>
+      <td>{{person.nr}}</td>
+      <td>{{person.name}}</td>
+      <td>{{person.surname}}</td>
+      <td ng-repeat="day in days">{{findMinutes(person.id,day) | minutesToHours}}</td>
+      <th>{{findPersonTotal(person.id) | minutesToHours}}</th>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+      <th colspan="4"></th>
+      <th ng-repeat="day in days" >{{findDailyTotal(day) | minutesToHours}}</th>
+      <th>&nbsp;</th>
+    </tr>
+    </tfoot>
+  </table>
+</div>

@@ -1,0 +1,53 @@
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true" ng-controller="NewHotelReservationCtrl" ng-init="init()">
+  <div class="modal-dialog modal-small">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="$hide()"><span
+          aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title text-muted" ng-bind="'hotel.modal.reservation.header' | translate"></h3>
+      </div>
+      <div class="modal-body">
+        <form name="reservationForm" role="form">
+
+          <div class="form-group">
+            <label for="startDate" class="text-muted"><i class="fa fa-calendar"></i> {{'hotel.modal.reservation.startDate' | translate}}</label>
+            <input class="form-control" id="startDate" ng-model="startDate" placeholder="{{startDate}}" required
+                   data-min-date="{{minDate}}" data-max-date="{{endDate}}" bs-datepicker autoclose="true" data-date-format="yyyy/MM/dd">
+          </div>
+          <div class="form-group">
+            <label for="endDate" class="text-muted"><i class="fa fa-calendar"></i> {{'hotel.modal.reservation.endDate' | translate}}</label>
+            <input type="text" id="endDate" class="form-control" ng-model="endDate" placeholder="{{endDate}}"
+                   required bs-datepicker autoclose="true" date-format="yyyy/MM/dd" data-min-date="{{startDate}}" data-max-date="{{maxDate}}">
+          </div>
+          <div class="form-group">
+            <label for="person" class="text-muted"><i class="fa fa-user"></i> {{'hotel.modal.reservation.person' | translate}}</label>
+            <ui-select ng-model="selected.value" id="person">
+              <ui-select-match>
+                <span ng-bind="$select.selected.name"></span>
+              </ui-select-match>
+              <ui-select-choices repeat="item in (people | filter: $select.search) track by item.id">
+                <span ng-bind="item.name"></span>
+              </ui-select-choices>
+            </ui-select>
+
+          </div>
+          <div class="form-group">
+            <label for="description" class="text-muted"><i class="fa fa-sticky-note-o"></i> {{'hotel.modal.reservation.description' | translate}}</label>
+            <textarea id="description" class="form-control" ng-model="description"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-default" ng-click="$hide()">{{'hotel.modal.reservation.cancel' | translate}}</button>
+        <button type="submit" class="btn btn-warning" ng-disabled="!startDate || !endDate || (selected.value.id > 0)"
+                ng-click="createReservation(); $hide()">{{'hotel.modal.reservation.reservation' | translate}}
+        </button>
+        <button type="submit" class="btn btn-danger" ng-disabled="!(selected.value.id > 0) || !startDate || !endDate"
+                ng-click="createBooking(); $hide()">{{'hotel.modal.reservation.booking' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

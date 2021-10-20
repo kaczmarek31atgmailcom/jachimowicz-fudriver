@@ -1,0 +1,34 @@
+<div class="container-fluid" ng-controller="reclassifyReasonCtrl" ng-init="init()">
+  <ol class="breadcrumb">
+    <li class="active">{{'settings.reclassifyReason' | translate}}</li>
+  </ol>
+  <div growl></div>
+
+  <div>
+    <button class="btn btn-primary" ng-click="addReason()" id="addReason"><i class="fa fa-plus"
+                                                                             aria-hidden="true"></i>
+      {{'settings.reclassifyReason.addButton' | translate}}
+    </button>
+  </div>
+
+  <div class = "row">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th ng-bind="'settings.reclassifyReason.reason' | translate"></th>
+        <th>&nbsp;</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="reason in reasons">
+        <td ng-bind="reason.description"></td>
+        <td class="text-right"><span ng-click="removeReason(reason.id)" class="hand-cursor"><i class="fa fa-trash-o fa-lg"></i></span></td>
+      </tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="col-lg-2"></div>
+  </div>
+</div>

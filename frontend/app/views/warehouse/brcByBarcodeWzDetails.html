@@ -1,0 +1,30 @@
+<div class="container-fluid" ng-controller="brcByBarcodeWzDetailsCtrl" ng-init="init()">
+<ol class="breadcrumb">
+  <li><a href="#/brcByBarcode" ng-bind="'warehouse.brcByBarcode.breadcrumb.summary' | translate"></a></li>
+  <li class="active" ng-bind="'warehouse.brcByBarcode.breadcrumb.wz.details' | translate"></li>
+</ol>
+
+  <table class="table table-condensed">
+    <thead>
+    <tr>
+      <th>{{'warehouse.brcByDate.detail.barcode' | translate}}</th>
+      <th>{{'warehouse.brcByDate.detail.typeName' | translate}}</th>
+      <th>{{'warehouse.brcByDate.detail.typeWeight' | translate}}</th>
+      <th>{{'warehouse.brcByDate.detail.harvestDate' | translate}}</th>
+      <th>{{'warehouse.brcByDate.detail.pickerName' | translate}}</th>
+      <th>{{'warehouse.brcByDate.detail.pickerSurname' | translate}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="detail in details">
+      <td ng-bind="findBarcode(detail.uniqId, detail.pickerId)"></td>
+      <td ng-bind="detail.typeName"></td>
+      <td ng-bind="detail.typeWeight | dotToCommaKg"></td>
+      <td ng-bind="detail.harvestDate"></td>
+      <td ng-bind="detail.pickerName"></td>
+      <td ng-bind="detail.pickerSurname"></td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>

@@ -1,0 +1,243 @@
+<div class="container-fluid" ng-controller="EastMushroomsWzCtrl">
+
+  <ol class="breadcrumb" ng-show="((showBackToReleaseBreadcrumb === true) && (!(shipment.id > 0)))">
+    <li><a href="#/warehouse-east/release">{{'eastMushrooms.releases.breadcrumb' | translate}}</a></li>
+    <li class="active">{{'eastMushrooms.wz.breadcrumb.document' | translate}}: <b>{{wz.wzNr}}/{{wz.date | date:'yyyy-MM'}}</b></li>
+  </ol>
+
+  <ol class="breadcrumb" ng-show="((showBackToReleaseBreadcrumb === false) && (!(shipment.id > 0)))">
+    <li><a href="#/warehouse-east/wz">{{'eastMushrooms.wz.breadcrumb.list' | translate}}</a></li>
+    <li class="active">{{'eastMushrooms.wz.breadcrumb.document' | translate}}: <b>{{wz.wzNr}}/{{wz.date | date:'yyyy-MM'}}</b></li>
+  </ol>
+
+
+  <ol class="breadcrumb" ng-show="(shipment.id > 0)">
+    <li><a href="#/warehouse-east/shipment/{{shipment.id}}">{{'eastMushrooms.shipment.breadcrumb.document' | translate}} {{shipment.id}}/{{shipment.date | date:'yyyy-MM'}}</a></li>
+    <li class="active">{{'eastMushrooms.wz.breadcrumb.document' | translate}}: <b>{{wz.wzNr}}/{{wz.date | date:'yyyy-MM'}}</b></li>
+  </ol>
+
+  <div growl></div>
+  <div class="row">
+    <div class="col-sm-2 col-lg-2"><i class="fa fa-print fa-2x hand-cursor" ng-print print-element-id="wz-print"></i></div>
+    <div class="col-lg-8 col-sm-8" id="wz">
+      <div class="col-sm-12 col-lg-12 text-center">
+        <h3>{{'eastMushrooms.wz.template.header.name' | translate}} {{wz.wzNr}}/{{wz.date | date:'yyyy-MM'}}
+          {{'eastMushrooms.wz.template.header.date' | translate}} {{wz.date}}</h3>
+      </div>
+      <div class="col-sm-6 col-lg-6" id="supplier">
+        <div><strong>{{'eastMushrooms.wz.template.header.supplier' | translate}}</strong></div>
+        <div>{{wz.companyName}}</div>
+        <div>{{wz.companyCity}}</div>
+        <div>{{wz.companyStreet}}</div>
+        <div ng-show="wz.companyGGN.length > 0">{{'eastMushrooms.wz.template.ggn' | translate}} {{wz.companyGGN}}</div>
+      </div>
+      <div class="col-sm-6 col-lg-6 text-right" id="customer">
+        <div><strong>{{'eastMushrooms.wz.template.header.customer' | translate}}</strong></div>
+        <div>{{wz.customerName}}</div>
+      </div>
+
+      <div class="col-lg-12 col-sm-12">&nbsp;</div>
+
+      <div class="col-sm-12 col-lg12">
+        <table class="table">
+          <tr>
+            <th>{{'eastMushrooms.wz.template.localTypeName' | translate}}</th>
+            <th ng-show="showRemoteTypes">{{'eastMushrooms.wz.template.remoteTypeName' | translate}}</th>
+            <td ng-hide="showRemoteTypes">&nbsp;</td>
+            <th class="text-right">{{'eastMushrooms.wz.template.type.amount' | translate}}</th>
+            <th class="text-right">{{'eastMushrooms.wz.template.type.totalWeight' | translate}}</th>
+          </tr>
+          <tr ng-repeat="type in types">
+            <td>{{type.localTypeName}} {{type.localTypeWeight}} {{'kg' | translate}}</td>
+            <td ng-show="showRemoteTypes">{{type.remoteTypeName}} {{type.remoteTypeWeight | longToWeight}} {{'kg' | translate}}</td>
+            <td ng-hide="showRemoteTypes">&nbsp;</td>
+            <td class="text-right">{{type.amount}} {{'pcs'|translate}}</td>
+            <td class="text-right">{{type.totalWeight}} {{'kg' | translate}}</td>
+          </tr>
+          <tr>
+            <td colspan="2">{{'eastMushrooms.wz.template.total'|translate}}:
+            </td>
+            <th class="text-right">{{totalAmount}} {{'pcs'|translate}}</th>
+            <th class="text-right">{{totalWeight}} {{'kg'|translate}}</th>
+          </tr>
+          <!--
+          <tr>
+            <th colspan="4">{{'eastMushrooms.wz.template.total.palettes'|translate}}: {{palettes.length}}</th>
+          </tr>
+          -->
+        </table>
+      </div>
+      <!--
+      <div class="col-lg-12 col-sm-12 text-center">
+        <strong><h3>{{'eastMushrooms.wz.template.palettes.list' | translate}}</h3></strong>
+      </div>
+
+      <div class="col-lg-12 col-sm-12">
+        <hr>
+        <ul ng-repeat="palette in palettes" class="list-unstyled">
+          <li>
+            <div class="col-lg-12 col-sm-12 text-left" ng-show="showRemoteTypes">
+
+
+              <io-barcode code="{{palette.id}}" type="CODE128B" height="50"></io-barcode>
+
+            </div>
+            <div class="col-lg-5 col-sm-5 text-nowrap"><h4><strong>{{'eastMushrooms.wz.template.paletteNr' | translate}}: {{palette.id}}</strong></h4></div>
+            <div class="col-lg-3 col-sm-3 text-nowrap"><h4><strong>{{'eastMushrooms.wz.template.amount' | translate}}: {{palette.amount}} {{'pcs'|translate}}</strong></h4></div>
+            <div class="col-lg-3 col-sm-4 text-nowrap text-right"><h4><strong>{{'eastMushrooms.wz.template.totalWeight' | translate}}: {{palette.totalWeight}} {{'kg' | translate}}</strong></h4></div>
+            <div class="col-lg-12 col-sm-12">
+              <div class="col-sm-2 col-lg-2 text-nowrap"><strong>{{'eastMushrooms.wz.template.localTypeName' | translate}}</strong></div>
+              <div class="col-lg-1 col-sm-1 text-nowrap"><strong>{{'eastMushrooms.wz.template.weight' | translate}}</strong></div>
+              <div class="col-sm-2 col-lg-2 text-nowrap" ng-show="showRemoteTypes"><strong>{{'eastMushrooms.wz.template.remoteTypeName' | translate}}</strong></div>
+              <div class="col-lg-1 col-sm-1 text-nowrap" ng-show="showRemoteTypes"><strong>{{'eastMushrooms.wz.template.weight' | translate}}</strong></div>
+              <div class="col-lg-3 col-sm-3" ng-hide="showRemoteTypes">&nbsp;</div>
+              <div class="col-lg-2 col-sm-2 text-nowrap text-right"><strong>{{'eastMushrooms.wz.template.amount' | translate}}</strong></div>
+              <div class="col-lg-2 col-sm-2 text-nowrap text-right"><strong>{{'eastMushrooms.wz.template.totalWeight' | translate}}</strong></div>
+              <div class="col-lg-2 col-sm-2">&nbsp;</div>
+
+              <ul ng-repeat="type in palette.types" class="list-unstyled">
+                <li>
+                  <div class="col-sm-2 col-lg-2">{{type.localTypeName}}</div>
+                  <div class="col-lg-1 col-sm-1">{{type.localTypeWeight}}</div>
+                  <div class="col-lg-2 col-sm-2" ng-show="showRemoteTypes">{{type.remoteTypeName}}</div>
+                  <div class="col-lg-1 col-sm-1" ng-show="showRemoteTypes">{{type.remoteTypeWeight}}</div>
+                  <div class="col-lg-3 col-sm-3" ng-hide="showRemoteTypes">&nbsp;</div>
+                  <div class="col-lg-2 col-sm-2 text-right">{{type.amount}} {{'pcs'|translate}}</div>
+                  <div class="col-lg-2 col-sm-2 text-right">{{type.weight}} {{'kg'|translate}}</div>
+                  <div class="col-lg-2 col-sm-2">&nbsp;</div>
+                </li>
+              </ul>
+            </div>
+            <div class="col-lg-12 col-sm-12">
+              <hr>
+            </div>
+          </li>
+        </ul>
+        -->
+      <div class="col-sm-12 col-lg-12">&nbsp;</div>
+      <div class="col-lg-6 col-sm-6 text-left">{{'eastMushrooms.wz.template.creator' | translate}}:</div>
+      <div class="col-lg-6 col-sm-6 text-right">{{'eastMushrooms.wz.template.receiver' | translate}}:</div>
+      <div class="col-sm-12 col-lg-12">&nbsp;</div>
+      <div class="col-lg-6 col-sm-6 text-left">{{wz.creatorName}} {{wz.creatorSurname}}</div>
+      <div class="col-lg-6 col-sm-6 text-right">..............................................</div>
+    </div>
+  </div>
+
+  <div class="col-sm-2 col-lg-2">&nbsp;</div>
+
+
+  <div class="row">
+    <div class="visible-print col-lg-12 col-sm-12" id="wz-print">
+      <div class="col-sm-12 col-lg-12  col-md-12 col-xs-12 text-center">
+        <h3>{{'eastMushrooms.wz.template.header.name' | translate}} {{wz.wzNr}}/{{wz.date | date:'yyyy-MM'}}
+          {{'eastMushrooms.wz.template.header.date' | translate}} {{wz.date}}</h3>
+      </div>
+      <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6">
+        <div><strong>{{'eastMushrooms.wz.template.header.supplier' | translate}}</strong></div>
+        <div>{{wz.companyName}}</div>
+        <div>{{wz.companyCity}}</div>
+        <div>{{wz.companyStreet}}</div>
+        <div ng-show="wz.companyGGN.length > 0">{{'eastMushrooms.wz.template.ggn' | translate}} {{wz.companyGGN}}</div>
+      </div>
+      <div class="col-sm-6 col-lg-6 col-md-6 col-xs-6 text-right">
+        <div><strong>{{'eastMushrooms.wz.template.header.customer' | translate}}</strong></div>
+        <div>{{wz.customerName}}</div>
+      </div>
+
+      <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 ">&nbsp;</div>
+
+      <div class="col-sm-12 col-lg-12">
+        <table class="table">
+          <tr>
+            <th>{{'eastMushrooms.wz.template.localTypeName' | translate}}</th>
+            <th ng-show="showRemoteTypes">{{'eastMushrooms.wz.template.remoteTypeName' | translate}}</th>
+            <th ng-hide="showRemoteTypes">&nbsp;</th>
+            <th class="text-right">{{'eastMushrooms.wz.template.type.amount' | translate}}</th>
+            <th class="text-right">{{'eastMushrooms.wz.template.type.totalWeight' | translate}}</th>
+          </tr>
+          <tr ng-repeat="type in types">
+            <td>{{type.localTypeName}} {{type.localTypeWeight}} {{'kg' | translate}}</td>
+            <td ng-show="showRemoteTypes">{{type.remoteTypeName}} {{type.remoteTypeWeight | longToWeight}} {{'kg' | translate}}</td>
+            <td ng-hide="showRemoteTypes">&nbsp;</td>
+            <td class="text-right">{{type.amount}} {{'pcs'|translate}}</td>
+            <td class="text-right">{{type.totalWeight}} {{'kg' | translate}}</td>
+          </tr>
+          <tr>
+            <th colspan="2">{{'eastMushrooms.wz.template.total'|translate}}:
+            </td>
+
+            <th class="text-right">{{totalAmount}} {{'pcs'|translate}}</th>
+            <th class="text-right">{{totalWeight}} {{'kg'|translate}}</th>
+          </tr>
+          <!--
+          <tr>
+            <th colspan="4">{{'eastMushrooms.wz.template.total.palettes'|translate}}: {{palettes.length}}</th>
+          </tr>
+          -->
+        </table>
+      </div>
+      <!--
+      <div class="col-lg-12 col-sm-12 text-center">
+        <strong><h3>{{'eastMushrooms.wz.template.palettes.list' | translate}}</h3></strong>
+      </div>
+
+      <div class="col-lg-12 col-sm-12">
+        <hr>
+        <ul ng-repeat="palette in palettes" class="list-unstyled">
+          <li>
+            <div class="col-lg-12 col-sm-12 text-left" ng-show="showRemoteTypes">
+              <io-barcode code="{{palette.id}}" type="CODE128B" height="50"></io-barcode>
+            </div>
+            <div class="col-lg-5 col-sm-5 text-nowrap"><h4><strong>{{'eastMushrooms.wz.template.paletteNr' | translate}}: {{palette.id}}</strong></h4></div>
+            <div class="col-lg-3 col-sm-3 text-nowrap"><h4><strong>{{'eastMushrooms.wz.template.amount' | translate}}: {{palette.amount}} {{'pcs'|translate}}</strong></h4></div>
+            <div class="col-lg-3 col-sm-4 text-nowrap text-right"><h4><strong>{{'eastMushrooms.wz.template.totalWeight' | translate}}: {{palette.totalWeight}} {{'kg' | translate}}</strong></h4></div>
+            <div class="col-lg-12 col-sm-12">
+              <div class="col-lg-2 col-sm-2 text-nowrap"><strong>{{'eastMushrooms.wz.template.localTypeName' | translate}}</strong></div>
+              <div class="col-lg-1 col-sm-1 text-nowrap"><strong>{{'eastMushrooms.wz.template.weight' | translate}}</strong></div>
+
+              <div class="col-sm-2 col-lg-2 text-nowrap" ng-show="showRemoteTypes"><strong>{{'eastMushrooms.wz.template.remoteTypeName' | translate}}</strong></div>
+              <div class="col-lg-1 col-sm-1 text-nowrap" ng-show="showRemoteTypes"><strong>{{'eastMushrooms.wz.template.weight' | translate}}</strong></div>
+              <div class="col-lg-3 col-sm-3" ng-hide="showRemoteTypes">&nbsp;</div>
+
+              <div class="col-lg-2 col-sm-2 text-nowrap text-right"><strong>{{'eastMushrooms.wz.template.amount' | translate}}</strong></div>
+              <div class="col-lg-2 col-sm-2 text-nowrap text-right"><strong>{{'eastMushrooms.wz.template.totalWeight' | translate}}</strong></div>
+              <div class="col-lg-2 col-sm-2">&nbsp;</div>
+
+              <ul ng-repeat="type in palette.types" class="list-unstyled">
+                <li>
+                  <div class="col-sm-2 col-lg-2 text-nowrap">{{type.localTypeName}}</div>
+                  <div class="col-lg-1 col-sm-1">{{type.localTypeWeight}}</div>
+                  <div class="col-lg-2 col-sm-2 text-nowrap" ng-show="showRemoteTypes">{{type.remoteTypeName}}</div>
+                  <div class="col-lg-1 col-sm-1" ng-show="showRemoteTypes">{{type.remoteTypeWeight}}</div>
+                  <div class="col-lg-3 col-sm-3" ng-hide="showRemoteTypes">&nbsp;</div>
+                  <div class="col-lg-2 col-sm-2 text-right">{{type.amount}} {{'pcs'|translate}}</div>
+                  <div class="col-lg-2 col-sm-2 text-right">{{type.weight}} {{'kg'|translate}}</div>
+                  <div class="col-lg-2 col-sm-2">&nbsp;</div>
+                </li>
+              </ul>
+            </div>
+            <div class="col-lg-12 col-sm-12">
+              <hr>
+            </div>
+          </li>
+        </ul>
+    -->
+
+      <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12 ">&nbsp;</div>
+      <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 text-left">{{'eastMushrooms.wz.template.creator' | translate}}:</div>
+      <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6  text-right">{{'eastMushrooms.wz.template.receiver' | translate}}:</div>
+      <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12 ">&nbsp;</div>
+      <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 text-left">{{wz.creatorName}} {{wz.creatorSurname}}</div>
+      <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6  text-right">..............................................</div>
+    </div>
+    <div class="col-sm-2 col-lg-2 col-md-2 col-xs-2 ">&nbsp;</div>
+  </div>
+</div>
+
+
+
+
+
+
+
+

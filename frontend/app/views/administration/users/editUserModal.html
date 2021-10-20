@@ -1,0 +1,87 @@
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true" ng-controller="UserCtrl">
+  <div class="modal-dialog modal-small">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="$hide()"><span
+          aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title text-muted" ng-bind="'users.add-user.header' | translate"></h3>
+      </div>
+      <div class="modal-body">
+        <form name="editUserForm">
+
+          <div class="form-group" ng-class="{'has-error': newUserForm.username.$invalid || !isLoginUnique} ">
+            <label for="username">{{'users.add-user.username' | translate}} <span ng-hide="isLoginUnique"
+                                                                                  class="text text-right text-danger">{{'users.add-user.nonUniqueLogin' | translate }}</span></label>
+            <input type="text" required class="form-control text-right input-xs" id="username" name="username"
+                   ng-model="editUser.login" ng-change="checkEditLoginUniqueness(editUser.login,origLogin)" autocomplete="off">
+          </div>
+
+
+          <div class="form-group">
+            <label for="name" ng-bind="'users.add-user.name' | translate"></label>
+            <input type="text" class="form-control text-right input-xs" id="name" name="name" ng-model="editUser.name"
+                   autocomplete="off">
+          </div>
+
+          <div class="form-group">
+            <label for="surname" ng-bind="'users.add-user.surname' | translate"></label>
+            <input type="text" class="form-control text-right input-xs" id="surname" name="surname"
+                   ng-model="editUser.surname" autocomplete="off">
+          </div>
+
+          <div class="form-group">
+            <label for="password" ng-bind="'users.add-user.password' | translate"></label>
+            <input type="text" class="form-control text-right input-xs" id="password" name="password"
+                   ng-model="editUser.password" autocomplete="nope">
+          </div>
+
+          <div class="checkbox">
+            <input type="checkbox" id="panel" class="styled checkbox-danger" ng-model="editUser.panel">
+            <label for="panel" ng-bind="'users.add-user.access.panel' | translate"></label>
+          </div>
+
+          <div class="checkbox">
+            <input type="checkbox" id="dostepy" class="checkbox-success" ng-model="editUser.admin">
+            <label for="dostepy" ng-bind="'users.add-user.access.dostepy' | translate"></label>
+          </div>
+
+          <div class="checkbox">
+            <input type="checkbox" id="rozliczenia" class="checkbox-success" ng-model="editUser.place">
+            <label for="rozliczenia"  ng-bind="'users.add-user.access.rozliczenia' | translate"></label>
+          </div>
+
+          <div class="checkbox">
+            <input type="checkbox" id="waga" class="checkbox-success" ng-model="editUser.waga">
+            <label for="waga" ng-bind="'users.add-user.access.waga' | translate"></label>
+          </div>
+
+          <div class="checkbox">
+            <input type="checkbox" id="leader" class="checkbox-success" ng-model="editUser.leader">
+            <label for="leader" ng-bind="'users.add-user.access.leader' | translate"></label>
+          </div>
+
+          <div class="checkbox">
+            <input type="checkbox" id="palety" class="checkbox-success" ng-model="editUser.palety">
+            <label for="palety" ng-bind="'users.add-user.access.palety' | translate"></label>
+          </div>
+
+          <div class="checkbox">
+            <input type="checkbox" id="hotel" class="checkbox-success" ng-model="editUser.hotel">
+            <label for="palety" ng-bind="'users.add-user.access.hotel' | translate"></label>
+          </div>
+
+
+        </form>
+      </div>
+
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-default" ng-click="$hide()">{{'users.add-user.close' | translate}}</button>
+        <button type="submit" class="btn btn-success" ng-disabled="editUserForm.$invalid || !isLoginUnique"
+                ng-click="updateUser(editUser); $hide()">{{'users.add-user.save' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

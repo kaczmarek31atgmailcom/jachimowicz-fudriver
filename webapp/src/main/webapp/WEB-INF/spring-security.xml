@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+    <!-- enable use-expressions -->
+	<http auto-config="true" use-expressions="true">
+		<intercept-url pattern="/resources/**" access="permitAll" />
+		<intercept-url pattern="/rest/workTimeRecorder/badge-event" access="permitAll" />
+		<intercept-url pattern="/generated/pdf/**" access="permitAll" />
+		<intercept-url pattern="/css/**" access="permitAll" />
+		<intercept-url pattern="/user" access="permitAll" />
+		<intercept-url pattern="/fonts" access="permitAll" />
+		<intercept-url pattern="/images" access="permitAll" />
+		<intercept-url pattern="/version/**" access="permitAll" />
+		<intercept-url pattern="/rest/workTimeRecorder/**" access="permitAll" />
+		<intercept-url pattern="/workTimeRecorder" access="permitAll" />
+		<intercept-url pattern="/rest/stand/**" access="permitAll" />
+		<intercept-url pattern="/stand" access="permitAll" />
+		<intercept-url pattern="/spring_security_login" access="permitAll" />
+		<intercept-url pattern="/websocket/**" access="hasRole('ROLE_WAGA')" />
+		<intercept-url pattern="/welcome" access="hasAnyRole('ROLE_WAGA', 'ROLE_LEADER','ROLE_PALETY','ROLE_ROZLICZENIA','ROLE_PANEL','ROLE_HOTEL')" />
+		<intercept-url pattern="/leaderReport/**" access="hasRole('ROLE_LEADER')" />
+		<intercept-url pattern="/scalesStatus/**" access="hasRole('ROLE_LEADER')" />
+		<intercept-url pattern="/rest/reportForLeader" access="hasRole('ROLE_LEADER')" />
+		<intercept-url pattern="/rest/person/workPeriod/**" access="hasAnyRole('ROLE_PANEL','ROLE_LEADER','ROLE_ROZLICZENIA')"/>
+		<intercept-url pattern="/rest/person/barcode/**" access="hasAnyRole('ROLE_PANEL','ROLE_LEADER','ROLE_ROZLICZENIA','ROLE_WAGA')" method="GET"/>
+		<intercept-url pattern="/rest/person/uniq" access="hasAnyRole('ROLE_PANEL','ROLE_LEADER','ROLE_ROZLICZENIA','ROLE_WAGA')" method="POST"/>
+		<intercept-url pattern="/rest/person/uniq" access="hasAnyRole('ROLE_PANEL','ROLE_LEADER','ROLE_ROZLICZENIA','ROLE_WAGA')" method="DELETE"/>
+		<intercept-url pattern="/rest/person/**" access="hasAnyRole('ROLE_PANEL','ROLE_LEADER','ROLE_ROZLICZENIA')" method="GET"/>
+		<intercept-url pattern="/rest/person/**" access="hasRole('ROLE_PANEL')" />
+		<intercept-url pattern="/rest/user/**" access="hasRole('ROLE_PANEL')" />
+		<intercept-url pattern="/rest/waiting/wozek/**" access="hasRole('ROLE_PALETY')" />
+		<intercept-url pattern="/rest/wozek/**" access="hasRole('ROLE_WAGA')" />
+		<intercept-url pattern="/rest/order/prepare" access="hasAnyRole('ROLE_PANEL','ROLE_PALETY')" />
+		<intercept-url pattern="/rest/order/palette/release" access="hasAnyRole('ROLE_PANEL','ROLE_PALETY')" />
+		<intercept-url pattern="/rest/order/palette/unprepare" access="hasAnyRole('ROLE_PANEL','ROLE_PALETY')" />
+		<intercept-url pattern="/rest/order/batchDetail**" access="hasAnyRole('ROLE_PANEL','ROLE_PALETY')" />
+		<intercept-url pattern="/rest/order/**" access="hasRole('ROLE_PANEL')" />
+		<intercept-url pattern="/rest/warehouse/**" access="hasRole('ROLE_PALETY')" />
+		<intercept-url pattern="/rest/calendar/**" access="hasRole('ROLE_ROZLICZENIA')" />
+		<intercept-url pattern="/rest/salary/**" access="hasRole('ROLE_ROZLICZENIA')" />
+		<intercept-url pattern="/rest/wage/**" access="hasRole('ROLE_ROZLICZENIA')" />
+		<intercept-url pattern="/rest/reclassification/**" access="hasRole('ROLE_PANEL')" />
+
+		<intercept-url pattern="/rest/settings/**" access="hasRole('ROLE_PANEL')" method="POST"/>
+		<intercept-url pattern="/rest/settings/**" access="hasRole('ROLE_PANEL')" method="POST"/>
+		<intercept-url pattern="/rest/settings/**" access="hasRole('ROLE_PANEL')" method="PUT"/>
+		<intercept-url pattern="/rest/settings/**" access="hasAnyRole('ROLE_PANEL','ROLE_PALETY','ROLE_LEADER','ROLE_ROZLICZENIA','ROLE_WAGA')" method="GET"/>
+		<intercept-url pattern="/rest/truck/**" access="hasRole('ROLE_PANEL')" method="POST"/>
+		<intercept-url pattern="/rest/truck/**" access="hasRole('ROLE_PANEL')" method="DELETE"/>
+		<intercept-url pattern="/rest/truck/**" access="hasAnyRole('ROLE_PANEL','ROLE_PALETY','ROLE_LEADER','ROLE_ROZLICZENIA','ROLE_WAGA')" method="GET"/>
+		<intercept-url pattern="/rest/type/**" access="hasAnyRole('ROLE_PANEL','ROLE_PALETY','ROLE_LEADER','ROLE_ROZLICZENIA','ROLE_WAGA')" method="GET"/>
+		<intercept-url pattern="/rest/type/**" access="hasRole('ROLE_PANEL')" method="POST"/>
+		<intercept-url pattern="/rest/type/**" access="hasRole('ROLE_PANEL')" method="PUT"/>
+		<intercept-url pattern="/rest/type/**" access="hasRole('ROLE_PANEL')" method="DELETE"/>
+		<intercept-url pattern="/rest/typeGroup/**" access="hasAnyRole('ROLE_PANEL','ROLE_PALETY','ROLE_LEADER','ROLE_ROZLICZENIA','ROLE_WAGA')" method="GET"/>
+		<intercept-url pattern="/rest/typeGroup/**" access="hasRole('ROLE_PANEL')" method="POST"/>
+		<intercept-url pattern="/rest/typeGroup/**" access="hasRole('ROLE_PANEL')" method="PUT"/>
+		<intercept-url pattern="/rest/typeGroup/**" access="hasRole('ROLE_PANEL')" method="DELETE"/>
+		<intercept-url pattern="/generatedGroup/pdf/palette-label.pdf" access="hasRole('ROLE_PANEL')" />
+		<intercept-url pattern="/rest/typeSize/**" access="hasAnyRole('ROLE_PANEL','ROLE_PALETY','ROLE_LEADER','ROLE_ROZLICZENIA','ROLE_WAGA')" method="GET"/>
+		<intercept-url pattern="/rest/typeSize/**" access="hasRole('ROLE_PANEL')" method="POST"/>
+		<intercept-url pattern="/rest/typeSize/**" access="hasRole('ROLE_PANEL')" method="PUT"/>
+		<intercept-url pattern="/rest/typeSize/**" access="hasRole('ROLE_PANEL')" method="DELETE"/>
+		<intercept-url pattern="/rest/reports/**" access="hasAnyRole('ROLE_ADMIN','ROLE_PANEL','ROLE_PALETY','ROLE_LEADER','ROLE_ROZLICZENIA','ROLE_WAGA')" method="GET"/>
+		<intercept-url pattern="/rest/reports/**" access="hasAnyRole('ROLE_ADMIN','ROLE_HOTEL')" />
+		<intercept-url pattern="/rest/palette-type/active" access="hasAnyRole('ROLE_PANEL','ROLE_PALETY','ROLE_LEADER','ROLE_ROZLICZENIA','ROLE_WAGA')" method="GET"/>
+        <!--<intercept-url pattern="/rest/updateCustomerInWz" access="hasRole('ROLE_LEADER')" />-->
+
+
+		
+		<!-- access denied page -->
+
+		<access-denied-handler error-page="/403" />
+		<form-login
+		    login-page="/login" 
+		    default-target-url="/welcome"
+			authentication-failure-url="/login?error" 
+			username-parameter="username"
+			password-parameter="password" />
+		<logout logout-success-url="/login"  />
+
+		<!-- enable csrf protection -->
+        <!--<csrf/>-->
+
+	</http>
+	
+	<!-- Select users and user_roles from database -->
+	<authentication-manager>
+		<authentication-provider>
+            <password-encoder hash='md5'/>
+			<jdbc-user-service data-source-ref="dataSource"
+				users-by-username-query=
+					"select user_name,passwd, 'true' as enabled from users where removed = 0 and user_name=?"
+				authorities-by-username-query=
+					"select username,role from user_roles where username =?  " />
+		</authentication-provider>
+	</authentication-manager>
+
+</beans:beans>

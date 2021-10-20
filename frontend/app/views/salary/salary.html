@@ -1,0 +1,156 @@
+<div class="container-fluid" ng-controller="salaryCtrl" ng-init="init()">
+  <ol class="breadcrumb">
+    <li class="active">{{'salary.breadcrumb.main' | translate}}</li>
+  </ol>
+  <div growl></div>
+
+  <div class="loading" ng-show="showSpinner">Loading&#8230;</div>
+
+  <div class="row">
+    <div class="col-xs-1"></div>
+    <div class="col-xs-10">
+
+
+      <div class="row" id="month-picker">
+        <div class="col-xs-4">
+          <select id="payrollMonth" class="form-control text-right" ng-model="currentMonth" ng-change="getMonthHeaders()"
+                  ng-options="month as month.month  | date:'yyyy-MM' for month in months"></select>
+          </select>
+        </div>
+
+        <div class="col-sx-2" ng-hide="currentMonth.isClosed">
+          <button class="btn btn-primary" ng-print print-element-id="open-month"><i class="fa fa-print"></i></button>
+        </div>
+
+
+        <div class="col-lg-4" ng-hide="currentMonth.isClosed || cantCloseMonth()">
+          <button class="btn btn-danger" ng-click="closeMonth(currentMonth.monthId)" ng-hide="showSpinner">{{'salary.closeMonth'|translate}}</button>
+        </div>
+
+        <div class="col-lg-4" ng-show="currentMonth.isClosed">
+          <button class="btn btn-default" ng-print print-element-id="closed-salary"><i class="fa fa-print"></i></button>
+        </div>
+      </div>
+      <hr>
+
+      <div ng-show="currentMonth.isClosed">
+        <div ng-hide="showSpinner" id="closed-salary" class="col-sm-12">
+          <table class="table table-hover table-condensed">
+            <thead>
+            <tr>
+              <th ng-bind="'salary.personNr' | translate" class="col-sm-1"></th>
+              <th ng-bind="'salary.personId' | translate" class="col-sm-1"></th>
+              <th ng-bind="'salary.personName' | translate" class="col-sm-1"></th>
+              <th ng-bind="'salary.personSurname' | translate" class="col-sm-1"></th>
+              <th ng-bind="'salary.regularSalary' | translate" class="text-right col-sm-1"></th>
+              <th ng-bind="'salary.sundaySalary' | translate" class="text-right col-sm-1"></th>
+              <th ng-bind="'salary.bonusSalary' | translate" class="text-right col-sm-1"></th>
+              <th ng-repeat="bonus in payedBonuses" class="text-right">{{bonus.name}}</th>
+              <th ng-bind="'salary.summary' | translate" class="text-right"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--<tr ng-repeat="person in payedSalary" ng-click="showDetails(person)" ng-show="person.total > 0">-->
+            <tr ng-repeat="person in payedSalary" ng-click="showDetails(person)">
+              <td class="text-nowrap text-left">
+                {{person.personNr}}
+              </td>
+              <td class="text-nowrap text-left">
+                {{person.personId}}
+                <i class="fa fa-bolt fa-lg" ng-show="person.payrollType === 'ACCORD'" aria-hidden="true"></i>
+                <i class="fa fa-clock-o fa-lg" ng-show="person.payrollType === 'HOURLY'" aria-hidden="true"></i>
+              </td>
+              <td>{{person.personName}}</td>
+              <td>{{person.personSurname}}</td>
+              <td ng-show="person.payrollType=='ACCORD'" class="text-right">{{person.regularHarvestSalary | longToCurrency}}</td>
+              <td ng-show="person.payrollType=='ACCORD'" class="text-right">{{person.sundayHarvestSalary | longToCurrency}}</td>
+              <td ng-show="person.payrollType=='ACCORD'" class="text-right">{{person.bonusHarvestSalary | longToCurrency}}</td>
+              <td ng-show="person.payrollType=='HOURLY'" class="text-right">{{person.regularWorkTimeSalary | longToCurrency}}</td>
+              <td ng-show="person.payrollType=='HOURLY'" class="text-right">{{person.sundayWorkTimeSalary | longToCurrency}}</td>
+              <td ng-show="person.payrollType=='HOURLY'" class="text-right">{{person.bonusWorkTimeSalary | longToCurrency}}</td>
+              <td ng-repeat="bonus in payedBonuses" class="text-right">{{getPayedBonusValue(person,bonus.id) | longToCurrency}}</td>
+              <td class="text-right">{{person.total | longToCurrency}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+      <div ng-hide="currentMonth.isClosed" id="open-month">
+        <div ng-hide="showSpinner">
+          <table class="table table-hover table-condensed">
+            <thead>
+            <tr>
+              <th ng-bind="'salary.personNr' | translate" ></th>
+              <th ng-bind="'salary.personId' | translate"></th>
+              <th ng-bind="'salary.personName' | translate"></th>
+              <th ng-bind="'salary.personSurname' | translate"></th>
+              <th ng-bind="'salary.groupName' | translate"></th>
+              <th ng-bind="'salary.quality' | translate" class="text-right"></th>
+              <th ng-bind="'salary.workingDaysAmount' | translate" class="text-right"></th>
+              <th ng-bind="'salary.workTime' | translate" class="text-right"></th>
+              <th class="text-right">{{'salary.totalKg'|translate}}</th>
+              <th ng-bind="'salary.regularSalary' | translate" class="text-right"></th>
+              <th ng-bind="'salary.sundaySalary' | translate" class="text-right"></th>
+              <th ng-bind="'salary.bonusSalary' | translate" class="text-right"></th>
+              <th ng-bind="'salary.summary' | translate" class="text-right"></th>
+              <th ng-repeat="bonus in bonuses" class="text-right">{{bonus.name}}</th>
+              <th ng-show="bonuses.length > 0" class="text-right">{{'salary.summary.plus.percentage.bonus.total' | translate}}</th>
+              <th ng-show="bonuses.length > 0" class="text-right">{{'salary.summary' | translate}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="person in salary" ng-class="person.payrollType === 'ACCORD' ? 'green-background text-success':'blue-background text-primary'">
+              <td>{{person.nr}}</td>
+              <td class="text-nowrap text-left">
+                {{person.id}}
+                <i class="fa fa-bolt fa-lg" ng-show="person.payrollType === 'ACCORD'" aria-hidden="true"></i>
+                <i class="fa fa-clock-o fa-lg" ng-show="person.payrollType === 'HOURLY'" aria-hidden="true"></i>
+                <i class="fa fa-exclamation text-danger" aria-hidden="true"
+                   ng-show="(person.payrollType === 'ACCORD' && !(person.wageHeaderId > 0)) || (person.payrollType == 'HOURLY' && (person.regularHoursWage === 0 || person.sundayHoursWage == 0 || person.bonusHoursWage == 0) || person.isValid === false)"></i>
+              </td>
+              <td ng-bind="person.name"></td>
+              <td ng-bind="person.surname"></td>
+              <td>{{person.groupName}}</td>
+              <td class="text-right">{{person.quality}}%</td>
+              <td class="text-right">{{person.workDaysAmount}}</td>
+              <td class="text-right">{{minutesToHours(person.totalMinutes)}}</td>
+              <td class="text-right">{{person.totalHarvest | longToWeight}}</td>
+              <td ng-show="person.payrollType === 'ACCORD'" class="text-right">{{person.regularHarvestSalary | longToCurrency}}</td>
+              <td ng-show="person.payrollType === 'HOURLY'" class="text-right"> {{person.regularHoursSalary | longToCurrency}}</td>
+              <td ng-show="person.payrollType === 'ACCORD'" class="text-right">{{person.sundayHarvestSalary | longToCurrency}}</td>
+              <td ng-show="person.payrollType === 'HOURLY'" class="text-right"> {{person.sundayHoursSalary | longToCurrency}}</td>
+              <td ng-show="person.payrollType === 'ACCORD'" class="text-right">{{person.bonusHarvestSalary | longToCurrency}}</td>
+              <td ng-show="person.payrollType === 'HOURLY'" class="text-right"> {{person.bonusHoursSalary | longToCurrency}}</td>
+              <td class="text-right">{{totalSalary(person) | longToCurrency}}</td>
+              <td ng-repeat="bonus in bonuses" class="text-right">
+                <i class="fa fa-circle-o hand-cursor" aria-hidden="true" ng-show="!person.bonuses[bonus.id]"
+                   ng-click="updateBonusAssignment(person.id,bonus.id)"></i>
+                <i class="fa fa-circle hand-cursor" aria-hidden="true" ng-show="person.bonuses[bonus.id]"
+                   ng-click="updateBonusAssignment(person.id,bonus.id)"></i>
+              </td>
+              <td class="text-right" ng-show="bonuses.length > 0">{{person.totalSalaryPlusPercentageBonus | longToCurrency}}</td>
+              <td class="text-right" ng-show="bonuses.length > 0">{{person.total | longToCurrency}}</td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+              <th colspan="7">{{'salary.summary' | translate}}</th>
+              <th class="text-right">{{getTotalWorkTime()}}</th>
+              <th class="text-right">{{getTotalHarvest()}}</th>
+              <th class="text-right">{{getTotalRegularSalary()}}</th>
+              <th class="text-right">{{getTotalSundaySalary()}}</th>
+              <th class="text-right">{{getTotalBonusSalary()}}</th>
+              <th class="text-right">{{getTotalSalary()}}</th>
+              <th colspan="{{bonuses.length}}">&nbsp;</th>
+              <th colspan="2" class="text-right">{{getTotalSalaryWithBonus()}}</th>
+            </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+      <div class="col-xs-1"></div>
+    </div>
+  </div>
+</div>

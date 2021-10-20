@@ -1,0 +1,26 @@
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true" ng-controller="reclassifyReasonCtrl">
+  <div class="modal-dialog modal-small">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="$hide()"><span
+          aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title text-muted">{{'settings.reclassifyReason.add-reason-modal.header' | translate }}</h3>
+      </div>
+      <div class="modal-body">
+        <input type="text" class="form-control" required ng-model="description">
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-default" ng-click="$hide()">{{'settings.reclassifyReason.add-reason-modal.cancel' |
+          translate}}
+        </button>
+        <button type="submit" class="btn btn-primary" ng-disabled="!description"
+                ng-click="saveReason(); $hide()"><i class="fa fa-plus" aria-hidden="true"></i>
+          {{'settings.reclassifyReason.add-reason-modal.submit' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

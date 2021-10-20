@@ -1,0 +1,166 @@
+<div class="container-fluid" ng-controller="editTimeSheetCtrl" ng-cloak>
+  <ol class="breadcrumb">
+    <li><a href="#/people/worktime">{{'people.worktime.breadcrumb' | translate}}</a></li>
+    <li><a href="#/people/worktime/{{employeeId}}">{{'people.breadcrumb.timeSheet' | translate}}</a></li>
+    <li class="active">{{'people.breadcrumb.editTimeSheet' | translate}} {{person.id}} {{person.imie}} {{person.nazwisko}}</li>
+  </ol>
+  <div growl></div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="row" nowrap>
+        <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 0:00</h6></div>
+        <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 2:00</h6></div>
+        <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 4:00</h6></div>
+        <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 6:00</h6></div>
+        <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 8:00</h6></div>
+        <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 10:00</h6></div>
+        <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 12:00</h6></div>
+        <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 14:00</h6></div>
+        <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 16:00</h6></div>
+        <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 18:00</h6></div>
+        <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 20:00</h6></div>
+        <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 22:00</h6></div>
+      </div>
+    </div>
+    <div class="col-lg-12 text-nowrap">
+      <div class="progress">
+        <div data-ng-repeat="barPeriod in barPeriods">
+          <div ng-show="barPeriod.percentOfTheDay > 0"
+               ng-class="getBarClass(barPeriod.barType)"
+               role="progressbar" style="width: {{barPeriod.percentOfTheDay}}%">&nbsp;
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div ng-repeat="workPeriod in workPeriods">
+    <div ng-show="workPeriod.endDate">
+      <form name="orderForm" class="form-inline" role="form">
+        <div class="row">
+
+          <div class="col-lg-4">
+            <div class="panel panel-success">
+              <div class="panel-body">
+                <div class="form-group">
+                  <input type="text" class="form-control" ng-model="workPeriod.startDate" data-time-format="HH:mm" data-autoclose="0"
+                         bs-timepicker ng-change="save(workPeriod)" data-minute-step="1" data-length="10">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="panel panel-danger">
+              <div class="panel-body">
+                <div class="form-group">
+                  <input type="text" class="form-control" ng-model="workPeriod.endDate" data-time-format="HH:mm" data-autoclose="0"
+                         bs-timepicker ng-change="save(workPeriod)" data-minute-step="1" data-length="10">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-sm-8 text-left">
+                    <strong>{{countWorkMinutes(workPeriod.endDate,workPeriod.startDate) | minutesToHours}}</strong>
+                  </div>
+                  <div class="col-sm-2 text-right">
+                    <button class="btn btn-danger btn-sm" ng-click="delete(workPeriod.id)"><i class="fa fa-times" aria-hidden="true"></i>
+                      {{'people.timesheet.edit.delete' |
+                      translate}}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!----------------------------------->
+    <div ng-hide="workPeriod.endDate">
+      <form name="orderForm" class="form-inline" role="form">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="panel panel-success">
+              <div class="panel-body">
+                <div class="form-group">
+                  <input type="text" class="form-control" ng-model="workPeriod.startDate" data-time-format="HH:mm" data-autoclose="0"
+                         bs-timepicker ng-change="save(workPeriod)" data-minute-step="1" data-length="10">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="panel panel-danger">
+              <div class="panel-body">
+                <!--
+                <input text class="form-control"> <input text class="form-control">
+-->
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-lg-4 text-left">
+                    <strong>{{countWorkMinutes(workPeriod.endDate,workPeriod.startDate) | minutesToHours}}</strong>
+                  </div>
+                  <div class="col-lg-4 text-right">
+                    <button class="btn btn-warning btn-sm" ng-click="close(workPeriod.id)"><i class="fa fa-times" aria-hidden="true"></i>
+                      {{'people.timesheet.edit.close' | translate}}
+                    </button>
+                  </div>
+                  <div class="col-lg-4">
+                    <button class="btn btn-danger btn-sm" ng-click="delete(workPeriod.id)"><i class="fa fa-times" aria-hidden="true"></i>
+                      {{'people.timesheet.edit.delete' | translate}}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-lg-3">
+    <div class="panel panel-success">
+      <div class="panel-body">
+        <div class="form-group">
+          <input type="text" class="form-control" ng-model="newStartTime" data-time-format="HH:mm" data-autoclose="0"
+                 bs-timepicker ng-change="checkIfTimeInExistingPeriod(newStartTime)" data-minute-step="1" data-length="10">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="panel panel-danger">
+      <div class="panel-body">
+        <div class="form-group">
+          <input type="text" class="form-control" ng-model="newEndTime" data-time-format="HH:mm" data-autoclose="0"
+                 bs-timepicker ng-change="checkIfTimeInExistingPeriod(newEndTime)" data-minute-step="1" data-length="10">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-sm-2 text-right">
+            <button class="btn btn-primary btn-sm" ng-click="addPeriod()"><i class="fa fa-plus" aria-hidden="true"></i>
+              {{'people.timesheet.edit.add' |
+              translate}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>

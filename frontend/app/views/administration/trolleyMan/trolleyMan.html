@@ -1,0 +1,29 @@
+<div class = "container-fluid" ng-controller="TrolleyManCtrl">
+  <ol class="breadcrumb">
+    <li class="active">{{'admin.trolleyMan.breadcrumb.header' | translate}}</li>
+  </ol>
+  <div growl></div>
+  <div class="row">
+    <div class="col-sm-3">
+      <button class="btn btn-primary" ng-click="openCreateTrolleyManModal()"
+              ng-bind="'admin.trolleyMan.create-button' | translate"></button>
+    </div>
+    <div class="col-sm-6">
+      <table class="table">
+        <thead><tr>
+          <th class="col-lg-4 col-sm-4">{{'admin.trolleyMan.barcode' | translate}}</th>
+          <th class="col-lg-4 col-sm-4">{{'admin.trolleyMan.name' | translate}}</th>
+          <th class="col-lg-4 col-sm-4">{{'admin.trolleyMan.surname' | translate}}</th>
+        </tr></thead>
+        <tbody>
+        <tr ng-repeat="man in trolleyMan">
+          <td class="col-sm-4">{{man.barcode}}</td>
+          <td class="col-sm-4"><a href="#" editable-text="man.name" onbeforesave="updateName(man.id,$data)">{{man.name}}</a></td>
+          <td class="col-sm-4"><a href="#" editable-text="man.surname" onbeforesave="updateSurname(man.id,$data)">{{man.surname}}</a></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-sm-3">&nbsp;</div>
+  </div>
+</div>

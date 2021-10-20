@@ -1,0 +1,74 @@
+<div class="container-fluid" ng-controller="PeopleBarcodesCtrl">
+<div growl></div>
+  <div class="loading" ng-show="loading">Loading&#8230;</div>
+
+  <div ng-hide="loading">
+    <table class="table table-condensed table-hover">
+      <thead>
+<tr>
+  <th class="col-sm-1" nowrap>
+  <a href="" ng-click="orderByField='nr'; reverseSort = !reverseSort">
+    {{'people.barcodes.header.nr' |translate}}
+    <span ng-show="orderByField=='nr' && !reverseSort" class="fa fa-caret-down"></span>
+    <span ng-show="orderByField=='nr' && reverseSort" class="fa fa-caret-up"></span>
+  </a>
+</th>
+
+  <th class="col-sm-1" nowrap>
+    <a href="" ng-click="orderByField='id'; reverseSort = !reverseSort">
+      {{'people.barcodes.header.id' |translate}}
+      <span ng-show="orderByField=='id' && !reverseSort" class="fa fa-caret-down"></span>
+      <span ng-show="orderByField=='id' && reverseSort" class="fa fa-caret-up"></span>
+    </a>
+  </th>
+
+  <th class="col-sm-1" nowrap>
+    <a href="" ng-click="orderByField='surname + name'; reverseSort = !reverseSort">
+      {{'people.barcodes.header.picker' |translate}}
+      <span ng-show="orderByField=='surname + name' && !reverseSort" class="fa fa-caret-down"></span>
+      <span ng-show="orderByField=='surname + name' && reverseSort" class="fa fa-caret-up"></span>
+    </a>
+  </th>
+
+  <th class="col-sm-1" nowrap>{{'people.barcodes.header.example' | translate}}</th>
+
+  <th class="col-sm-1" nowrap>
+    <a href="" ng-click="orderByField='freeCodesAmount'; reverseSort = !reverseSort">
+      {{'people.barcodes.header.amount' |translate}}
+      <span ng-show="orderByField=='freeCodesAmount' && !reverseSort" class="fa fa-caret-down"></span>
+      <span ng-show="orderByField=='freeCodesAmount' && reverseSort" class="fa fa-caret-up"></span>
+    </a>
+  </th>
+
+  <th class="col-sm-1" nowrap>
+    <a href="" ng-click="orderByField='highestNumber'; reverseSort = !reverseSort">
+      {{'people.barcodes.header.highest' |translate}}
+      <span ng-show="orderByField=='highestNumber' && !reverseSort" class="fa fa-caret-down"></span>
+      <span ng-show="orderByField=='highestNumber' && reverseSort" class="fa fa-caret-up"></span>
+    </a>
+  </th>
+
+
+  <th class="col-sm-2 text-right">&nbsp;</th>
+  <th class="col-sm-1 text-right">&nbsp;</th>
+  <th class="col-sm-1 text-right">&nbsp;</th>
+</tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="header in headers | orderBy:orderByField:reverseSort" ng-class="{'danger' : header.freeCodesAmount < '500' ,'warning' : header.freeCodesAmount < '1000'}">
+        <td class="col-sm-1" nowrap ng-hide="eastMode === true">{{header.nr}}</td>
+        <td class="col-sm-1" nowrap ng-hide="eastMode === true">{{header.id}}</td>
+        <td class="col-sm-1" nowrap ng-show="eastMode === true">{{header.id}} | {{header.nr}}</td>
+        <td class="col-sm-2" nowrap>{{header.surname}} {{header.name}} </td>
+        <td class="col-sm-1" nowrap ng-hide="eastMode">{{supplierId}}xxxxx{{getFiveCharsEmployeeId(header.id)}}</td>
+        <td class="col-sm-1" nowrap ng-show="eastMode">002xxxxx{{getTwoCharsEmployeeNr(header.nr)}}{{supplierId}}</td>
+        <td class="col-sm-1">{{header.freeCodesAmount}}</td>
+        <td class="col-sm-1">{{header.highestNumber}}</td>
+        <td class="col-sm-2 text-right"><a href="#" editable-number="0" onbeforesave="reserve(header.id,$data)" >{{'people.barcodes.button.reserve'|translate}}</a></td>
+        <td class="col-sm-1 text-right"><button class="btn btn-danger" ng-disabled="! header.freeCodesAmount > 0" ng-click="openRemoveModal(header.id)">{{'people.barcodes.button.remove'|translate}}</button></td>
+        <td class="col-sm-1 text-right"><button class="btn btn-primary" ng-disabled="! header.freeCodesAmount > 0" ng-click="openListModal(header.id)">{{'people.barcodes.button.show'|translate}}</button></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

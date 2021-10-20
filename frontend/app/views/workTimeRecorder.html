@@ -1,0 +1,36 @@
+<div ng-controller="workTimeRecorderCtrl" ng-init="connect();focusBack();">
+  <div ng-show="disconnected" class="dimScreen span12 pagination-centered">
+    <h1>
+      workTimeRecorder.noConnection
+    </h1>
+  </div>
+  <div class="container-fluid">
+    <div class="page-header">
+      <h2>{{'workTimeRecorder.header'|translate}}</h2>
+    </div>
+    <div class="row">
+      <div class="col-md-2 form-group">
+        <form name="barcodeForm">
+          <label for="barcodeInput"></label>
+          <input type="text" id="barcodeInput" name="barcodeInput" ng-model="barcode"
+                 ng-change="readBarcode()" class="form-control" ng-blur="focusBack()" autofocus/>
+        </form>
+      </div>
+      <div ng-class="getScannedClass(scannedPicker.workStatus)">
+        <h4>
+          <strong>
+            {{ scannedPicker.id }} {{ scannedPicker.nr }} {{ scannedPicker.name }}
+            {{ scannedPicker.surname }}
+          </strong>
+        </h4>
+      </div>
+    </div>
+    <div class="row">
+      <div ng-repeat="workingTime in workingTimeAll track by $index"
+           ng-class="getStatusClass(workingTime.workStatus)" role="alert">
+        {{ workingTime.picker.id }} {{ workingTime.picker.nr }} {{ workingTime.picker.name }}
+        {{workingTime.picker.surname }}
+      </div>
+    </div>
+  </div>
+</div>

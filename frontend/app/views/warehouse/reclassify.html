@@ -1,0 +1,121 @@
+<div class="container-fluid" ng-controller="reclassifyByBarcodeCtrl" ng-init="init(); focusInputText();">
+  <ol class="breadcrumb">
+    <li class="active">{{'warehouse.reclassifyByBarcode.breadcrumb.main' | translate}}</li>
+  </ol>
+
+
+  <div class="form-group">
+    <form name="barForm">
+      <div class="row">
+        <div class="form-group col-xs-3">
+          <label for="type">{{'warehouse.reclassifyByBarcode.type' | translate}}</label>
+          <select id="type" class="form-control text-right" ng-model="typeId"
+                  ng-options="type.id as type.name + ' ' + type.weight | dotToCommaKg for type in types"
+                  ng-mouseleave="focusInputText()"></select>
+        </div>
+        <div class="form-group col-xs-3">
+          <label for="reason">{{'warehouse.reclassifyByBarcode.reason' | translate}}</label>
+          <select id="reason" class="form-control text-right" ng-model="reasonId"
+                  ng-options="reason.id as reason.description for reason in reasons"
+                  ng-mouseleave="focusInputText()"></select>
+        </div>
+
+        <div class="form-group col-xs-3 text-center">
+          <label for="warehouseOnly">{{'warehouse.reclassifyByBarcode.warehouse-only' | translate}}</label>
+          <div id="warehouseOnly" class="text-center">
+            <i class="fa fa-check-circle-o fa-3x hand-cursor" aria-hidden="true" ng-show="warehouseOnly"
+               ng-click="setWarehouseOnly(false)" ng-mouseleave="focusInputText()"></i>
+            <i class="fa fa-circle-o fa-3x hand-cursor" aria-hidden="true" ng-hide="warehouseOnly"
+               ng-click="setWarehouseOnly(true)" ng-mouseleave="focusInputText()"></i>
+          </div>
+        </div>
+
+
+        <div class="form-group col-xs-3" ng-hide="warehouseOnly">
+          <label for="quality_check">{{'warehouse.reclassifyByBarcode.quality-check' | translate}}</label>
+          <div id="quality_check">
+              <span
+                ng-class="qualityStatus=='REJECTED'?'text-danger text-left  hand-cursor':'text-default text-muted text-left hand-cursor'"
+                ng-click="setQualityStatus('REJECTED')" ng-mouseleave="focusInputText()">
+          <i class="fa fa-exclamation fa-3x" aria-hidden="true"></i>
+              </span>
+            <span
+              ng-class="qualityStatus=='NOT_CHECKED'?'text-default hand-cursor':'text-default text-muted  hand-cursor'"
+              ng-click="setQualityStatus('NOT_CHECKED')" ng-mouseleave="focusInputText()">
+          <i class="fa fa-minus fa-3x" aria-hidden="true"></i>
+              </span>
+              <span
+                ng-class="qualityStatus=='ACCEPTED'?'text-success text-right hand-cursor':'text-default text-muted text-right hand-cursor'"
+                ng-click="setQualityStatus('ACCEPTED')" ng-mouseleave="focusInputText()">
+          <i class="fa fa-check fa-3x text-right" aria-hidden="true"></i>
+              </span>
+          </div>
+        </div>
+
+
+        <div class="form-group col-xs-4">
+          <label for="barcode">&nbsp;</label>
+          <input class="form-control" name="barcode" id="barcode" type="text"
+                 ng-model="barcode"
+                 ng-change="parseBarcode()" autocomplete="off">
+        </div>
+        <div class="col-lg-1">
+          <label for="cancel">&nbsp;</label>
+          <button id="cancel" class="form-control btn btn-default" ng-click="cancel()" ng-mouseleave="focusInputText()"
+                  ng-bind="'warehouse.reclassifyByBarcode.message.cancel' | translate"></button>
+        </div>
+
+        <div class="col-lg-2">
+          <label for="submit">&nbsp;</label>
+          <button id="submit" class="form-control btn btn-primary" ng-click="reclassify()"
+                  ng-mouseleave="focusInputText()"
+                  ng-bind="'warehouse.reclassifyByBarcode.message.submit' | translate"></button>
+        </div>
+
+        <div class="alert alert-danger col-lg-2" ng-show="message == 'reserved'">
+          {{'warehouse.reclassifyByBarcode.message.reserved1' | translate}}
+          {{orderId}}
+          {{'warehouse.reclassifyByBarcode.message.reserved2' | translate}}
+          {{paletteId}}
+        </div>
+        <div class="alert alert-danger col-lg-2" ng-show="message == 'unknownError'"
+             ng-bind="'warehouse.reclassifyByBarcode.message.unknownError' | translate"></div>
+        <div class="alert alert-danger col-lg-2" ng-show="message == 'notOnStock'"
+             ng-bind="'warehouse.reclassifyByBarcode.message.notOnStock' | translate"></div>
+        <div class="alert alert-danger col-lg-2" ng-show="message == 'notADigit'"
+             ng-bind="'warehouse.reclassifyByBarcode.message.notADigit' | translate"></div>
+        <div class="alert alert-danger col-lg-2" ng-show="message == 'invalidSupplier'"
+             ng-bind="'warehouse.reclassifyByBarcode.message.invalidSupplier' | translate"></div>
+        <div class="alert alert-success col-lg-2" ng-show="message == 'success'"
+             ng-bind="'warehouse.reclassifyByBarcode.message.success' | translate"></div>
+      </div>
+    </form>
+  </div>
+  <table class="table table-condensed table-hover" ng-show="codes.length > 0">
+    <thead>
+    <tr>
+      <th ng-bind="'warehouse.reclassifyByBarcode.barcode' | translate"></th>
+      <th ng-bind="'warehouse.reclassifyByBarcode.typeName' | translate"></th>
+      <th ng-bind="'warehouse.reclassifyByBarcode.typeWeight' | translate"></th>
+      <th ng-bind="'warehouse.reclassifyByBarcode.harvestDate' | translate"></th>
+      <th ng-bind="'warehouse.reclassifyByBarcode.chamberName' | translate"></th>
+      <th ng-bind="'warehouse.reclassifyByBarcode.pickerId' | translate"></th>
+      <th ng-bind="'warehouse.reclassifyByBarcode.pickerName' | translate"></th>
+      <th ng-bind="'warehouse.reclassifyByBarcode.pickerSurname' | translate"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="code in codes">
+      <td ng-bind="getBarcode(code.uniqId,code.pickerId)"></td>
+      <td ng-bind="code.typeName"></td>
+      <td ng-bind="code.typeWeight | dotToCommaKg"></td>
+      <td ng-bind="code.harvestDate"></td>
+      <td ng-bind="code.chamberName"></td>
+      <td ng-bind="code.pickerId"></td>
+      <td ng-bind="code.pickerName"></td>
+      <td ng-bind="code.pickerSurname"></td>
+      <td><i class="fa fa-trash-o hand-cursor" aria-hidden="true" ng-click="removeFromCodes(code.id)"></i></td>
+    </tr>
+    </tbody>
+  </table>
+</div>

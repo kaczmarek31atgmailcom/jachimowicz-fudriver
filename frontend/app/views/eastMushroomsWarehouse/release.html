@@ -1,0 +1,140 @@
+<div class="container-fluid" ng-controller="EastMushroomsReleaseCtrl" ng-init="focusInputText();">
+  <div growl></div>
+  <div class="row">
+    <div class="form-group col-sm-4">
+      <select ng-model="customer" class="form-control input-sm"
+              ng-options="customer as customer.name for customer in customers"></select>
+    </div>
+    <div class="form-group col-sm-4">
+      <input class="form-control" focus-if="documentScreen" name="barcode" id="barcode" type="text"
+             ng-model="barcode"
+             ng-change="parseBarcode(barcode);" ng-blur="focusInputText();" autocomplete="off">
+    </div>
+    <div class="form-group col-sm-4">
+      <button class="btn btn-danger btn-block" ng-disabled="isReleaseButtonDisabled()" ng-click="createShipment()">{{'eastMushrooms.warehouse.release-button' | translate}}</button>
+    </div>
+    <div class="col-lg-6">
+      <div class="panel panel-primary">
+        <div class="panel-heading text-center">
+          {{'eastMushrooms.warehouse.assigned.palettes.total.amount.pcs' | translate}}{{palette.paletteId}}: <strong>{{assignedUnitsTotalAmount}}</strong> {{'eastMushrooms.warehouse.assigned.palettes.amount' | translate}}: <strong>{{assignedWarehousePalettes.length}}</strong>
+        </div>
+        <div class="panel-body">
+          <ul class="list-unstyled">
+            <li ng-repeat="palette in assignedWarehousePalettes track by $index">
+              <div class="panel panel-danger">
+                <div class="panel-heading">
+                  <div class="row">
+                    <div class="col-sm-8 col-lg-8">{{'eastMushrooms.warehouse.palette.name' | translate}}{{palette.paletteId}}</div>
+                    <div class="col-sm-4 col-lg-4 text-right"><button class="btn btn-small btn-danger text-right" ng-click="showChangeAssignedPaletteTypeModal(palette.paletteId)">{{showAssignedPaletteType(palette.paletteId)}}</button></div>
+                </div>
+                </div>
+                <div class="panel-body">
+                  <div class="col-xs-10 text-left">
+                    <span class="col-sm-6"><strong>{{'eastMushrooms.warehouse.local.type.name' | translate}}</strong></span></span>
+                    <span class="col-sm-3 text-nowrap" ng-show="customer.producerGroup !== 'None'"><strong>{{'eastMushrooms.warehouse.remote.type.name' | translate}}</strong></span>
+                    <span class="col-sm-3 text-nowrap" ng-show="customer.producerGroup === 'None'">&nbsp;</span>
+                    <span class="col-sm-3 text-right"><strong>{{'eastMushrooms.warehouse.remote.amount' | translate}}</strong></span>
+                    <div ng-repeat="type in palette.types track by $index">
+                      <span class="col-sm-6">{{type.localTypeName}} {{type.localTypeWeight}}</span>
+                      <span class="col-sm-3" ng-show="type.remoteTypeId >0 && customer.producerGroup !== 'None'">{{type.remoteTypeName}} {{type.remoteTypeWeight}} </span>
+                      <span class="col-sm-3" ng-hide="type.remoteTypeId >0 || customer.producerGroup === 'None'">{{'eastMushrooms.warehouse.reception.no-remote-type-defined' | translate}} </span>
+                      <span class="col-sm-3" ng-show="customer.producerGroup === 'None'">&nbsp;</span>
+                      <span class="col-sm-3 text-right">{{type.amount}}{{'eastMushrooms.warehouse.reception.pcs' | translate}}</span>
+                    </div>
+                  </div>
+                  <div class="col-xs-1 text-right">
+                    <button class="btn btn-warning btn-sm" ng-click="printPaletteLabel(palette.paletteId)"><i class="fa fa-print"></i></button>
+                  </div>
+                  <div class="col-xs-1 text-right">
+                    <button class="btn btn-success btn-sm" ng-click="move(palette.paletteId)"><i class="fa fa-minus"></i></button>
+                  </div>
+                  <div><strong><span class="col-sm-9">&nbsp;</span><span class="col-sm-1 text-left"> {{palette.totalAmount}}{{'eastMushrooms.warehouse.reception.pcs' | translate}}</span></strong>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-lg-6">
+      <ul class="list-unstyled">
+        <!--<li ng-repeat="palette in notAssignedPalettes track by $index" ng-show="palette.totalAmount > 0">-->
+        <li ng-repeat="palette in notAssignedPalettes track by $index">
+          <div class="panel panel-success">
+            <div class="panel-heading">
+              <div class="row">
+              <div class="col-sm-8 col-lg-8">{{'eastMushrooms.warehouse.palette.name' | translate}}{{palette.paletteId}}</div>
+                <div class="col-sm-4 col-lg-4 text-right"><button class="btn btn-small btn-success text-right" ng-click="showChangeAssignedPaletteTypeModal(palette.paletteId)">{{showAssignedPaletteType(palette.paletteId)}}</button></div>
+              </div>
+              </div>
+
+            <div class="panel-body">
+              <div class="col-xs-10 text-left">
+                <span class="col-sm-6"><strong>{{'eastMushrooms.warehouse.local.type.name' | translate}}</strong></span></span>
+                <span class="col-sm-3 text-nowrap" ng-show="customer.producerGroup !== 'None'"><strong>{{'eastMushrooms.warehouse.remote.type.name' | translate}}</strong></span>
+                <span class="col-sm-3 text-nowrap" ng-show="customer.producerGroup === 'None'">&nbsp;</span>
+                <span class="col-sm-3 text-right"><strong>{{'eastMushrooms.warehouse.remote.amount' | translate}}</strong></span>
+                <div ng-repeat="type in palette.types track by $index">
+                  <span class="col-sm-6">{{type.localTypeName}} {{type.localTypeWeight}}</span>
+                  <span class="col-sm-3" ng-show="type.remoteTypeId >0 && customer.producerGroup !== 'None'">{{type.remoteTypeName}} {{type.remoteTypeWeight}} </span>
+                  <span class="col-sm-3" ng-hide="type.remoteTypeId >0 || customer.producerGroup === 'None'">{{'eastMushrooms.warehouse.reception.no-remote-type-defined' | translate}} </span>
+                  <span class="col-sm-3" ng-show="customer.producerGroup === 'None'">&nbsp;</span>
+                  <span class="col-sm-3 text-right">{{type.amount}}{{'eastMushrooms.warehouse.reception.pcs' | translate}}</span>
+                </div>
+              </div>
+              <div class="col-xs-1 text-right">
+                <button class="btn btn-default btn-sm" ng-click="printPaletteLabel(palette.paletteId)"><i class="fa fa-print"></i></button>
+              </div>
+              <div class="col-xs-1 text-right">
+                <button class="btn btn-primary btn-sm" ng-click="move(palette.paletteId)"><i class="fa fa-plus"></i></button>
+              </div>
+              <div><strong><span class="col-sm-9">&nbsp;</span><span class="col-sm-1 text-left"> {{palette.totalAmount}}{{'eastMushrooms.warehouse.reception.pcs' | translate}}</span></strong></div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <!--<div ng-repeat="(listName, list) in models.lists track by $index" class="dndlist col-lg-6">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{listName|translate}}</h3>
+        </div>
+        <div class="panel-body">
+          <ul dnd-list="list">
+            <li ng-repeat="item in list track by $index"
+                ng-class="{'selected': models.selected === item}">
+              <div class="row">
+                <div class="col-xs-10 text-left">
+                  <span class="col-sm-12"><h4><strong>{{'eastMushrooms.warehouse.palette.name' | translate}}{{item.paletteId}}</strong></h4></span>
+                  <span class="col-sm-6"><strong>{{'eastMushrooms.warehouse.local.type.name' | translate}}</strong></span></span>
+                  <span class="col-sm-3 text-nowrap" ng-show="customer.producerGroup !== 'None'"><strong>{{'eastMushrooms.warehouse.remote.type.name' | translate}}</strong></span>
+                  <span class="col-sm-3 text-nowrap" ng-show="customer.producerGroup === 'None'">&nbsp;</span>
+                  <span class="col-sm-3 text-right"><strong>{{'eastMushrooms.warehouse.remote.amount' | translate}}</strong></span>
+                  <div ng-repeat="type in item.types track by $index">
+                    <span class="col-sm-6">{{type.localTypeName}} {{type.localTypeWeight}}</span>
+                    <span class="col-sm-3" ng-show="type.remoteTypeId >0 && customer.producerGroup !== 'None'">{{type.remoteTypeName}} {{type.remoteTypeWeight}} </span>
+                    <span class="col-sm-3" ng-hide="type.remoteTypeId >0 || customer.producerGroup === 'None'">{{'eastMushrooms.warehouse.reception.no-remote-type-defined' | translate}} </span>
+                    <span class="col-sm-3" ng-show="customer.producerGroup === 'None'">&nbsp;</span>
+                    <span class="col-sm-3 text-right">{{type.amount}}{{'eastMushrooms.warehouse.reception.pcs' | translate}}</span>
+                  </div>
+                </div>
+                <div class="col-xs-1 text-right">
+                  <button class="btn btn-warning btn-sm" ng-click="printPaletteLabel(item.paletteId)"><i class="fa fa-print"></i></button>
+                </div>
+                <div class="col-xs-1 text-right">
+                  <button class="btn btn-primary btn-sm" ng-click="move(item.paletteId)"><i class="fa fa-plus"></i></button>
+                </div>
+                <div><strong><span class="col-sm-9">&nbsp;</span><span class="col-sm-1 text-left"> {{item.totalAmount}}{{'eastMushrooms.warehouse.reception.pcs' | translate}}</span></strong></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>-->
+
+  </div>
+
+</div>

@@ -1,0 +1,1 @@
+alter table ludzie change password password varchar(50);

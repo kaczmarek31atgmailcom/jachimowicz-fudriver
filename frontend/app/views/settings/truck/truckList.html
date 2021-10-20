@@ -1,0 +1,33 @@
+<div class="container-fluid" ng-controller="TruckCtrl">
+  <ol class="breadcrumb">
+    <li class="active">{{'settings.truck.menu' | translate}}</li>
+  </ol>
+  <div growl></div>
+  <button class="btn btn-primary" ng-click="openCreateTruckPage()"><i class="fa fa-plus" aria-hidden="true"></i> {{'settings.truck.create.button' | translate}}
+  </button>
+
+  <div class="row">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
+      <table class="table table-condensed table-hover">
+        <thead>
+        <tr>
+          <th class="col-lg-2">{{'settings.truck.plate' | translate}}</th>
+          <th class="col-lg-2">{{'settings.truck.capacity' | translate}}</th>
+          <th class="col-lg-7">{{'settings.truck.description' | translate}}</th>
+          <th class="col-lg-offset-1"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="truck in trucks">
+          <td class="col-lg-2">{{truck.plate}}</td>
+          <td class="col-lg-2">{{truck.capacity}}</td>
+          <td class="col-lg-7">{{truck.description}}</td>
+          <td class="col-lg-1 text-right"><i class="fa fa-trash-o hand-cursor" ng-click="deleteTruck(truck.id)"></i></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-lg-2"></div>
+  </div>
+</div>

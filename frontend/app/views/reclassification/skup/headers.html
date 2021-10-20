@@ -1,0 +1,30 @@
+<div class=container-fluid ng-controller="reclassificationHeaderCtrl" ng-init="getHeaders()" class="ng-cloak">
+
+    <div ng-show="showHeaders">
+        <table class="table table-condensed">
+            <thead>
+            <tr>
+                <th>{{'reclassification.header.id' | translate}}</th>
+                <th>{{'reclassification.header.remoteId' | translate}}</th>
+                <th>{{'reclassification.header.description' | translate}}</th>
+                <th>{{'reclassification.header.date' | translate}}</th>
+                <th>{{'reclassification.header.amount' | translate}}</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="header in headers">
+                <td>{{header.id}}</td>
+                <td>{{header.remoteId}}</td>
+                <td>{{header.description}}</td>
+                <td>{{header.created}}</td>
+                <td>{{header.totalAmount}}</td>
+                <td><a ng-href="#/reclassification/{{header.id}}" ng-click="setCurrentHeader(header.id)">szczegóły</a></td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+    <div class="jumbotron" ng-hide="showHeaders">
+        <h2>{{'reclassification.details.message.no.items' | translate}}</h2>
+    </div>
+</div>

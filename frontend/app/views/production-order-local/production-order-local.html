@@ -1,0 +1,34 @@
+<div class="container-fluid" ng-controller="ProductionOrderLocalCtrl">
+
+
+  <ol class="breadcrumb">
+    <li class="active">{{'production.order.local.breadcrumb' | translate}}</li>
+  </ol>
+  <div growl></div>
+
+  <div class="row">
+    <div class="loading" ng-hide="loading == 0">Loading&#8230;</div>
+    <div class="form-group">
+      <div class="form-group col-xs-3">
+        <input class="form-control text-right" ng-model="startDate" placeholder="{{startDate}}" required
+               bs-datepicker autoclose="true" data-date-format="yyyy/MM/dd" ng-change="init()">
+      </div>
+      <div class="form-group col-xs-3">
+        <input type="text" class="form-control text-right" ng-model="endDate" placeholder="{{endDate}}"
+               required bs-datepicker autoclose="true" date-format="yyyy/MM/dd" ng-change="init()">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <table class="table table-condensed table-hover table-bordered">
+      <tr>
+        <th>&nbsp</th>
+        <th ng-repeat="day in days">{{day}}</th>
+      </tr>
+      <tr ng-repeat="type in types">
+        <td>{{type.name}} {{type.weight | longToWeight}}</td>
+        <td ng-repeat="day in days" ng-click="openEditOrderModal(day,type.id)">{{findOrderAmount(day, type.id)}}</td>
+      </tr>
+    </table>
+  </div>
+</div>

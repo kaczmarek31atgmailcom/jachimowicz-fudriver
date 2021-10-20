@@ -1,0 +1,56 @@
+<div class="container-fluid" ng-controller="trolleyDetailsCtrl" ng-init="loadData()">
+  <ol class="breadcrumb">
+    <li><a href="#/scanner">{{'scanner.breadcrumb.scanner' | translate}}</a></li>
+    <li><a href="#/scannerSummary">{{'scanner.breadcrumb.total' | translate}}</a></li>
+    <li class="active">{{'scanner.breadcrumb.detail'| translate}}</li>
+  </ol>
+  <div growl></div>
+  <div class="row">
+    <div class="col-sm-1 col-lg-1">
+      <button class="btn btn-danger" ng-disabled="! showRemoveAllButton" ng-click="removeTrolley()" ng-cloak><i class="fa fa-times" aria-hidden="true"></i>
+        {{'scanner.detail.remove.trolley.button' | translate}}</button>
+    </div>
+  </div>
+
+  <table class="table table-condensed" ng-show="wozek.length>0">
+    <thead>
+    <tr>
+      <th>{{'scanner.detail.barcode' | translate}}</th>
+      <th>{{'scanner.detail.type' | translate}}</th>
+      <th>{{'scanner.detail.weight' | translate}}</th>
+      <th>{{'scanner.detail.chamber' | translate}}</th>
+      <th>{{'scanner.detail.picker.id' | translate}}</th>
+      <th>{{'scanner.detail.picker.name' | translate}}</th>
+      <th>{{'scanner.detail.picker.surname' | translate}}</th>
+      <th class="text-right">{{'scanner.detail.leader.name' | translate}}</th>
+      <th>{{'scanner.detail.leader.surname' | translate}}</th>
+      <th class="text-right">{{'scanner.detail.trolleyMan.name' | translate}}</th>
+      <th class="text-right">{{'scanner.detail.trolleyMan.surname' | translate}}</th>
+      <th>&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="box in wozek">
+      <td>{{box.barcode}}</td>
+      <td>{{box.typeName}}</td>
+      <td>{{box.typeWeight}} kg</td>
+      <td>{{box.chamberName}}</td>
+      <td>{{box.pickerId}}</td>
+      <td>{{box.pickerName}}</td>
+      <td>{{box.pickerSurname}}</td>
+      <td class="text-right">{{box.leaderName}}</td>
+      <td>{{box.leaderSurname}}</td>
+      <td class="text-right">{{row.trolleyManName}}</td>
+      <td>{{box.trolleyManSurname}}</td>
+      <td>
+        <span ng-show="box.qualityStatus == 0" class="text-warning"><i class="fa fa-question fa-lg"></i></span>
+        <span ng-show="box.qualityStatus == 1" class="text-success"><i class="fa fa-check fa-lg"></i></span>
+        <span ng-show="box.qualityStatus == 2" class="text-danger"><i class="fa fa-exclamation fa-lg"></i></span>
+      </td>
+      <td>
+        <span ng-show="box.showTrashButton" ng-click="removeBox(box.id)" class="hand-cursor"><i class="fa fa-trash-o fa-lg"></i></span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
