@@ -65,6 +65,11 @@ public class AddUserCommandHandler implements CommandHandler<AddUserCommand> {
             userRoleFactory.userRoleBuilder().roleName("ROLE_HOTEL").userId(id).username(command.login).build().create();
         }
 
+        if(command.handlowiec){
+            userRoleFactory.userRoleBuilder().roleName("ROLE_HANDLOWIEC").userId(id).username(command.login).build().create();
+        }
+
+
         return new CommandResult(id, CommandResult.Status.OK,"User created");
     }
 

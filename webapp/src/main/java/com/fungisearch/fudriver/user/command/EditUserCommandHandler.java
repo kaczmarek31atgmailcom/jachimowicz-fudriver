@@ -81,6 +81,13 @@ public class EditUserCommandHandler implements CommandHandler<EditUserCommand> {
             userRoleFactory.userRoleBuilder().roleName("ROLE_HOTEL").userId(command.id).username(command.login).build().remove();
         }
 
+        if(command.handlowiec){
+            userRoleFactory.userRoleBuilder().roleName("ROLE_HANDLOWIEC").userId(command.id).username(command.login).build().create();
+        } else {
+            userRoleFactory.userRoleBuilder().roleName("ROLE_HANDLOWIEC").userId(command.id).username(command.login).build().remove();
+        }
+
+
         return CommandResult.OK;
     }
 

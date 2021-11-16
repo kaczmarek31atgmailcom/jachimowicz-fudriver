@@ -83,6 +83,7 @@ angular.module('frontendApp').controller('UserCtrl', ['$scope', '$modal', 'userS
     $scope.editUser.waga = $scope.checkRight(user.id, 'ROLE_WAGA');
     $scope.editUser.leader = $scope.checkRight(user.id, 'ROLE_LEADER');
     $scope.editUser.palety = $scope.checkRight(user.id, 'ROLE_PALETY');
+    $scope.editUser.handlowiec = $scope.checkRight(user.id, 'ROLE_HANDLOWIEC');
     $scope.editUser.hotel = $scope.checkRight(user.id, 'ROLE_HOTEL');
     var editUserModal = $modal({
       scope: $scope,

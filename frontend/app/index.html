@@ -152,24 +152,24 @@
                ng-bind="'HEADER.PEOPLE'|translate"><span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
               <li ng-show="privileges['ROLE_PANEL']"><a ng-href="#/people"><i class="fa fa-user"></i> {{'people.people' | translate}}</a></li>
-              <li ng-show="privileges['ROLE_PANEL'] || privileges['ROLE_WAGA']"><a ng-href="#/people/barcodes"><i class="fa fa-barcode"></i> {{'people.barcodes' | translate}}</a></li>
+              <li ng-show="privileges['ROLE_PANEL'] || privileges['ROLE_WAGA'] || privileges['ROLE_LEADER']"><a ng-href="#/people/barcodes"><i class="fa fa-barcode"></i> {{'people.barcodes' | translate}}</a></li>
               <li ng-show="privileges['ROLE_PANEL'] || privileges['ROLE_LEADER']"><a ng-href="#/people/worktime"><i class="fa fa-clock-o"></i>
                 {{'people.worktime' | translate}}</a></li>
               <!--<li><a ng-href="#/test">test</a></li>-->
             </ul>
           </li>
 
-          <li class="dropdown" ng-show="privileges['ROLE_PANEL']">
+          <li class="dropdown" ng-show="privileges['ROLE_PANEL'] || privileges['ROLE_HANDLOWIEC']">
             <a href="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"
                ng-bind="'HEADER.EASTWAREHOUSE'|translate"><span
               class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
-              <li><a ng-href="#/reclassificationTypes" ng-bind="'HEADER.reclassificationTypes'|translate"></a></li>
-              <li ng-show="isWarehouseOrdersActive"><a ng-href="#/production-orders" ng-bind="'HEADER.productionOrders'|translate"></a></li>
-              <li ng-hide="isWarehouseOrdersActive"><a ng-href="#/production-order-local" ng-bind="'HEADER.productionOrders'|translate"></a></li>
-              <li><a ng-href="#/palette-type" ng-bind="'HEADER.palette-type'|translate"></a></li>
-              <li><a ng-href="#/reclassificationHeaders" ng-bind="'HEADER.reclassificationHeaders'|translate"></a></li>
-              <li><a ng-href="#/reclassificationHistory" ng-bind="'HEADER.reclassificationHistory'|translate"></a></li>
+              <li ng-show="privileges['ROLE_PANEL']"><a ng-href="#/reclassificationTypes" ng-bind="'HEADER.reclassificationTypes'|translate"></a></li>
+              <li ng-show="isWarehouseOrdersActive && (privileges['ROLE_PANEL'])"><a ng-href="#/production-orders" ng-bind="'HEADER.productionOrders'|translate"></a></li>
+              <li ng-hide="isWarehouseOrdersActive && (privileges['ROLE_PANEL'] || privileges['ROLE_HANDLOWIEC'])"><a ng-href="#/production-order-local" ng-bind="'HEADER.productionOrders'|translate"></a></li>
+              <li ng-show="privileges['ROLE_PANEL']"><a ng-href="#/palette-type" ng-bind="'HEADER.palette-type'|translate"></a></li>
+              <li ng-show="privileges['ROLE_PANEL']"><a ng-href="#/reclassificationHeaders" ng-bind="'HEADER.reclassificationHeaders'|translate"></a></li>
+              <li ng-show="privileges['ROLE_PANEL']"><a ng-href="#/reclassificationHistory" ng-bind="'HEADER.reclassificationHistory'|translate"></a></li>
             </ul>
 
 

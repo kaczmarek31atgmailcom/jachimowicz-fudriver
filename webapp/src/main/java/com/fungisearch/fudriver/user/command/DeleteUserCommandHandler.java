@@ -31,6 +31,7 @@ public class DeleteUserCommandHandler implements CommandHandler<DeleteUserComman
         userRoleFactory.userRoleBuilder().roleName("ROLE_ROZLICZENIA").userId(command.userId).build().remove();
         userRoleFactory.userRoleBuilder().roleName("ROLE_WAGA").userId(command.userId).build().remove();
         userRoleFactory.userRoleBuilder().roleName("ROLE_HOTEL").userId(command.userId).build().remove();
+        userRoleFactory.userRoleBuilder().roleName("ROLE_HANDLOWIEC").userId(command.userId).build().remove();
         return CommandResult.OK;
     }
 }

@@ -17,4 +17,5 @@ public class AddUserCommand implements Command {
     public Boolean leader;
     public Boolean palety;
     public Boolean hotel;
+    public Boolean handlowiec;
 }

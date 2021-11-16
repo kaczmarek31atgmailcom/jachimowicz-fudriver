@@ -22,7 +22,7 @@
 		<intercept-url pattern="/stand" access="permitAll" />
 		<intercept-url pattern="/spring_security_login" access="permitAll" />
 		<intercept-url pattern="/websocket/**" access="hasRole('ROLE_WAGA')" />
-		<intercept-url pattern="/welcome" access="hasAnyRole('ROLE_WAGA', 'ROLE_LEADER','ROLE_PALETY','ROLE_ROZLICZENIA','ROLE_PANEL','ROLE_HOTEL')" />
+		<intercept-url pattern="/welcome" access="hasAnyRole('ROLE_WAGA', 'ROLE_LEADER','ROLE_PALETY','ROLE_ROZLICZENIA','ROLE_PANEL','ROLE_HOTEL','ROLE_HANDLOWIEC')" />
 		<intercept-url pattern="/leaderReport/**" access="hasRole('ROLE_LEADER')" />
 		<intercept-url pattern="/scalesStatus/**" access="hasRole('ROLE_LEADER')" />
 		<intercept-url pattern="/rest/reportForLeader" access="hasRole('ROLE_LEADER')" />
@@ -49,7 +49,7 @@
 		<intercept-url pattern="/rest/settings/**" access="hasRole('ROLE_PANEL')" method="POST"/>
 		<intercept-url pattern="/rest/settings/**" access="hasRole('ROLE_PANEL')" method="POST"/>
 		<intercept-url pattern="/rest/settings/**" access="hasRole('ROLE_PANEL')" method="PUT"/>
-		<intercept-url pattern="/rest/settings/**" access="hasAnyRole('ROLE_PANEL','ROLE_PALETY','ROLE_LEADER','ROLE_ROZLICZENIA','ROLE_WAGA')" method="GET"/>
+		<intercept-url pattern="/rest/settings/**" access="hasAnyRole('ROLE_PANEL','ROLE_PALETY','ROLE_LEADER','ROLE_ROZLICZENIA','ROLE_WAGA','ROLE_HANDLOWIEC')" method="GET"/>
 		<intercept-url pattern="/rest/truck/**" access="hasRole('ROLE_PANEL')" method="POST"/>
 		<intercept-url pattern="/rest/truck/**" access="hasRole('ROLE_PANEL')" method="DELETE"/>
 		<intercept-url pattern="/rest/truck/**" access="hasAnyRole('ROLE_PANEL','ROLE_PALETY','ROLE_LEADER','ROLE_ROZLICZENIA','ROLE_WAGA')" method="GET"/>

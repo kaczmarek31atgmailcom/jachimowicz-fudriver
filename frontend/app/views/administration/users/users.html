@@ -14,6 +14,7 @@
           <th ng-bind="'users.waga' | translate"></th>
           <th ng-bind="'users.leader' | translate"></th>
           <th ng-bind="'users.palety' | translate"></th>
+          <th ng-bind="'users.handlowiec' | translate"></th>
           <th ng-bind="'users.hotel' | translate"></th>
           <th>&nbsp;</th>
           <th>&nbsp;</th>
@@ -42,6 +43,12 @@
           <td class="text-left"><i class="fa fa-check fa-lg text-success"
                                    ng-show="checkRight(user.id,'ROLE_PALETY');"></i><i
             class="fa fa-times fa-lg text-danger" ng-show="!checkRight(user.id,'ROLE_PALETY');"></i></td>
+
+
+          <td class="text-left"><i class="fa fa-check fa-lg text-success"
+                                   ng-show="checkRight(user.id,'ROLE_HANDLOWIEC');"></i><i
+            class="fa fa-times fa-lg text-danger" ng-show="!checkRight(user.id,'ROLE_HANDLOWIEC');"></i></td>
+
 
           <td class="text-left"><i class="fa fa-check fa-lg text-success"
                                    ng-show="checkRight(user.id,'ROLE_HOTEL');"></i><i
