@@ -82,32 +82,32 @@
           </li>
 
 
-          <li class="dropdown" ng-show="privileges['ROLE_PANEL']">
+          <li class="dropdown" ng-show="privileges['ROLE_PANEL'] || privileges['ROLE_LEADER'] || privileges['ROLE_WAGA']">
             <a ng-href="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"
                ng-bind="'HEADER.ADMIN'|translate"><span
               class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
-              <li><a ng-href="#/users"><i class="fa fa-user"></i> {{'admin.users' | translate}}</a></li>
-              <li><a ng-href="#/reclassify"><i class="fa fa-exchange"></i> {{'admin.reclassification' | translate}}</a></li>
-              <li><a ng-href="#/reclassifyReport"><i class="fa fa-table"></i> {{'admin.reclassificationReport' | translate}}</a></li>
+              <li ng-show="privileges['ROLE_PANEL']"><a ng-href="#/users"><i class="fa fa-user"></i> {{'admin.users' | translate}}</a></li>
+              <li ng-show="privileges['ROLE_PANEL'] || privileges['ROLE_LEADER'] || privileges['ROLE_WAGA']"><a ng-href="#/reclassify"><i class="fa fa-exchange"></i> {{'admin.reclassification' | translate}}</a></li>
+              <li ng-show="privileges['ROLE_PANEL']"><a ng-href="#/reclassifyReport"><i class="fa fa-table"></i> {{'admin.reclassificationReport' | translate}}</a></li>
               <li ng-show="(activeBrc || activeEastMushrooms) && privileges['ROLE_PANEL']"><a ng-href="#/customer"><i class="fa fa-users"></i>
                 {{'settings.customer.menu' | translate}}</a></li>
-              <li><a ng-href="#/type"><i class="fa fa-square-o"></i> {{'admin.type' | translate}}</a></li>
-              <li><a ng-href="#/typeGroup"><i class="fa fa-clone"></i> {{'admin.typeGroups' | translate}}</a></li>
-              <li><a ng-href="#/typeSize"><i class="fa fa-arrows-alt"></i> {{'admin.typeSize' | translate}}</a></li>
-              <li><a ng-href="#/box"><i class="fa fa-shopping-basket"></i> {{'admin.box' | translate}}</a></li>
-              <li><a ng-href="#/trolleyMan"><i class="fa fa-balance-scale"></i> {{'admin.trolleyMan' | translate}}</a></li>
+              <li ng-show="privileges['ROLE_PANEL']"><a ng-href="#/type"><i class="fa fa-square-o"></i> {{'admin.type' | translate}}</a></li>
+              <li ng-show="privileges['ROLE_PANEL']"><a ng-href="#/typeGroup"><i class="fa fa-clone"></i> {{'admin.typeGroups' | translate}}</a></li>
+              <li ng-show="privileges['ROLE_PANEL']"><a ng-href="#/typeSize"><i class="fa fa-arrows-alt"></i> {{'admin.typeSize' | translate}}</a></li>
+              <li ng-show="privileges['ROLE_PANEL']"><a ng-href="#/box"><i class="fa fa-shopping-basket"></i> {{'admin.box' | translate}}</a></li>
+              <li ng-show="privileges['ROLE_PANEL']"><a ng-href="#/trolleyMan"><i class="fa fa-balance-scale"></i> {{'admin.trolleyMan' | translate}}</a></li>
             </ul>
           </li>
 
-          <li class="dropdown" ng-show="privileges['ROLE_LEADER']">
+          <li class="dropdown" ng-show="privileges['ROLE_LEADER'] || privileges['ROLE_PANEL']">
             <a ng-href="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"
                ng-bind="'HEADER.CYCLES'|translate"><span
               class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
-              <li><a ng-href="#/cycle-dates"><i class="fa fa-calendar"></i> {{'cycles.dates' | translate}}</a></li>
-              <li><a ng-href="#/cycle-headers"><i class="fa fa-sitemap"></i> {{'cycles.headers' | translate}}</a></li>
-              <li><a ng-href="#/cycle-by-technologists"><i class="fa fa-birthday-cake"></i> {{'cycles.by-technologists' | translate}}</a></li>
+              <li ng-show="privileges['ROLE_LEADER'] || privileges['ROLE_PANEL']"><a ng-href="#/cycle-dates"><i class="fa fa-calendar"></i> {{'cycles.dates' | translate}}</a></li>
+              <li ng-show="privileges['ROLE_LEADER'] || privileges['ROLE_PANEL']"><a ng-href="#/cycle-headers"><i class="fa fa-sitemap"></i> {{'cycles.headers' | translate}}</a></li>
+              <li ng-show="privileges['ROLE_LEADER'] || privileges['ROLE_PANEL']"><a ng-href="#/cycle-by-technologists"><i class="fa fa-birthday-cake"></i> {{'cycles.by-technologists' | translate}}</a></li>
             </ul>
           </li>
 
@@ -127,49 +127,49 @@
           </li>
 
 
-          <li class="dropdown" ng-show="privileges['ROLE_LEADER']">
+          <li class="dropdown" ng-show="privileges['ROLE_LEADER'] || privileges['ROLE_PANEL']">
             <a ng-href="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"
                ng-bind="'HEADER.REPORTS_MENU'|translate"><span
               class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
-              <li><a ng-href="#/leaderReport"><i class="fa fa-user"></i> {{'HEADER.LEADER_REPORT' | translate}}</a></li>
-              <li><a ng-href="#/report/typesByPickers"><i class="fa fa-table"></i> {{'header.reports.types-by-pickers' | translate}}</a></li>
-              <li><a ng-href="#/report/cycles-by-brigades"><i class="fa fa-users"></i> {{'HEADER.CYCLES_BY_BRIGADES' | translate}}</a></li>
-              <li><a ng-href="#/worktimeReport"><i class="fa fa-clock-o"></i> {{'HEADER.WORKTIME_REPORT' | translate}}</a></li>
-              <li><a ng-href="#/scalesStatus"><i class="fa fa-balance-scale"></i>
+              <li ng-show="privileges['ROLE_LEADER'] || privileges['ROLE_PANEL']"><a ng-href="#/leaderReport"><i class="fa fa-user"></i> {{'HEADER.LEADER_REPORT' | translate}}</a></li>
+              <li ng-show="privileges['ROLE_LEADER'] || privileges['ROLE_PANEL']"><a ng-href="#/report/typesByPickers"><i class="fa fa-table"></i> {{'header.reports.types-by-pickers' | translate}}</a></li>
+              <li ng-show="privileges['ROLE_LEADER'] || privileges['ROLE_PANEL']"><a ng-href="#/report/cycles-by-brigades"><i class="fa fa-users"></i> {{'HEADER.CYCLES_BY_BRIGADES' | translate}}</a></li>
+              <li ng-show="privileges['ROLE_LEADER'] || privileges['ROLE_PANEL']"><a ng-href="#/worktimeReport"><i class="fa fa-clock-o"></i> {{'HEADER.WORKTIME_REPORT' | translate}}</a></li>
+              <li ng-show="privileges['ROLE_LEADER'] || privileges['ROLE_PANEL']"><a ng-href="#/scalesStatus"><i class="fa fa-balance-scale"></i>
                 {{'HEADER.SCALE_STATUS' | translate}}</a></li>
-              <li><a ng-href="#/collectedByChamber"><i class="fa fa-columns"></i> {{'HEADER.CHAMBER_STATUS' | translate}}</a></li>
-              <li><a ng-href="#/sizeByCycle"><i class="fa fa-arrows-alt"></i> {{'HEADER.SIZE_BY_CYCLE' | translate}}</a></li>
-              <li><a ng-href="#/scannerManReport"><i class="fa fa-shopping-cart"></i> {{'HEADER.SCANNER_MAN_REPORT' | translate}}</a></li>
-              <li><a ng-href="#/report/trolleyManReport"><i class="fa fa-balance-scale"></i> {{'HEADER.TROLLEY_MAN_REPORT' | translate}}</a></li>
-              <li ng-hide="activeBrc"><a ng-href="#/salesReport"><i class="fa fa-dollar"></i> {{'HEADER.SALES_REPORT' | translate}}</a></li>
+              <li ng-show="privileges['ROLE_LEADER'] || privileges['ROLE_PANEL']"><a ng-href="#/collectedByChamber"><i class="fa fa-columns"></i> {{'HEADER.CHAMBER_STATUS' | translate}}</a></li>
+              <li ng-show="privileges['ROLE_LEADER'] || privileges['ROLE_PANEL']"><a ng-href="#/sizeByCycle"><i class="fa fa-arrows-alt"></i> {{'HEADER.SIZE_BY_CYCLE' | translate}}</a></li>
+              <li ng-show="privileges['ROLE_LEADER'] || privileges['ROLE_PANEL']"><a ng-href="#/scannerManReport"><i class="fa fa-shopping-cart"></i> {{'HEADER.SCANNER_MAN_REPORT' | translate}}</a></li>
+              <li ng-show="privileges['ROLE_LEADER'] || privileges['ROLE_PANEL']"><a ng-href="#/report/trolleyManReport"><i class="fa fa-balance-scale"></i> {{'HEADER.TROLLEY_MAN_REPORT' | translate}}</a></li>
+              <!--<li ng-hide="activeBrc"><a ng-href="#/salesReport"><i class="fa fa-dollar"></i> {{'HEADER.SALES_REPORT' | translate}}</a></li>-->
             </ul>
           </li>
 
 
-          <li class="dropdown" ng-show="privileges['ROLE_PANEL'] || privileges['ROLE_LEADER'] || privileges['ROLE_WAGA']">
+          <li class="dropdown" ng-show="privileges['ROLE_DOSTEPY'] || privileges['ROLE_LEADER']">
             <a ng-href="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"
                ng-bind="'HEADER.PEOPLE'|translate"><span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
-              <li ng-show="privileges['ROLE_PANEL']"><a ng-href="#/people"><i class="fa fa-user"></i> {{'people.people' | translate}}</a></li>
-              <li ng-show="privileges['ROLE_PANEL'] || privileges['ROLE_WAGA'] || privileges['ROLE_LEADER']"><a ng-href="#/people/barcodes"><i class="fa fa-barcode"></i> {{'people.barcodes' | translate}}</a></li>
-              <li ng-show="privileges['ROLE_PANEL'] || privileges['ROLE_LEADER']"><a ng-href="#/people/worktime"><i class="fa fa-clock-o"></i>
+              <li ng-show="privileges['ROLE_DOSTEPY']"><a ng-href="#/people"><i class="fa fa-user"></i> {{'people.people' | translate}}</a></li>
+              <li ng-show="privileges['ROLE_DOSTEPY'] || privileges['ROLE_LEADER']"><a ng-href="#/people/barcodes"><i class="fa fa-barcode"></i> {{'people.barcodes' | translate}}</a></li>
+              <li ng-show="privileges['ROLE_DOSTEPY'] || privileges['ROLE_LEADER']"><a ng-href="#/people/worktime"><i class="fa fa-clock-o"></i>
                 {{'people.worktime' | translate}}</a></li>
               <!--<li><a ng-href="#/test">test</a></li>-->
             </ul>
           </li>
 
-          <li class="dropdown" ng-show="privileges['ROLE_PANEL'] || privileges['ROLE_HANDLOWIEC']">
+          <li class="dropdown" ng-show="privileges['ROLE_HANDLOWIEC']">
             <a href="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"
                ng-bind="'HEADER.EASTWAREHOUSE'|translate"><span
               class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
-              <li ng-show="privileges['ROLE_PANEL']"><a ng-href="#/reclassificationTypes" ng-bind="'HEADER.reclassificationTypes'|translate"></a></li>
-              <li ng-show="isWarehouseOrdersActive && (privileges['ROLE_PANEL'])"><a ng-href="#/production-orders" ng-bind="'HEADER.productionOrders'|translate"></a></li>
-              <li ng-hide="isWarehouseOrdersActive && (privileges['ROLE_PANEL'] || privileges['ROLE_HANDLOWIEC'])"><a ng-href="#/production-order-local" ng-bind="'HEADER.productionOrders'|translate"></a></li>
-              <li ng-show="privileges['ROLE_PANEL']"><a ng-href="#/palette-type" ng-bind="'HEADER.palette-type'|translate"></a></li>
-              <li ng-show="privileges['ROLE_PANEL']"><a ng-href="#/reclassificationHeaders" ng-bind="'HEADER.reclassificationHeaders'|translate"></a></li>
-              <li ng-show="privileges['ROLE_PANEL']"><a ng-href="#/reclassificationHistory" ng-bind="'HEADER.reclassificationHistory'|translate"></a></li>
+              <li ng-show="privileges['ROLE_HANDLOWIEC']"><a ng-href="#/reclassificationTypes" ng-bind="'HEADER.reclassificationTypes'|translate"></a></li>
+              <li ng-show="isWarehouseOrdersActive && (privileges['ROLE_HANDLOWIEC'])"><a ng-href="#/production-orders" ng-bind="'HEADER.productionOrders'|translate"></a></li>
+              <li ng-hide="isWarehouseOrdersActive && (privileges['ROLE_HANDLOWIEC'] || privileges['ROLE_HANDLOWIEC'])"><a ng-href="#/production-order-local" ng-bind="'HEADER.productionOrders'|translate"></a></li>
+              <li ng-show="privileges['ROLE_HANDLOWIEC']"><a ng-href="#/palette-type" ng-bind="'HEADER.palette-type'|translate"></a></li>
+              <li ng-show="privileges['ROLE_HANDLOWIEC']"><a ng-href="#/reclassificationHeaders" ng-bind="'HEADER.reclassificationHeaders'|translate"></a></li>
+              <li ng-show="privileges['ROLE_HANDLOWIEC']"><a ng-href="#/reclassificationHistory" ng-bind="'HEADER.reclassificationHistory'|translate"></a></li>
             </ul>
 
 

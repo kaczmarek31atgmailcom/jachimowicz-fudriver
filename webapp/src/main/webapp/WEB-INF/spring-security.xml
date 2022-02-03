@@ -25,11 +25,12 @@
 		<intercept-url pattern="/welcome" access="hasAnyRole('ROLE_WAGA', 'ROLE_LEADER','ROLE_PALETY','ROLE_ROZLICZENIA','ROLE_PANEL','ROLE_HOTEL','ROLE_HANDLOWIEC')" />
 		<intercept-url pattern="/leaderReport/**" access="hasRole('ROLE_LEADER')" />
 		<intercept-url pattern="/scalesStatus/**" access="hasRole('ROLE_LEADER')" />
+		<intercept-url pattern="/rest/cycle/**" access="hasAnyRole('ROLE_LEADER','ROLE_PANEL')" />
 		<intercept-url pattern="/rest/reportForLeader" access="hasRole('ROLE_LEADER')" />
 		<intercept-url pattern="/rest/person/workPeriod/**" access="hasAnyRole('ROLE_PANEL','ROLE_LEADER','ROLE_ROZLICZENIA')"/>
 		<intercept-url pattern="/rest/person/barcode/**" access="hasAnyRole('ROLE_PANEL','ROLE_LEADER','ROLE_ROZLICZENIA','ROLE_WAGA')" method="GET"/>
-		<intercept-url pattern="/rest/person/uniq" access="hasAnyRole('ROLE_PANEL','ROLE_LEADER','ROLE_ROZLICZENIA','ROLE_WAGA')" method="POST"/>
-		<intercept-url pattern="/rest/person/uniq" access="hasAnyRole('ROLE_PANEL','ROLE_LEADER','ROLE_ROZLICZENIA','ROLE_WAGA')" method="DELETE"/>
+		<intercept-url pattern="/rest/person/uniq" access="hasAnyRole('ROLE_PANEL','ROLE_LEADER','ROLE_ROZLICZENIA')" method="POST"/>
+		<intercept-url pattern="/rest/person/uniq" access="hasAnyRole('ROLE_PANEL','ROLE_LEADER','ROLE_ROZLICZENIA')" method="DELETE"/>
 		<intercept-url pattern="/rest/person/**" access="hasAnyRole('ROLE_PANEL','ROLE_LEADER','ROLE_ROZLICZENIA')" method="GET"/>
 		<intercept-url pattern="/rest/person/**" access="hasRole('ROLE_PANEL')" />
 		<intercept-url pattern="/rest/user/**" access="hasRole('ROLE_PANEL')" />
