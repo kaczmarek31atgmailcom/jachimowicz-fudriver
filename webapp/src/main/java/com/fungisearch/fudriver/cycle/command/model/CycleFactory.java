@@ -7,6 +7,8 @@ import com.fungisearch.fudriver.user.command.model.UserFactory;
 import com.fungisearch.fudriver.user.query.service.UserService;
 import com.fungisearch.fudriver.validation.BeanValidator;
 import com.fungisearch.fudriver.zarobki.command.model.ZarobkiFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ public class CycleFactory {
     private final UserService userService;
     private final ChamberRepository chamberRepository;
     private final UserFactory userFactory;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
     @Autowired
     public CycleFactory(CycleRepository cycleRepository, BeanValidator beanValidator, ZarobkiFactory zarobkiFactory, UserService userService, ChamberRepository chamberRepository, UserFactory userFactory) {

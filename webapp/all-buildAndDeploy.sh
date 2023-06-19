@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-export JETTY_HOME="/home/marcin/jetty/rymuza/jetty-rymuza-fudriver"
+export JETTY_HOME="/home/marcin/jetty/jachimowicz/jetty-jachimowicz-fudriver"
 #mvn clean package -Pfrontend -Dmaven.test.skip=true
 mvn clean package -Pfrontend
 $JETTY_HOME/bin/jetty.sh stop

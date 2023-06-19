@@ -2,6 +2,8 @@ package com.fungisearch.fudriver.cycle.command.repository;
 
 import com.fungisearch.fudriver.cycle.command.model.Cycle;
 import com.fungisearch.fudriver.settings.command.model.Chamber;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -11,6 +13,8 @@ import java.util.List;
 
 @Repository
 public class CycleRepositoryImpl implements CycleRepository {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
     @PersistenceContext
     private EntityManager em;
