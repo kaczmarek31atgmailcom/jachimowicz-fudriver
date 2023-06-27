@@ -312,6 +312,28 @@ public class ZarobkiEntry {
         beanValidator.validate(this);
     }
 
+    public void reclassify(Long rodzajId, double weight, ExportType exportType){
+        if(rodzajId != null) {
+            this.rodzajId = rodzajId;
+        }
+        this.export = 0.0;
+        this.kraj = 0.0;
+        this.inne = 0.0;
+        this.ilosc = weight;
+        if(exportType == ExportType.EXPORT){
+            this.export = weight;
+        }
+        if(exportType == ExportType.KRAJ){
+            this.kraj = weight;
+        }
+        if(exportType == ExportType.INNE){
+            this.inne = weight;
+        }
+        this.qualityCheckStatus = 2;
+        beanValidator.validate(this);
+    }
+
+
 
     public static class ZarobkiEntryBuilder{
         private ZarobkiRepository zarobkiRepository;

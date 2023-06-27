@@ -1,7 +1,10 @@
 package com.fungisearch.fudriver.zarobki.query.service;
 
+import com.fungisearch.fudriver.common.command.CommandResult;
 import com.fungisearch.fudriver.cycle.query.dao.CycleDao;
 import com.fungisearch.fudriver.cycle.query.dto.WozekCycleDto;
+import com.fungisearch.fudriver.reclassification.command.ReclassifyByBarcodeCommand;
+import com.fungisearch.fudriver.reclassification.command.ReclassifyByBarcodeCommandHandler;
 import com.fungisearch.fudriver.type.query.dao.TypeDao;
 import com.fungisearch.fudriver.type.query.dto.WozekTypeDto;
 import com.fungisearch.fudriver.zarobki.query.dao.PaletaDao;
@@ -21,14 +24,17 @@ import java.util.List;
 @RestController
 public class PaletaReclassifyRestService {
 
-    @Autowired
-    private PaletaDao paletaDao;
+    private final PaletaDao paletaDao;
+    private final TypeDao typeDao;
+    private final CycleDao cycleDao;
+    private final ReclassifyByBarcodeCommandHandler reclassifyByBarcodeCommandHandler;
 
-    @Autowired
-    private TypeDao typeDao;
-
-    @Autowired
-    private CycleDao cycleDao;
+    public PaletaReclassifyRestService(PaletaDao paletaDao, TypeDao typeDao, CycleDao cycleDao, ReclassifyByBarcodeCommandHandler reclassifyByBarcodeCommandHandler) {
+        this.paletaDao = paletaDao;
+        this.typeDao = typeDao;
+        this.cycleDao = cycleDao;
+        this.reclassifyByBarcodeCommandHandler = reclassifyByBarcodeCommandHandler;
+    }
 
     @RequestMapping(value = "/rest/reclassify/paletaHeader", method=RequestMethod.GET ,produces = "application/json; charset=UTF-8")
     public List<PaletaHeaderDto> getPalety(@RequestParam(value="dateFrom") @DateTimeFormat(pattern="yyyyMMdd")Date dateFrom, @RequestParam(value="dateTo") @DateTimeFormat(pattern="yyyyMMdd") Date dateTo){
@@ -53,5 +59,10 @@ public class PaletaReclassifyRestService {
     @RequestMapping(value = "/rest/reclassify/paletaHeader/{nr}", method=RequestMethod.GET, produces="application/json; charset=UTF-8")
     public PaletaDetailsHeaderDto getHeader(@PathVariable Long nr){
         return paletaDao.getPaletaHeader(nr);
+    }
+
+    @PutMapping("/rest/reclassify/byBarcode")
+    public CommandResult reclassifyByBarcode(@RequestBody List<ReclassifyByBarcodeCommand> commands){
+        return reclassifyByBarcodeCommandHandler.handle(commands);
     }
 }

@@ -1,0 +1,121 @@
+<div class="container-fluid" ng-controller="ReclassifyByBarcodeCtrl" ng-init="focusInputText()">
+  <ol class="breadcrumb">
+    <li class="active">{{'reclassify-by-barcode.breadcrumb' | translate}}</li>
+  </ol>
+  <div growl></div>
+  <div class="row">
+    <div class="loading" ng-show="showSpinner">Loading&#8230;</div>
+    <div class="col-lg-1 col-sm-1">&nbsp;</div>
+    <div class="col-lg-10 col-sm-10">
+      <form name="barForm">
+        <div class="form-group col-lg-3 col-xs-3">
+          <input class="form-control" focus-if="documentScreen" name="barcode" id="barcode" type="text"
+                 ng-model="barcode"
+                 ng-change="parseBarcode(barcode)" ng-blur="focusInputText()" autocomplete="off">
+        </div>
+        <div class="form-group col-lg-3 col-xs-3">
+          <button class="btn btn-block btn-success" ng-click="details=[]">{{'reclassify-by-barcode.clear' | translate}}</button>
+        </div>
+
+        <div class="form-group col-lg-3 col-xs-3">
+          <select id="targetTypeId" class="form-control input-sm" ng-model="targetTypeId" ng-options="type.id as type.name for type in types" ng-change="updateVisibility(searchPicker,ranges)"></select>
+        </div>
+
+        <div class="form-group col-lg-3 col-xs-3">
+          <button class="btn btn-block btn-danger" ng-click="reclassify();focusInputText" ng-disabled="(details.length === 0) || !(targetTypeId > 0)">{{'reclassify-by-barcode.reclassify' | translate}}</button>
+        </div>
+
+      </form>
+    </div>
+    <div class="col-lg-1 col-sm-1">&nbsp;</div>
+  </div>
+  <div class="row">
+    <div class="col-lg-1 col-sm-1">&nbsp;</div>
+    <div class="col-lg-10 col-sm-10" ng-show="details.length > 0">
+      <table class="table table-bordered">
+        <tr>
+          <th>
+            <a href="" ng-click="orderByField='code'; reverseSort = !reverseSort">
+              {{'checkCode.barcode' | translate}}
+              <span ng-show="orderByField=='code' && !reverseSort" class="fa fa-caret-down"></span>
+              <span ng-show="orderByField=='code' && reverseSort" class="fa fa-caret-up"></span>
+            </a>
+          </th>
+
+          <th>
+            <a href="" ng-click="orderByField='typeName'; reverseSort = !reverseSort">
+              {{'checkCode.typeName' | translate}}
+              <span ng-show="orderByField=='typeName' && !reverseSort" class="fa fa-caret-down"></span>
+              <span ng-show="orderByField=='typeName' && reverseSort" class="fa fa-caret-up"></span>
+            </a>
+          </th>
+
+          <th>
+            <a href="" ng-click="orderByField='typeWeight'; reverseSort = !reverseSort">
+              {{'checkCode.typeWeight' | translate}}
+              <span ng-show="orderByField=='typeWeight' && !reverseSort" class="fa fa-caret-down"></span>
+              <span ng-show="orderByField=='typeWeight' && reverseSort" class="fa fa-caret-up"></span>
+            </a>
+          </th>
+
+          <th>
+            <a href="" ng-click="orderByField='pickerId'; reverseSort = !reverseSort">
+              {{'checkCode.pickerId' | translate}}
+              <span ng-show="orderByField=='pickerId' && !reverseSort" class="fa fa-caret-down"></span>
+              <span ng-show="orderByField=='pickerId' && reverseSort" class="fa fa-caret-up"></span>
+            </a>
+          </th>
+
+          <th>
+            <a href="" ng-click="orderByField='pickerName'; reverseSort = !reverseSort">
+              {{'checkCode.pickerName' | translate}}
+              <span ng-show="orderByField=='pickerName' && !reverseSort" class="fa fa-caret-down"></span>
+              <span ng-show="orderByField=='pickerName' && reverseSort" class="fa fa-caret-up"></span>
+            </a>
+          </th>
+
+          <th>
+            <a href="" ng-click="orderByField='pickerSurname'; reverseSort = !reverseSort">
+              {{'checkCode.pickerSurname' | translate}}
+              <span ng-show="orderByField=='pickerSurname' && !reverseSort" class="fa fa-caret-down"></span>
+              <span ng-show="orderByField=='pickerSurname' && reverseSort" class="fa fa-caret-up"></span>
+            </a>
+          </th>
+
+          <th>
+            <a href="" ng-click="orderByField='chamberName'; reverseSort = !reverseSort">
+              {{'checkCode.chamberName' | translate}}
+              <span ng-show="orderByField=='chamberName' && !reverseSort" class="fa fa-caret-down"></span>
+              <span ng-show="orderByField=='chamberName' && reverseSort" class="fa fa-caret-up"></span>
+            </a>
+          </th>
+
+          <th>
+            <a href="" ng-click="orderByField='harvestDate'; reverseSort = !reverseSort">
+              {{'checkCode.harvestDate' | translate}}
+              <span ng-show="orderByField=='harvestDate' && !reverseSort" class="fa fa-caret-down"></span>
+              <span ng-show="orderByField=='harvestDate' && reverseSort" class="fa fa-caret-up"></span>
+            </a>
+          </th>
+<th>&nbsp;</th>
+        </tr>
+        <tr ng-repeat="detail in details | orderBy:orderByField:reverseSort">
+          <td>{{detail.code}}</td>
+          <td>{{detail.typeName}}</td>
+          <td>{{detail.typeWeight | longToWeight}}</td>
+          <td>{{detail.pickerId}}</td>
+          <td>{{detail.pickerName}}</td>
+          <td>{{detail.pickerSurname}}</td>
+          <td>{{detail.chamberName}}</td>
+          <td>{{detail.harvestDate | date:'yyyy/MM/dd'}}</td>
+          <td class="col-lg-1 text-right"><i class="fa fa-trash-o hand-cursor" ng-click="removeBox(detail)"></i></td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div class="col-lg-1 col-sm-1">&nbsp;</div>
+  </div>
+
+</div>
+

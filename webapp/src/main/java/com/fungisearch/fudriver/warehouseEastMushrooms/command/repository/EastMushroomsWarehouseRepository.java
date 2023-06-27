@@ -65,4 +65,15 @@ public class EastMushroomsWarehouseRepository {
     public void save(ShipmentOrder shipmentOrder) {
         em.persist(shipmentOrder);
     }
+
+    public WarehouseUnit findByUniqAndPicker(long uniqId, long pickerId) {
+        Query query = em.createQuery("select w from WarehouseUnit w where w.uniqId =:uniqId and w.pickerId =:pickerId");
+        query.setParameter("uniqId",uniqId);
+        query.setParameter("pickerId",pickerId);
+        List<WarehouseUnit> list = query.getResultList();
+        if(!(list.isEmpty())){
+            return list.get(0);
+        }
+        return null;
+    }
 }

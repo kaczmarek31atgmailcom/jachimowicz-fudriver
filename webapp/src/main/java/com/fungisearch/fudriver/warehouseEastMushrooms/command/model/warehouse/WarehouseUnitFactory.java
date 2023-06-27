@@ -29,4 +29,14 @@ public class WarehouseUnitFactory {
         }
         return warehouseUnit;
     }
+
+    public WarehouseUnit findByUniqAndPicker(long uniqId, long pickerId) {
+        WarehouseUnit warehouseUnit = warehouseRepository.findByUniqAndPicker(uniqId,pickerId);
+        if(warehouseUnit != null){
+            warehouseUnit.warehouseRepository = warehouseRepository;
+            warehouseUnit.beanValidator = beanValidator;
+            warehouseUnit.typeFactory = typeFactory;
+        }
+        return warehouseUnit;
+    }
 }

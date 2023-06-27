@@ -4,7 +4,7 @@ angular.module('frontendApp')
   .controller('LeaderReportCtrl', ['$scope', '$rootScope', '$http','growl', 'leaderReportService',
     function ($scope, $rootScope, $http, growl, leaderReportService) {
 
-    $scope.startDay = moment().subtract(14, 'days');
+    $scope.startDay = moment().subtract(3, 'days');
     $scope.endDay = moment();
     $scope.loading = 0;
     $scope.report = [];
@@ -144,7 +144,7 @@ angular.module('frontendApp')
       if (all === undefined || part === undefined || all <= 0 || part <= 0) {
         return 0;
       } else {
-        return parseInt((part / all) * 100);
+        return (parseInt((part / all) * 10000))/100;
       }
     };
 

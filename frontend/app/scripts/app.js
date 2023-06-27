@@ -128,6 +128,9 @@ angular
       .when('/reclassificationHistoryDetails/:reclassifcationId', {
         templateUrl: 'views/reclassification/skup/historyDetails.html'
       })
+      .when('/reclassifyByBarcode', {
+        templateUrl: 'views/administration/reclassify-by-barcode/reclassify-by-barcode.html'
+      })
       .when('/users', {
         templateUrl: 'views/administration/users/users.html'
       })

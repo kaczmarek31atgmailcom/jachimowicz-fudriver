@@ -174,6 +174,15 @@ public class WarehouseUnit extends BaseEntity {
         this.remoteTypeId = null;
     }
 
+    public void reclassify(long newTypeId) {
+        if (!this.status.equals(WarehouseUnitStatus.ON_STOCK)) {
+            throw new IllegalStateException("Reclassify warehouse unit that is not on stock");
+        }
+
+        this.localTypeId = newTypeId;
+    }
+
+
     public void moveToAnotherWarehousePalette(long paletteId){
         if(this.status != WarehouseUnitStatus.ON_STOCK){
             throw new IllegalStateException("Moving to other palette warehouseUnit that is not on the stock.");

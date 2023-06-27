@@ -95,10 +95,9 @@ public class LocalReclassificationLog extends BaseEntity{
         this.beanValidator = beanValidator;
     }
 
-    public Long create(){
+    public void save(){
         beanValidator.validate(this);
         auditRepository.saveLocalReclassificationLog(this);
-        return this.id;
     }
 
 
@@ -261,6 +260,7 @@ public class LocalReclassificationLog extends BaseEntity{
             localReclassificationLog.targetCycleId = this.targetCycleId;
             localReclassificationLog.targetChamberName = this.targetChamberName;
             localReclassificationLog.warehouseOnly = this.warehouseOnly;
+            localReclassificationLog.save();
             return localReclassificationLog;
         }
     }

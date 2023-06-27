@@ -56,7 +56,7 @@ public class LocalReclassifyCommandHandler{
                 .sourceCycleId(zarobkiEntry.getCycleId())
                 .targetCycleId(command.cycleId)
                 .targetTypeId(command.rodzajId)
-                .build().create();
+                .build();
     }
 }
 
