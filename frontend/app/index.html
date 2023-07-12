@@ -89,7 +89,6 @@
             <ul class="dropdown-menu" role="menu">
               <li ng-show="privileges['ROLE_PANEL']"><a ng-href="#/users"><i class="fa fa-user"></i> {{'admin.users' | translate}}</a></li>
               <li ng-show="privileges['ROLE_PANEL'] || privileges['ROLE_LEADER'] || privileges['ROLE_WAGA']"><a ng-href="#/reclassify"><i class="fa fa-exchange"></i> {{'admin.reclassification' | translate}}</a></li>
-              <li ng-show="privileges['ROLE_DOSTEPY']"><a ng-href="#/reclassifyByBarcode"><i class="fa fa-barcode"></i> {{'admin.reclassification-by-barcode' | translate}}</a></li>
               <li ng-show="privileges['ROLE_PANEL']"><a ng-href="#/reclassifyReport"><i class="fa fa-table"></i> {{'admin.reclassificationReport' | translate}}</a></li>
               <li ng-show="(activeBrc || activeEastMushrooms) && privileges['ROLE_PANEL']"><a ng-href="#/customer"><i class="fa fa-users"></i>
                 {{'settings.customer.menu' | translate}}</a></li>
@@ -183,7 +182,9 @@
               <li><a ng-href="#/scanner"><i class="fa fa-barcode"></i> {{'scanner.header' | translate}} </a></li>
               <li ng-show="showMassHarvest"><a ng-href="#/massHarvest"><i class="fa fa-calculator"></i>
                 {{'manualBoard.header' | translate}} </a></li>
+              <li><a ng-href="#/reclassifyByBarcode"><i class="fa fa-barcode"></i> {{'admin.reclassification-by-barcode' | translate}}</a></li>
             </ul>
+
           </li>
 
           <li class="dropdown" ng-show="privileges['ROLE_PALETY'] && activeEastMushrooms">

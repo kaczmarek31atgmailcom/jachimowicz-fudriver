@@ -39,7 +39,7 @@ public class LocalReclassifyCommandHandler{
         List<ZarobkiEntry> wozek = zarobkiFactory.getWozek(command.paletaNr);
         Type targetType = typeFactory.findById(command.rodzajId);
         for (ZarobkiEntry entry : wozek) {
-            createAuditLog(command,entry);
+            //createAuditLog(command,entry);
             entry.reclassify(command.rodzajId, command.cycleId, targetType.getWeight(), targetType.getExportType(),command.trolleyManId);
         }
         return CommandResult.OK;

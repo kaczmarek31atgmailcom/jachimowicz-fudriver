@@ -45,7 +45,7 @@
 		<intercept-url pattern="/rest/calendar/**" access="hasRole('ROLE_ROZLICZENIA')" />
 		<intercept-url pattern="/rest/salary/**" access="hasRole('ROLE_ROZLICZENIA')" />
 		<intercept-url pattern="/rest/wage/**" access="hasRole('ROLE_ROZLICZENIA')" />
-		<intercept-url pattern="/rest/reclassification/**" access="hasRole('ROLE_PANEL')" />
+		<intercept-url pattern="/rest/reclassification/**" access="hasAnyRole('ROLE_PANEL','ROLE_WAGA')" />
 
 		<intercept-url pattern="/rest/settings/**" access="hasRole('ROLE_PANEL')" method="POST"/>
 		<intercept-url pattern="/rest/settings/**" access="hasRole('ROLE_PANEL')" method="POST"/>

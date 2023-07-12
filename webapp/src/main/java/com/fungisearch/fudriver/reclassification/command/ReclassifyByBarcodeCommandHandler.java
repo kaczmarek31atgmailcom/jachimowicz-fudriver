@@ -59,7 +59,7 @@ public class ReclassifyByBarcodeCommandHandler {
             UserDto user = userService.getCurrentUser();
             localReclassificationLogFactory.builder()
                     .date(new Date())
-                    .sourceTypeId(zarobkiEntry.rodzajId)
+                    .sourceTypeId(sourceType.getId())
                     .sourceTypename(sourceType.getName())
                     .sourceTypeWeight(sourceType.getWeight())
                     .targetTypeId(targetType.getId())
