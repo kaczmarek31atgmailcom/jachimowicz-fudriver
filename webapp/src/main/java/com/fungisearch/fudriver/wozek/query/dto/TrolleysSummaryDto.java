@@ -14,4 +14,5 @@ public class TrolleysSummaryDto {
     public String chamberName;
     public long totalAmount;
     public long totalWeight;
+    public long totalReclassified;
 }

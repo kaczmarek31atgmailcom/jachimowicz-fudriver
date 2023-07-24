@@ -6,7 +6,7 @@ angular.module('frontendApp')
     $scope.loading = 0;
     $scope.startDate = moment().subtract(1, 'month');
     $scope.endDate = moment();
-
+    $scope.totalReclassified = 0;
 
     function compareTypes(a, b) {
       if (a.name > b.name) {
@@ -74,6 +74,7 @@ angular.module('frontendApp')
         trolleyMan.name = item.name;
         trolleyMan.surname = item.surname;
         trolleyMan.typesWeights = [];
+        trolleyMan.reclassified = $scope.findTrolleyManTotalReclassified(report,trolleyMan.id);
         types.forEach(function (type) {
           trolleyMan.typesWeights.push(findTrolleyManTypeResult(trolleyMan.id, type.id, report));
         })
@@ -105,6 +106,19 @@ angular.module('frontendApp')
         })
       })
       return uniqueTypes;
+    }
+
+    $scope.findTrolleyManTotalReclassified = function(report,trolleyManId){
+      var result = 0;
+      report.forEach(function(trolleyMan){
+        if(trolleyMan.trolleyManDto.id === trolleyManId) {
+          trolleyMan.deliverables.forEach(function (item) {
+            result += item.reclassified;
+          })
+        }
+      })
+      $scope.totalReclassified += result;
+      return result;
     }
 
     $scope.findTotalWeight = function(report){

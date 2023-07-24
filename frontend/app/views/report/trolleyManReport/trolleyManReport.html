@@ -25,17 +25,20 @@
       <table class="table table-condensed table-bordered export-table">
         <tr>
           <td><strong>{{'report.trolleyManReport.scaleMan' | translate}}</strong></td>
-            <td ng-repeat="type in uniqueTypes" class="text-right"><strong>{{type.name}} {{ type.weight | longToWeight}}</strong></td>
-        <td class="text-right"><strong>{{'report.trolleyManReport.total' | translate}}:</strong></td>
+          <td ng-repeat="type in uniqueTypes" class="text-right"><strong>{{type.name}} {{ type.weight | longToWeight}}</strong></td>
+          <td class="text-right"><strong>{{'report.trolleyManReport.reclassified' | translate}}:</strong></td>
+          <td class="text-right"><strong>{{'report.trolleyManReport.total' | translate}}:</strong></td>
         </tr>
         <tr ng-repeat="trolleyMan in trolleyMen">
           <td>{{trolleyMan.name}} {{trolleyMan.surname}}</td>
           <td ng-repeat="typeWeight in trolleyMan.typesWeights track by $index" class="text-right">{{typeWeight | longToWeight}}</td>
+          <td class="text-right"><strong>{{trolleyMan.reclassified | longToWeight}}</strong></td>
           <td class="text-right"><strong>{{trolleyMan.totalWeight | longToWeight}}</strong></td>
         </tr>
         <tr>
           <td><strong>{{'report.trolleyManReport.total' | translate}}:</strong></td>
           <td ng-repeat="type in uniqueTypes" class="text-right"><strong>{{type.totalWeight | longToWeight}}</strong></td>
+          <td class="text-right"><strong>{{totalReclassified | longToWeight}}</strong></td>
           <td class="text-right"><strong>{{totalWeight | longToWeight}}</strong></td>
         </tr>
       </table>

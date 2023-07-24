@@ -1313,6 +1313,7 @@ angular.module('myTranslator', ['pascalprecht.translate'])
       'production.order.local.message.success':'Zamówienie zapisane',
       'report.trolleyManReport.header':'Raport pracy wagowych',
       'report.trolleyManReport.scaleMan':'Wagowy',
+      'report.trolleyManReport.reclassified':'Przyklasyfikowania',
       'report.trolleyManReport.total':'Suma',
       'reclassify-by-barcode.breadcrumb':'Przeklasyfikowania po kodach kreskowych',
       'reclassify-by-barcode.clear':'Wyczyść listę',

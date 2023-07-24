@@ -48,21 +48,21 @@ public class TrolleyManDao {
     }
     
     public List<TrolleyManReportDto> getTrolleyManReport(Date startDate, Date endDate){
-        return jdbcTemplate.query("select " +
-                "       z.wozkowy_id  as trolleyManId, " +
-                "       tm.name       as trolleyManName, " +
-                "       tm.surname    as trolleyManSurname, " +
-                "       z.rodzaj_id   as typeId, " +
-                "       r.name        as typeName, " +
-                "       round(r.waga * 1000) as typeWeight, " +
-                "       sum(z.ilosc) * 1000 as totalWeight, " +
-                "       z.time        as date " +
-                " from zarobki z " +
+        return jdbcTemplate.query("select z.wozkowy_id                                          as trolleyManId, " +
+                "       tm.name                                               as trolleyManName, " +
+                "       tm.surname                                            as trolleyManSurname, " +
+                "       z.rodzaj_id                                           as typeId, " +
+                "       r.name                                                as typeName, " +
+                "       round(r.waga * 1000)                                  as typeWeight, " +
+                "       sum(z.ilosc) * 1000                                   as totalWeight, " +
+                "       ifnull(sum(z.ilosc * (z.test_jakosci = 2)), 0) * 1000 as reclassified, " +
+                "       z.time                                                as date " +
+                "from zarobki z " +
                 "         left join trolley_man tm on z.wozkowy_id = tm.id " +
                 "         left join rodzaj r on z.rodzaj_id = r.id " +
-                " where z.wozkowy_id is not null " +
-                " and z.time between ? and ? " +
-                " group by z.wozkowy_id, z.rodzaj_id, z.time ", new Object[]{DateUtils.getStartOfDay(startDate), DateUtils.getEndOfDay(endDate)}, new TrolleyManReportResultSetExtractor());
+                "where z.wozkowy_id is not null " +
+                "  and z.time between ? and ? " +
+                "group by z.wozkowy_id, z.rodzaj_id, z.time", new Object[]{DateUtils.getStartOfDay(startDate), DateUtils.getEndOfDay(endDate)}, new TrolleyManReportResultSetExtractor());
     }
 
     private class TrolleyManReportResultSetExtractor implements ResultSetExtractor<List<TrolleyManReportDto>> {
@@ -89,6 +89,7 @@ public class TrolleyManDao {
                 deliverablesDto.typeName = rs.getString("typeName");
                 deliverablesDto.typeWeight = rs.getInt("typeWeight");
                 deliverablesDto.totalWeight = rs.getInt("totalWeight");
+                deliverablesDto.reclassified = rs.getInt("reclassified");
                 deliverablesDto.date = rs.getDate("date");
                 trolleyManReportDto.deliverables.add(deliverablesDto);
             }

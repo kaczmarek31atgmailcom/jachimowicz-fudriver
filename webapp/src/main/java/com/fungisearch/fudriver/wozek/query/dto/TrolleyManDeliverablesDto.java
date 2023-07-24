@@ -7,5 +7,6 @@ public class TrolleyManDeliverablesDto {
     public int typeWeight;
     public String typeName;
     public int totalWeight;
+    public int reclassified;
     public Date date;
 }
