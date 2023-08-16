@@ -155,6 +155,7 @@ angular.module('frontendApp')
 
     $scope.init = function () {
       $scope.loading = 1;
+      $scope.totalReclassified = 0;
       TrolleyManService.getTrolleyManReport(moment($scope.startDate).format("YYYY-MM-DD"), moment($scope.endDate).format("YYYY-MM-DD"), function (report) {
         var uniqueTypes = $scope.getUniqueTypes(report)
         var uniqueTrolleyMen = $scope.getUniqueTrolleyMen(report);
