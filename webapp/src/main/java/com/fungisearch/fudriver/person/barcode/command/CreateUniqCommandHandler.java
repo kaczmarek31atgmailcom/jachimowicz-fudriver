@@ -1,7 +1,6 @@
 package com.fungisearch.fudriver.person.barcode.command;
 
 import com.fungisearch.fudriver.common.command.CommandResult;
-import com.fungisearch.fudriver.wozek.command.model.Uniq;
 import com.fungisearch.fudriver.wozek.command.model.UniqFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

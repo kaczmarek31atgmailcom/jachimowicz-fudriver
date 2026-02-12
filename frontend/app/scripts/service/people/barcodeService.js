@@ -35,6 +35,21 @@ angular.module('frontendApp').factory('barcodeService', ['$rootScope', '$http',
       });
     };
 
+    service.resetBarcodes = function (command) {
+      $http({
+        method: 'PUT',
+        url: '/fudriver/rest/person/barcode/reset',
+        data: command,
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8'
+        }
+      }).success(function (data) {
+        $rootScope.$broadcast('barcodesReseted',data);
+      }).error(function (result) {
+        $rootScope.$broadcast('error', result);
+      });
+    };
+
 
     service.getNotUsedBarcodes = function (personId, successFn){
       $http({
@@ -64,37 +79,6 @@ angular.module('frontendApp').factory('barcodeService', ['$rootScope', '$http',
       })
     };
 
-
-
-
-    service.reclassifyByBarcode = function(command){
-      $http({
-        url: '/fudriver/rest/reclassify/byBarcode',
-        method: 'PUT',
-        data: command,
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8'
-        }
-      })
-        .success(function(response,data) {
-          $rootScope.$broadcast('ReclassificationSuccessful', response, data);
-        })
-        .error(function(result){
-          $rootScope.$broadcast('error', result);
-        })
-    };
-
-
-    service.getCheckCode = function (pickerId,uniqId, successFn) {
-      $http({
-        method: 'GET',
-        url: '/fudriver/rest/uniq/checkCode/pickerId/' + pickerId + '/uniqId/' + uniqId
-      }).then(function successCallback(response, data) {
-        successFn(response.data);
-      }, function errorCallback(response) {
-        $rootScope.$broadcast('error', response);
-      });
-    };
 
     return service;
   }]);

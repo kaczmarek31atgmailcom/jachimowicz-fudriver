@@ -5,8 +5,6 @@ import com.fungisearch.fudriver.person.person.query.dto.ForeignerAlertDto;
 import com.fungisearch.fudriver.person.person.query.dto.PersonDto;
 import com.fungisearch.fudriver.person.person.query.dto.PersonGroupDto;
 import com.fungisearch.fudriver.person.person.query.dto.PersonHeaderDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,7 +36,7 @@ public class PersonRestController {
 
     @RequestMapping(value = "/rest/person/{employeeId}", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     PersonDto getPerson(@PathVariable Long employeeId){
-        return personDao.getPerson(employeeId);
+        return personDao.getPersonRFID(employeeId);
     }
 
 

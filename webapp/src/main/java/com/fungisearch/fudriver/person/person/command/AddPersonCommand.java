@@ -1,7 +1,6 @@
 package com.fungisearch.fudriver.person.person.command;
 
 import com.fungisearch.fudriver.common.command.Command;
-import com.fungisearch.fudriver.person.person.command.model.PayrollTypeEnum;
 
 import java.util.Date;
 

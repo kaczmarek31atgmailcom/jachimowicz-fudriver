@@ -335,4 +335,10 @@ public class ZarobkiJdbcDao implements ZarobkiDao {
             return list;
         }
     }
+
+    @Override
+    public void resetUniq(int personId) {
+        jdbcTemplate.update("update zarobki set uniq_id = null where ludzie_id =? ", new Object[]{personId});
+    }
+
 }

@@ -20,4 +20,7 @@ public interface PersonDao {
     WorkTimePersonHeaderDto findWorkTimePerson(Long id);
     List<Long> getReservedNumbers();
     ForeignerAlertDto getForeignerAlert();
+
+    PersonDto getPersonRFID(String rfid);
+    PersonDto getPersonRFID(Long rfid);
 }

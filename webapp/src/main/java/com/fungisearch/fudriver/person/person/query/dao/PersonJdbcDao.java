@@ -1,6 +1,5 @@
 package com.fungisearch.fudriver.person.person.query.dao;
 
-import com.fungisearch.fudriver.person.person.command.model.ForeignerAlert;
 import com.fungisearch.fudriver.person.person.query.dto.*;
 import com.fungisearch.fudriver.wozek.query.dto.ScannerPersonDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -396,4 +395,78 @@ public class PersonJdbcDao implements PersonDao {
             return dto;
         }
     }
+
+    @Override
+    public PersonDto getPersonRFID(String rfid) {
+        return jdbcTemplate.query("select " +
+                "l.id as id, " +
+                "l.nr as nr, " +
+                "l.imie as imie, " +
+                "l.nazwisko as nazwisko, " +
+                "l.adres as adres, " +
+                "l.nr_telefonu as mobile, " +
+                "g.id as groupId, " +
+                "g.name as groupName, " +
+                "l.data_urodzenia as birthDate, " +
+                "l.miasto as city, " +
+                "l.rejon as rejon, " +
+                "l.indeks as indeks, " +
+                "l.imiona_rodzicow as imionaRodzicow, " +
+                "l.poczatek_zameldowania as dataZameldowania, " +
+                "l.koniec_zameldowania as dataWymeldowania, " +
+                "l.nr_wizy as nrWizy, " +
+                "l.koniec_waznosci_wizy as koniecWaznosciWizy, " +
+                "l.pesel as pesel, " +
+                "l.czy_akord as payrollStatus, " +
+                "l.numer_paszportu as passportNo, " +
+                "l.koniec_waznosci_paszportu as koniecWaznosciPaszportu, " +
+                "l.numer_oswiadczenia as nrOswiadczenia, " +
+                "l.numer_zezwolenia as nrZezwolenia, " +
+                "l.poczatek_waznosci_zezwolenia as poczatekWaznosciZezwolenia, " +
+                "l.koniec_waznosci_zezwolenia as koniecWaznosciZezwolenia, " +
+                "l.rfid as rfid, " +
+                "l.active as active, " +
+                "l.czy_obcokrajowiec as isForeigner, " +
+                "l.version as version " +
+                "from ludzie l, grupy g " +
+                "where l.grupa = g.id and l.rfid = ? ", new Object[]{rfid}, new PersonResultSetExtractor());
+    }
+
+    @Override
+    public PersonDto getPersonRFID(Long id) {
+        return jdbcTemplate.query("select " +
+                "l.id as id, " +
+                "l.nr as nr, " +
+                "l.imie as imie, " +
+                "l.nazwisko as nazwisko, " +
+                "l.adres as adres, " +
+                "l.nr_telefonu as mobile, " +
+                "g.id as groupId, " +
+                "g.name as groupName, " +
+                "l.data_urodzenia as birthDate, " +
+                "l.miasto as city, " +
+                "l.rejon as rejon, " +
+                "l.indeks as indeks, " +
+                "l.imiona_rodzicow as imionaRodzicow, " +
+                "l.poczatek_zameldowania as dataZameldowania, " +
+                "l.koniec_zameldowania as dataWymeldowania, " +
+                "l.nr_wizy as nrWizy, " +
+                "l.koniec_waznosci_wizy as koniecWaznosciWizy, " +
+                "l.pesel as pesel, " +
+                "l.czy_akord as payrollStatus, " +
+                "l.numer_paszportu as passportNo, " +
+                "l.koniec_waznosci_paszportu as koniecWaznosciPaszportu, " +
+                "l.numer_oswiadczenia as nrOswiadczenia, " +
+                "l.numer_zezwolenia as nrZezwolenia, " +
+                "l.poczatek_waznosci_zezwolenia as poczatekWaznosciZezwolenia, " +
+                "l.koniec_waznosci_zezwolenia as koniecWaznosciZezwolenia, " +
+                "l.rfid as rfid, " +
+                "l.active as active, " +
+                "l.czy_obcokrajowiec as isForeigner, " +
+                "l.version as version " +
+                "from ludzie l, grupy g " +
+                "where l.grupa = g.id and l.id = ? ", new Object[]{id}, new PersonResultSetExtractor());
+    }
+
+
 }

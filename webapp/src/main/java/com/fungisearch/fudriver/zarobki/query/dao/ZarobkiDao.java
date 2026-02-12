@@ -16,4 +16,5 @@ public interface ZarobkiDao {
     List<ZarobkiByCycleDto> getZarobkiByCycle(long cycleId);
     List<DailyHarvestByTypeGroupDto> getDailyHarvestByGroupsForCycle(long cycleId);
     List<StandDetailDto> getStandDetails(long personId,Date startDate, Date endDate);
+    void resetUniq(int personId);
 }

@@ -1,4 +1,3 @@
-// Generated on 2015-05-22 using generator-angular 0.11.1
 'use strict';
 
 // # Globbing
@@ -339,11 +338,11 @@ module.exports = function (grunt) {
     },
 
     // Replace Google CDN references
-    cdnify: {
-      dist: {
-        html: ['<%= yeoman.dist %>/*.html']
-      }
-    },
+//    cdnify: {
+//      dist: {
+//        html: ['<%= yeoman.dist %>/*.html']
+//      }
+//    },
 
     // Copies remaining files to places other tasks can use
     copy: {
@@ -399,7 +398,7 @@ module.exports = function (grunt) {
       ],
       dist: [
         'copy:styles',
-        'imagemin',
+        //'imagemin',
         'svgmin'
       ]
     },
@@ -461,7 +460,7 @@ module.exports = function (grunt) {
     'concat',
     'ngAnnotate',
     'copy:dist',
-    'cdnify',
+    //'cdnify',
     'cssmin',
     'uglify',
     'filerev',

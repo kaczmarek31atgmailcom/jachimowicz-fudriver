@@ -4,17 +4,13 @@ import com.fungisearch.fudriver.payroll.salary.command.model.PayrollMonth;
 import com.fungisearch.fudriver.person.person.command.repository.PersonRepository;
 import com.fungisearch.fudriver.timeRecorder.command.model.TimeWorkLogFactory;
 import com.fungisearch.fudriver.validation.BeanValidator;
-import com.fungisearch.fudriver.zarobki.command.model.ZarobkiEntry;
 import com.fungisearch.fudriver.zarobki.command.repository.ZarobkiRepository;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.management.Query;
 import java.util.*;
 
 

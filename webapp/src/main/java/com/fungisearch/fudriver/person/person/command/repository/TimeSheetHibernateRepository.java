@@ -1,18 +1,11 @@
 package com.fungisearch.fudriver.person.person.command.repository;
 
 import com.fungisearch.fudriver.person.person.command.model.TimeSheet;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.io.Serializable;
 
 /**
  * Created by marcin on 03.03.16.

@@ -11,9 +11,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Pracownik zarabiający stawkę godzinową
@@ -397,7 +394,9 @@ public class Person {
         this.koniecZameldowania = edit.koniecZameldowania;
         this.koniecWaznosciPaszportu = edit.koniecWaznosciPaszportu;
         this.pesel = edit.pesel;
-        this.payrollType = edit.payrollType;
+        if(edit.payrollType != null) {
+            this.payrollType = edit.payrollType;
+        }
         this.passportNo = edit.passportNo;
         this.statementNo = edit.statementNo;
         this.permitNo = edit.permitNo;

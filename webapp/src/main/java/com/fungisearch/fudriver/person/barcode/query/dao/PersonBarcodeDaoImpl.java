@@ -38,6 +38,11 @@ public class PersonBarcodeDaoImpl implements PersonBarcodeDao {
                 "GROUP BY l.id ", new PersonBarcodeDaoResultSetExtractor());
     }
 
+    @Override
+    public void deleteUniqs(int personId) {
+        jdbcTemplate.update("delete from uniq where ludzie_id = ? ", new Object[]{personId});
+    }
+
     private static class PersonBarcodeDaoResultSetExtractor implements ResultSetExtractor<List<PersonBarcodeHeaderDto>> {
 
         @Override

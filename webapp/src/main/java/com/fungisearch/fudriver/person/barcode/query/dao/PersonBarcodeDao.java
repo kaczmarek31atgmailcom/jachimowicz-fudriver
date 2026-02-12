@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface PersonBarcodeDao {
     List<PersonBarcodeHeaderDto> findHeaders();
+
+    void deleteUniqs(int personId);
 }

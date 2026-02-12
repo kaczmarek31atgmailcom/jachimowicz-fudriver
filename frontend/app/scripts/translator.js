@@ -243,6 +243,7 @@ angular.module('myTranslator', ['pascalprecht.translate'])
       'people.barcodes.button.remove': 'Usuń',
       'people.barcodes.button.reserve': 'Rezerwuj',
       'people.barcodes.button.show': 'Pokaż zarezerwowane',
+      'people.barcodes.button.reset': 'Resetuj',
       'people.barcodes.message.barcodes.created': 'Kody pomyślnie utworzone',
       'people.barcodes.message.barcodes.removed': 'Kody pomyślnie usunięte',
       'people.barcodes.delete.modal.header': 'Usuń rezerwację kodów',
@@ -251,6 +252,9 @@ angular.module('myTranslator', ['pascalprecht.translate'])
       'people.barcodes.list.modal.header': 'Lista zarezerwowanych kodów',
       'people.barcodes.list.modal.button.close': 'Zamknij',
       'people.barcodes.header.error.to-long-person-nr': 'Opcja wspierająca kody East Mushrooms może być używana jedynie do numeru zbieraczki 99',
+      'people.barcodes.reset.modal.header':'Resetowanie etykiet dla ',
+      'people.barcodes.reset.modal.cancel':'Anuluj',
+      'people.barcodes.reset.modal.submit':'Resetuj',
       'people.worktime': 'Czas pracy',
       'people.worktime.breadcrumb': 'Czas pracy',
 

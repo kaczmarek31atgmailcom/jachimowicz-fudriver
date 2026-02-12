@@ -65,8 +65,9 @@
         <td class="col-sm-1">{{header.freeCodesAmount}}</td>
         <td class="col-sm-1">{{header.highestNumber}}</td>
         <td class="col-sm-2 text-right"><a href="#" editable-number="0" onbeforesave="reserve(header.id,$data)" >{{'people.barcodes.button.reserve'|translate}}</a></td>
-        <td class="col-sm-1 text-right"><button class="btn btn-danger" ng-disabled="! header.freeCodesAmount > 0" ng-click="openRemoveModal(header.id)">{{'people.barcodes.button.remove'|translate}}</button></td>
-        <td class="col-sm-1 text-right"><button class="btn btn-primary" ng-disabled="! header.freeCodesAmount > 0" ng-click="openListModal(header.id)">{{'people.barcodes.button.show'|translate}}</button></td>
+        <td class="col-sm-1 text-right"><button class="btn btn-block btn-warning" ng-disabled="! header.freeCodesAmount > 0" ng-click="openRemoveModal(header.id)">{{'people.barcodes.button.remove'|translate}}</button></td>
+        <td class="col-sm-1 text-right"><button class="btn btn-block btn-danger" ng-click="openResetModal(header)">{{'people.barcodes.button.reset'|translate}}</button></td>
+        <td class="col-sm-1 text-right"><button class="btn btn-block btn-primary" ng-disabled="! header.freeCodesAmount > 0" ng-click="openListModal(header.id)">{{'people.barcodes.button.show'|translate}}</button></td>
       </tr>
       </tbody>
     </table>

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('frontendApp')
-  .controller('PeopleBarcodesCtrl', ['$rootScope', '$scope', 'growl', '$uibModal', 'barcodeService', 'peopleDictionaryServicePromise','settingsPromiseService',
-    function ($rootScope, $scope, growl, $uibModal, barcodeService, peopleDictionaryServicePromise,settingsPromiseService) {
+  .controller('PeopleBarcodesCtrl', ['$rootScope', '$scope', 'growl', '$modal','$uibModal', 'barcodeService', 'peopleDictionaryServicePromise','settingsPromiseService',
+    function ($rootScope, $scope, growl, $modal, $uibModal, barcodeService, peopleDictionaryServicePromise,settingsPromiseService) {
 
       $scope.loading = true;
       $scope.eastMushroomsError = false;
@@ -164,6 +164,15 @@ angular.module('frontendApp')
                 $rootScope.$broadcast('BarcodesDeletedSuccessfully');
               });
 
+
+              $scope.$on('barcodesReseted', function () {
+                console.log('ddd')
+                console.log($('#resetBarcodeModal'));
+                $('#resetBarcodeModal').modal('hide');
+              });
+
+
+
               $scope.$on('error', function () {
                 $rootScope.$broadcast('ModalError');
               });
@@ -185,6 +194,29 @@ angular.module('frontendApp')
 
         });
       };
+
+
+      $scope.openResetModal = function(person){
+        $scope.loading = true;
+
+        $scope.params = {person:person};
+        $modal({
+          scope: $scope,
+          animation: $scope.animationsEnabled,
+          templateUrl: 'views/people/barcodes/reset-barcodes-modal.html',
+          show: true
+        })
+      };
+
+      $scope.$on('hideLoading',function(){
+        $scope.loading = false;
+      })
+
+      $scope.$on('barcodesReseted',function(){
+        $scope.loading = false;
+        init();
+      })
+
 
       $scope.setOrderByField = function (value) {
         $scope.orderByField = value;
