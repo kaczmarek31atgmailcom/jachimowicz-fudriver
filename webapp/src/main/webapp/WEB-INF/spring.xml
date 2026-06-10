@@ -23,6 +23,7 @@
     <mvc:resources mapping="/fonts/**" location="/WEB-INF/pages/static/src/fonts/" />
     <mvc:resources mapping="/images/**" location="/WEB-INF/pages/static/src/images/" />
     <mvc:resources mapping="/workTimeRecorder/**" location="/WEB-INF/pages/static/src/workTimeRecorder/" />
+    <mvc:resources mapping="/standRFID/**" location="/WEB-INF/pages/static/src/standRFID/" />
     <mvc:resources mapping="/stand/**" location="/WEB-INF/pages/static/src/stand/" />
     <mvc:resources mapping="/version/**" location="/WEB-INF/pages/static/src/version/" />
 

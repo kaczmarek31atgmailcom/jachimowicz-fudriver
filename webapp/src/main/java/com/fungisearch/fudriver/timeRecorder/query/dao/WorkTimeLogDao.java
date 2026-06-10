@@ -1,9 +1,6 @@
 package com.fungisearch.fudriver.timeRecorder.query.dao;
 
-import com.fungisearch.fudriver.timeRecorder.query.dto.PayedSalaryWorkTimeDto;
-import com.fungisearch.fudriver.timeRecorder.query.dto.PersonDailyWorkTimeDto;
-import com.fungisearch.fudriver.timeRecorder.query.dto.PersonWorkTimeDto;
-import com.fungisearch.fudriver.timeRecorder.query.dto.WorkTimeDto;
+import com.fungisearch.fudriver.timeRecorder.query.dto.*;
 import com.fungisearch.fudriver.person.person.query.yearBar.model.BarPeriod;
 import com.fungisearch.fudriver.zarobki.query.dto.PickerZarobkiDto;
 
@@ -19,4 +16,5 @@ public interface WorkTimeLogDao {
     List<PersonWorkTimeDto> getPersonWorkTime(Date startDate, Date endDate);
     List<PayedSalaryWorkTimeDto> getWorkTime(int personId, Date startDay, Date endDay);
     List<PersonDailyWorkTimeDto> getWorkTimeIncludingPauses(Date startTime, Date endTime);
+    List<WorkMinutesDto> getWorkMinutes(String personId);
 }

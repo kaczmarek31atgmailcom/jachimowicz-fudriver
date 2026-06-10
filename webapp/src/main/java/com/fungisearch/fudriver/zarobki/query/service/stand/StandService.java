@@ -7,6 +7,7 @@ import com.fungisearch.fudriver.type.command.model.ExportType;
 import com.fungisearch.fudriver.zarobki.query.dao.ZarobkiDao;
 import com.fungisearch.fudriver.zarobki.query.dto.StandDetailDto;
 import com.fungisearch.fudriver.zarobki.query.dto.StandHeaderDto;
+import com.fungisearch.fudriver.zarobki.query.dto.StandRFIDHeaderDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,23 @@ public class StandService {
         return result;
     }
 
+
+    public StandRFIDHeaderDto getStandRFIDStats(long personId, Date yesterday, Date startPeriod, Date endPeriod) {
+        StandRFIDHeaderDto result = getRFIDPersonName(personId);
+        Date dayBeforeYesterday = DateUtils.getYesterday(yesterday);
+        result.today = new Date();
+        result.yesterday = yesterday;
+        result.dayBeforeYestarday = dayBeforeYesterday;
+        result.startOfTheMonth = startPeriod;
+        result.lastDayDetails = zarobkiDao.getStandDetails(personId, DateUtils.getStartOfDay(yesterday), DateUtils.getEndOfDay(yesterday));
+        result.dayBeforeLastDayDetails = zarobkiDao.getStandDetails(personId,DateUtils.getStartOfDay(dayBeforeYesterday),DateUtils.getEndOfDay(dayBeforeYesterday));
+        result.periodDetails = zarobkiDao.getStandDetails(personId, DateUtils.getStartOfDay(startPeriod), DateUtils.getEndOfDay(endPeriod));
+        result.lastDayExport = countExportPercent(result.lastDayDetails);
+        result.periodExport = countExportPercent(result.periodDetails);
+        return result;
+    }
+
+
     private int countExportPercent(List<StandDetailDto> details) {
         long total = 0;
         long totalExport = 0;
@@ -46,6 +64,8 @@ public class StandService {
         return result;
     }
 
+
+
     private StandHeaderDto getPersonName(long personId) {
         PersonDto person = personDao.getPerson(personId);
         StandHeaderDto header = new StandHeaderDto();
@@ -55,5 +75,22 @@ public class StandService {
         header.lastDayDetails = new ArrayList<>();
         header.periodDetails = new ArrayList<>();
         return header;
+    }
+    private StandRFIDHeaderDto getRFIDPersonName(long personId) {
+        PersonDto person = personDao.getPersonRFID(personId);
+        StandRFIDHeaderDto header = new StandRFIDHeaderDto();
+        header.personId = person.id;
+        header.personName = person.imie;
+        header.personSurname = person.nazwisko;
+        header.lastDayDetails = new ArrayList<>();
+        header.periodDetails = new ArrayList<>();
+        return header;
+    }
+
+    public StandRFIDHeaderDto getStandStatsRfid(String rfid) {
+        PersonDto personDto = personDao.getPersonRFID(rfid);
+        Date startDay = DateUtils.getDayBefore(new Date(),1);
+        Date firstDayOfMonth = DateUtils.getStartOfDay(DateUtils.getFirstDayOfMonth(new Date()));
+        return getStandRFIDStats(personDto.id,startDay,firstDayOfMonth,startDay);
     }
 }

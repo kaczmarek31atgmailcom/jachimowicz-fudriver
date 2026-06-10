@@ -1,0 +1,120 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Wyniki zbieraczek">
+    <meta name="author" content="Marcin Kaczmarek marcin@fungisearch.com">
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/angular-growl.css">
+</head>
+<body ng-app="standRFIDApp" ng-controller="StandRFIDCtrl" ng-init="focusInputText();">
+<div class="container-fluid" ng-cloak>
+    <div growl></div>
+    <div class="row">
+        <div class="col-sm-2">
+            <form name="rfidForm">
+                <div class="form-group col-xs-12">
+                    <input class="form-control" focus-if="documentScreen" name="rfid" id="rfid" type="text"
+                           ng-model="rfid"
+                           ng-change="parseRFID()" ng-blur="focusInputText()" autocomplete="off">
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row" ng-show="stats.personId > 0">
+        <div class="col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <ul class="list-unstyled">
+                        <li>
+                            <strong>{{stats.personId}} {{stats.personName}} {{stats.personSurname}} </strong>
+                        </li>
+                        <li>
+                            <div class="col-sm-12 col-lg-12 text-nowrap"><strong>Eksport {{yesterday | date:'yyyy-MM-dd'}}: {{stats.lastDayExport / 100}}%</strong></div>
+                        </li>
+                        <li>
+                            <div class="col-sm-12 col-lg-12 text-nowrap"><strong>Eksport {{startPeriod | date:'yyyy-MM-dd'}} - {{endPeriod | date:'yyyy-MM-dd'}}: {{stats.periodExport / 100}}%</strong></div>
+                        </li>
+                        <li>
+                            <div class="row">
+                                <table class="table table-condensed">
+                                    <tr>
+                                        <th colspan="2" class="text-center">Czas pracy</th>
+                                    </tr>
+                                    <tr ng-repeat="day in minutes">
+                                        <td>{{day.day}}</td>
+                                        <td>{{minutesToHours(day.minutes)}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Suma:</th>
+                                        <th>{{minutesToHours(totalMinutes)}}</th>
+                                    </tr>
+                                </table>
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-8" ng-show="stats.personId > 0">
+            <table class="table table-condensed table-bordered">
+                <tr>
+                    <th colspan="2">&nbsp;</th>
+                    <th colspan="2" class="text-center text-danger">{{dayBeforeYestarday| date:'yyyy-MM-dd'}}</th>
+                    <th colspan="2" class="text-center text-danger">{{yesterday| date:'yyyy-MM-dd'}}</th>
+                    <th colspan="2" class="text-right text-primary">{{startPeriod| date:'yyyy-MM-dd'}} - {{endPeriod| date:'yyyy-MM-dd'}}</th>
+                </tr>
+                <tr>
+                    <th colspan="2">Rodzaj</th>
+                    <th class="text-right text-danger">Ilość sztuk: {{dayBeforeYesterdayTotalAmount}}</th>
+                    <th class="text-right text-danger">Łączna waga: {{dayBeforeYesterdayTotalWeight / 1000}}</th>
+                    <th class="text-right text-danger">Ilość sztuk: {{yesterdayTotalAmount}}</th>
+                    <th class="text-right text-danger">Łączna waga: {{yesterdayTotalWeight / 1000}}</th>
+                    <th class="text-right text-primary">Ilość sztuk: {{periodTotalAmount}}</th>
+                    <th class="text-right text-primary">Łączna waga: {{periodTotalWeight / 1000}}</th>
+                </tr>
+                <tr ng-repeat="type in types">
+                    <td>{{type.name}}</td>
+                    <td class="text-right">{{type.weight / 1000}}</td>
+
+                    <td class="text-right text-danger">{{type.dayBeforeYesterdayAmount}}</td>
+                    <td class="text-right text-danger">{{type.dayBeforeYesterdayWeight / 1000}}</td>
+
+                    <td class="text-right text-danger">{{type.yesterdayAmount}}</td>
+                    <td class="text-right text-danger">{{type.yesterdayWeight / 1000}}</td>
+
+                    <td class="text-right text-primary">{{type.periodAmount}}</td>
+                    <td class="text-right text-primary">{{type.periodWeight / 1000}}</td>
+                </tr>
+                <tr>
+                    <th colspan="2">Suma:</th>
+                    <th class="text-right text-danger">{{dayBeforeYesterdayTotalAmount}}</th>
+                    <th class="text-right text-danger">{{dayBeforeYesterdayTotalWeight / 1000}}</th>
+                    <th class="text-right text-danger">{{yesterdayTotalAmount}}</th>
+                    <th class="text-right text-danger">{{yesterdayTotalWeight / 1000}}</th>
+                    <th class="text-right text-primary">{{periodTotalAmount}}</th>
+                    <th class="text-right text-primary">{{periodTotalWeight / 1000}}</th>
+                </tr>
+            </table>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+</div>
+<script src="js/vendor/jquery.min.js"></script>
+<script src="js/vendor/bootstrap.min.js"></script>
+<script src="js/vendor/angular.js"></script>
+<script src="js/vendor/angular-route.min.js"></script>
+<script src="js/vendor/angular-growl.js"></script>
+<script src="js/vendor/moment/moment.js"></script>
+<script src="js/app.js"></script>
+<script src="js/StandRFIDService.js"></script>
+<script src="js/StandRFIDController.js"></script>
+
+<script language="JavaScript">
+
+</script>
+</body>
+</html>

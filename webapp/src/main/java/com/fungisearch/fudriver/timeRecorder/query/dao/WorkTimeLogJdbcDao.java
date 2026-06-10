@@ -3,10 +3,7 @@ package com.fungisearch.fudriver.timeRecorder.query.dao;
 import com.fungisearch.fudriver.common.DateUtils;
 import com.fungisearch.fudriver.person.person.query.yearBar.model.BarPeriod;
 import com.fungisearch.fudriver.person.person.query.yearBar.model.BarType;
-import com.fungisearch.fudriver.timeRecorder.query.dto.PayedSalaryWorkTimeDto;
-import com.fungisearch.fudriver.timeRecorder.query.dto.PersonDailyWorkTimeDto;
-import com.fungisearch.fudriver.timeRecorder.query.dto.PersonWorkTimeDto;
-import com.fungisearch.fudriver.timeRecorder.query.dto.WorkTimeDto;
+import com.fungisearch.fudriver.timeRecorder.query.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -174,6 +171,33 @@ public class WorkTimeLogJdbcDao implements WorkTimeLogDao {
                 dto.surname = rs.getString("surname");
                 dto.day = rs.getDate("day");
                 dto.workMinutes = DateUtils.getMinutesBetweenTwoDates(rs.getTime("startTime"), rs.getTime("endTime"));
+                list.add(dto);
+            }
+            return list;
+        }
+    }
+
+    @Override
+    public List<WorkMinutesDto> getWorkMinutes(String rfid) {
+        return jdbcTemplate.query("select " +
+                "    DATE_FORMAT(t.start_time,'%Y-%m-%d') as day, " +
+                "    floor(sum(TIME_TO_SEC(TIMEDIFF(ifnull(t.end_time,now()),t.start_time)))/ 60) as minutes " +
+                "from time_work_log t, ludzie l " +
+                "where t.start_time >= DATE_FORMAT(NOW() ,'%Y-%m-01') " +
+                "and t.person_id = l.id " +
+                "and l.rfid = ? " +
+                "group by DATE_FORMAT(t.start_time,'%Y-%m-%d'); ", new Object[]{rfid},new WorkMinutesResultSetExtractor());
+    }
+
+
+    private class WorkMinutesResultSetExtractor implements ResultSetExtractor<List<WorkMinutesDto>> {
+        @Override
+        public List<WorkMinutesDto> extractData(ResultSet rs) throws SQLException {
+            List<WorkMinutesDto> list = new ArrayList<>();
+            while (rs.next()){
+                WorkMinutesDto dto = new WorkMinutesDto();
+                dto.day = rs.getDate("day");
+                dto.minutes = rs.getInt("minutes");
                 list.add(dto);
             }
             return list;

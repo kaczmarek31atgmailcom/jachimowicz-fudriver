@@ -1,0 +1,17 @@
+.no-connection{
+    background-color: black;
+    min-height: 100%;
+    min-width: 1024px;
+    width: 100%;
+    height: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    color: grey;
+}
+
+.hand-cursor { cursor: pointer; }
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak, .ng-hide-add, .ng-hide-remove {
+    display: none !important;
+}

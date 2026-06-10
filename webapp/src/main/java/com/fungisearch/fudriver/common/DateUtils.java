@@ -96,8 +96,27 @@ public class DateUtils {
         return dates;
     }
 
+    public static Date getDayBefore(Date date, int amountOfDays) {
+        amountOfDays = amountOfDays * -1;
+        if (date != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.add(Calendar.DATE, amountOfDays);
+            return calendar.getTime();
+        }
+        return null;
+    }
+
+
     public static Long getMinutesBetweenTwoDates(Date startDate, Date endDate){
         long duration =  endDate.getTime() - startDate.getTime();
         return TimeUnit.MILLISECONDS.toMinutes(duration);
+    }
+
+    public static Date getFirstDayOfMonth(Date today){
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(today);
+        calendar.set(Calendar.DAY_OF_MONTH,1);
+        return calendar.getTime();
     }
 }
