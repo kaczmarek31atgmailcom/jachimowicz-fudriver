@@ -104,6 +104,22 @@ public class ExceptionController {
         return new ResponseEntity( new CommandResult(CommandResult.Status.ERROR,"Batch fully reserved"),headers, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler({WorkPeriodDifferentDayException.class})
+    ResponseEntity<Object> handleWorkPeriodDifferentDay(WorkPeriodDifferentDayException ex, WebRequest request) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(new CommandResult(CommandResult.Status.ERROR, ex.getMessage()),
+                headers, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({OverlappingWorkPeriodException.class})
+    ResponseEntity<Object> handleOverlappingWorkPeriod(OverlappingWorkPeriodException ex, WebRequest request) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(new CommandResult(CommandResult.Status.ERROR, ex.getMessage()),
+                headers, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler({StartDateAfterEndDateException.class })
     ResponseEntity<Object> handleStartDayAfterEndDayException(RuntimeException ex, WebRequest request){
         logger.error(ex.getMessage());

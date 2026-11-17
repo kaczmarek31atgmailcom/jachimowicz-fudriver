@@ -32,6 +32,7 @@ public class TimeWorkLogFactory {
     public TimeWorkLog create(Person person) {
         TimeWorkLog timeWorkLog = null;
         if (person != null) {
+            PastWorkPeriodCloser.close(person.getId(), timeWorkLogRepository, applicationEventPublisher, beanValidator);
             timeWorkLog = timeWorkLogRepository.findOpen(person.getId());
             if (timeWorkLog == null) {
                 TimeWorkLog.TimeWorkLogBuilder builder = new TimeWorkLog.TimeWorkLogBuilder(this.timeWorkLogRepository, this.applicationEventPublisher, this.beanValidator);
@@ -46,6 +47,7 @@ public class TimeWorkLogFactory {
     }
 
     public TimeWorkLog findOpen(long personId) {
+        PastWorkPeriodCloser.close(personId, timeWorkLogRepository, applicationEventPublisher, beanValidator);
         TimeWorkLog result = timeWorkLogRepository.findOpen(personId);
         if (result != null) {
             result.applicationEventPublisher = applicationEventPublisher;

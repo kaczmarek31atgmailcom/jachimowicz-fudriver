@@ -11,7 +11,13 @@ import java.util.List;
  * Created by marcin on 06.04.16.
  */
 public interface TimeWorkLogRepository {
+    /** Locks the employee until transaction completion, then reads their open log.
+     * Must be called within the transaction that registers/closes the log. */
     TimeWorkLog findOpen(Long personId);
+    void lockPerson(Long personId);
+    boolean hasOverlap(Long personId, Long excludedId, Date start, Date end);
+    List<TimeWorkLog> findOpenedBefore(Long personId, Date dayStart);
+    Date findNextStart(Long personId, Long excludedId, Date start, Date dayEnd);
     void save(TimeWorkLog timeWorkLog);
     TimeWorkLog find(Long id);
     void delete(TimeWorkLog timeWorkLog);
