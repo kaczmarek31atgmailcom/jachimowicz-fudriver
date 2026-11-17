@@ -1,64 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<div class="container-fluid" ng-controller="WorkTimeCtrl">
-  <ol class="breadcrumb">
-    <li class="active">{{'people.worktime.breadcrumb' | translate}}</li>
-  </ol>
-  <table class="table table-striped table-bordered table-hover table-condensed" ng-show="people.length>0">
-    <thead>
-    <tr>
-      <th>
-        <a href="" ng-click="orderByField='id'; reverseSort = !reverseSort">
-          {{'peopleHeaders.id'|translate}}
-          <span ng-show="orderByField=='id' && !reverseSort" class="fa fa-caret-down"></span>
-          <span ng-show="orderByField=='id' && reverseSort" class="fa fa-caret-up"></span>
-        </a>
-      </th>
-      <th>
-        <a href="" ng-click="orderByField='nr'; reverseSort = !reverseSort">
-          {{'peopleHeaders.nr'|translate}}
-          <span ng-show="orderByField=='nr' && !reverseSort" class="fa fa-caret-down"></span>
-          <span ng-show="orderByField=='nr' && reverseSort" class="fa fa-caret-up"></span>
-        </a>
-      </th>
-      <th>
-        <a href="" ng-click="orderByField='name'; reverseSort = !reverseSort">
-          {{'peopleHeaders.name'|translate}}
-          <span ng-show="orderByField=='name' && !reverseSort" class="fa fa-caret-down"></span>
-          <span ng-show="orderByField=='name' && reverseSort" class="fa fa-caret-up"></span>
-        </a>
-      </th>
+<div class="container-fluid timesheet-editor worktime-list" ng-controller="WorkTimeCtrl" ng-cloak>
+  <nav aria-label="{{'people.timesheet.edit.navigation' | translate}}"><ol class="breadcrumb"><li class="active">{{'people.timesheet.edit.worktime' | translate}}</li></ol></nav>
+  <header class="ts-header">
+    <div><div class="ts-eyebrow">{{'people.timesheet.edit.eyebrow' | translate}}</div>
+      <h1>{{'people.timesheet.list.title' | translate}}</h1>
+      <p>{{'people.timesheet.list.intro' | translate}}</p>
+    </div>
+    <button type="button" class="btn ts-secondary" ng-click="load()" ng-disabled="loading"><i class="fa fa-refresh" aria-hidden="true"></i> {{'people.timesheet.edit.refresh' | translate}}</button>
+  </header>
+  <div class="ts-message ts-message-error" role="alert" ng-if="error">{{error | translate}}
+    <button type="button" class="btn ts-secondary" ng-click="load()" ng-disabled="loading">{{'people.timesheet.edit.retry' | translate}}</button></div>
+  <div class="ts-loading" role="status" ng-if="loading"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i> {{'people.timesheet.list.loading' | translate}}</div>
 
-      <th>
-        <a href="" ng-click="orderByField='surname'; reverseSort = !reverseSort">
-          {{'peopleHeaders.surname'|translate}}
-          <span ng-show="orderByField=='surname' && !reverseSort" class="fa fa-caret-down"></span>
-          <span ng-show="orderByField=='surname' && reverseSort" class="fa fa-caret-up"></span>
-        </a>
-      </th>
+  <div ng-if="loaded && !loading && !error">
+    <section class="ts-stats" aria-label="{{'people.timesheet.list.summary' | translate}}">
+      <button type="button" class="ts-stat wl-stat-button" ng-class="{'wl-stat-selected': !filters.status}" ng-click="filters.status = ''; applyFilters()" ng-attr-aria-pressed="{{!filters.status}}"><span class="ts-stat-icon"><i class="fa fa-users" aria-hidden="true"></i></span><span class="wl-stat-content"><span>{{'people.timesheet.list.total' | translate}}</span><strong>{{total.all}}</strong></span></button>
+      <button type="button" class="ts-stat wl-stat-button" ng-class="{'wl-stat-selected': filters.status === 'present'}" ng-click="filters.status = 'present'; applyFilters()" ng-attr-aria-pressed="{{filters.status === 'present'}}"><span class="ts-stat-icon"><i class="fa fa-clock-o" aria-hidden="true"></i></span><span class="wl-stat-content"><span>{{'people.timesheet.list.present' | translate}}</span><strong>{{total.present}}</strong></span></button>
+      <button type="button" class="ts-stat wl-stat-button" ng-class="{'wl-stat-selected': filters.status === 'away'}" ng-click="filters.status = 'away'; applyFilters()" ng-attr-aria-pressed="{{filters.status === 'away'}}"><span class="ts-stat-icon wl-neutral-icon"><i class="fa fa-user-o" aria-hidden="true"></i></span><span class="wl-stat-content"><span>{{'people.timesheet.list.away' | translate}}</span><strong>{{total.away}}</strong></span></button>
+    </section>
+    <p class="ts-caption">{{'people.timesheet.list.summary-hint' | translate}}</p>
 
-      <th>
-        <a href="" ng-click="orderByField='groupName'; reverseSort = !reverseSort">
-          {{'peopleHeaders.group'|translate}}
-          <span ng-show="orderByField=='groupName' && !reverseSort" class="fa fa-caret-down"></span>
-          <span ng-show="orderByField=='groupName' && reverseSort" class="fa fa-caret-up"></span>
-        </a>
-      </th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="person in people |filter:searchText | orderBy:orderByField:reverseSort" ng-show="showRow(person.active) == true"
-        ng-class="person.isPresent ? 'text-primary hand-cursor':'hand-cursor'" ng-click="editTimeSheet(person)">
-      <td>
-        <i class="fa fa-user-plus" aria-hidden="true" ng-show="person.isPresent"></i>
-        <i class="fa fa-user-times" aria-hidden="true" ng-hide="person.isPresent"></i>
-        {{person.id}}
-      </td>
-      <td class="text-right" ng-bind="person.nr"></td>
-      <td ng-bind="person.name"></td>
-      <td ng-bind="person.surname"></td>
-      <td ng-bind="person.groupName"></td>
-    </tr>
-    </tbody>
-  </table>
+    <section class="ts-card wl-filter-card" aria-labelledby="wl-filter-title">
+      <div class="ts-card-heading"><h2 id="wl-filter-title">{{'people.timesheet.list.find-employee' | translate}}</h2>
+        <label class="tc-empty-toggle"><input type="checkbox" ng-model="filters.includeInactive" ng-change="load()"> {{'people.timesheet.list.include-inactive' | translate}}</label></div>
+      <div class="wl-filters">
+        <div class="ts-field wl-search"><label for="wl-search">{{'people.timesheet.list.search' | translate}}</label><input id="wl-search" type="search" class="form-control" ng-model="filters.query" ng-model-options="{debounce: 150}" ng-change="applyFilters()" placeholder="{{'people.timesheet.list.search-placeholder' | translate}}"></div>
+        <div class="ts-field"><label for="wl-group">{{'people.timesheet.list.group' | translate}}</label><select id="wl-group" class="form-control" ng-model="filters.group" ng-options="group.key as (group.label || ('people.timesheet.list.unassigned' | translate)) for group in groups" ng-change="applyFilters()"><option value="">{{'people.timesheet.list.all-groups' | translate}}</option></select></div>
+        <div class="ts-field"><label for="wl-status">{{'people.timesheet.list.status' | translate}}</label><select id="wl-status" class="form-control" ng-model="filters.status" ng-change="applyFilters()"><option value="">{{'people.timesheet.list.all-statuses' | translate}}</option><option value="present">{{'people.timesheet.list.present' | translate}}</option><option value="away">{{'people.timesheet.list.away' | translate}}</option></select></div>
+        <button type="button" class="btn ts-secondary" ng-click="clearFilters()" ng-disabled="!hasFilters()">{{'people.timesheet.list.clear-filters' | translate}}</button>
+      </div>
+    </section>
+
+    <section class="ts-card" aria-labelledby="wl-list-title">
+      <div class="ts-card-heading"><div><h2 id="wl-list-title">{{'people.timesheet.list.employees' | translate}}</h2><p>{{'people.timesheet.list.results' | translate:{count: filteredPeople.length, total: total.all} }}</p></div>
+        <span class="wl-updated" ng-if="updatedAt">{{'people.timesheet.list.updated' | translate:{time: (updatedAt | date:'HH:mm:ss')} }}</span></div>
+      <div class="wl-mobile-sort" ng-if="filteredPeople.length">
+        <div class="ts-field"><label for="wl-sort">{{'people.timesheet.list.sort-by' | translate}}</label><select id="wl-sort" class="form-control" ng-model="settings.sortField" ng-options="field.key as (('people.timesheet.list.' + field.label) | translate) for field in sortFields" ng-change="sortBy(settings.sortField)"></select></div>
+        <button type="button" class="btn ts-secondary" ng-click="sortBy(sortField)">{{(reverseSort ? 'people.timesheet.list.ascending' : 'people.timesheet.list.descending') | translate}} <span aria-hidden="true">{{reverseSort ? '↑' : '↓'}}</span></button>
+      </div>
+      <div class="wl-table-wrap" ng-if="filteredPeople.length">
+        <table class="wl-table">
+          <caption class="sr-only">{{'people.timesheet.list.table-caption' | translate}}</caption>
+          <thead><tr>
+            <th scope="col" class="wl-col-id" ng-attr-aria-sort="{{sortDirection('id')}}"><button type="button" ng-click="sortBy('id')">{{'people.timesheet.list.id' | translate}} <span aria-hidden="true">{{sortField === 'id' ? (reverseSort ? '↓' : '↑') : '↕'}}</span></button></th>
+            <th scope="col" class="wl-col-number" ng-attr-aria-sort="{{sortDirection('nr')}}"><button type="button" ng-click="sortBy('nr')">{{'people.timesheet.list.number' | translate}} <span aria-hidden="true">{{sortField === 'nr' ? (reverseSort ? '↓' : '↑') : '↕'}}</span></button></th>
+            <th scope="col" ng-attr-aria-sort="{{sortDirection('employee')}}"><button type="button" ng-click="sortBy('employee')">{{'people.timesheet.list.employee' | translate}} <span aria-hidden="true">{{sortField === 'employee' ? (reverseSort ? '↓' : '↑') : '↕'}}</span></button></th>
+            <th scope="col" ng-attr-aria-sort="{{sortDirection('group')}}"><button type="button" ng-click="sortBy('group')">{{'people.timesheet.list.group' | translate}} <span aria-hidden="true">{{sortField === 'group' ? (reverseSort ? '↓' : '↑') : '↕'}}</span></button></th>
+            <th scope="col" ng-attr-aria-sort="{{sortDirection('status')}}"><button type="button" ng-click="sortBy('status')">{{'people.timesheet.list.status' | translate}} <span aria-hidden="true">{{sortField === 'status' ? (reverseSort ? '↓' : '↑') : '↕'}}</span></button></th>
+            <th scope="col"><span class="sr-only">{{'people.timesheet.list.actions' | translate}}</span></th>
+          </tr></thead>
+          <tbody><tr ng-repeat="person in pagePeople track by person.id" ng-class="{'wl-person-present': person.isPresent}">
+            <td class="wl-person-id"><span class="wl-mobile-label">{{'people.timesheet.list.id' | translate}}</span>#{{person.id}}</td>
+            <td class="wl-person-number"><span class="wl-mobile-label">{{'people.timesheet.list.number' | translate}}</span>{{person.nr}}</td>
+            <td class="wl-person-name"><span class="wl-avatar" ng-class="{'wl-avatar-present': person.isPresent}" aria-hidden="true">{{person.initials}}</span><div><a ng-href="#/people/worktime/{{person.id}}">{{person.name}} {{person.surname}}</a><small class="wl-inactive" ng-if="!person.active">{{'people.timesheet.list.inactive' | translate}}</small></div></td>
+            <td class="wl-person-group"><span class="wl-mobile-label">{{'people.timesheet.list.group' | translate}}</span>{{person.groupName || ('people.timesheet.list.unassigned' | translate)}}</td>
+            <td class="wl-person-status"><span class="wl-status" ng-class="{'wl-status-present': person.isPresent}"><i aria-hidden="true"></i>{{(person.isPresent ? 'people.timesheet.list.present' : 'people.timesheet.list.away') | translate}}</span></td>
+            <td class="wl-person-action"><button type="button" class="btn ts-secondary" ng-click="editTimeSheet(person)" ng-attr-aria-label="{{'people.timesheet.list.open-card-label' | translate:{name: person.name, surname: person.surname, id: person.id} }}">{{'people.timesheet.list.open-card' | translate}} <span aria-hidden="true">→</span></button></td>
+          </tr></tbody>
+        </table>
+      </div>
+      <div class="ts-empty" ng-if="!filteredPeople.length"><i class="fa fa-search" aria-hidden="true"></i><h3>{{(total.all ? 'people.timesheet.list.no-matches' : 'people.timesheet.list.no-employees') | translate}}</h3><p>{{(total.all ? 'people.timesheet.list.no-matches-hint' : 'people.timesheet.list.no-employees-hint') | translate}}</p><button type="button" class="btn ts-secondary" ng-if="hasFilters()" ng-click="clearFilters()">{{'people.timesheet.list.clear-filters' | translate}}</button></div>
+      <footer class="wl-footer" ng-if="filteredPeople.length">
+        <div class="wl-page-size"><label for="wl-page-size">{{'people.timesheet.list.page-size' | translate}}</label><select id="wl-page-size" class="form-control" ng-model="settings.pageSize" ng-options="size for size in pageSizes" ng-change="changePageSize()"></select></div>
+        <span class="wl-result-range" role="status">{{'people.timesheet.list.result-range' | translate:{first: firstResult, last: lastResult, count: filteredPeople.length} }}</span>
+        <nav class="wl-pages" aria-label="{{'people.timesheet.list.pagination' | translate}}"><button type="button" class="btn ts-secondary" ng-click="goToPage(page - 1)" ng-disabled="page <= 1">‹ {{'people.timesheet.list.previous' | translate}}</button><span>{{'people.timesheet.list.page' | translate:{page: page, count: pageCount} }}</span><button type="button" class="btn ts-secondary" ng-click="goToPage(page + 1)" ng-disabled="page >= pageCount">{{'people.timesheet.list.next' | translate}} ›</button></nav>
+      </footer>
+    </section>
+  </div>
 </div>

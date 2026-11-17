@@ -1,166 +1,73 @@
-<div class="container-fluid" ng-controller="editTimeSheetCtrl" ng-cloak>
-  <ol class="breadcrumb">
-    <li><a href="#/people/worktime">{{'people.worktime.breadcrumb' | translate}}</a></li>
-    <li><a href="#/people/worktime/{{employeeId}}">{{'people.breadcrumb.timeSheet' | translate}}</a></li>
-    <li class="active">{{'people.breadcrumb.editTimeSheet' | translate}} {{person.id}} {{person.imie}} {{person.nazwisko}}</li>
-  </ol>
-  <div growl></div>
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="row" nowrap>
-        <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 0:00</h6></div>
-        <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 2:00</h6></div>
-        <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 4:00</h6></div>
-        <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 6:00</h6></div>
-        <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 8:00</h6></div>
-        <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 10:00</h6></div>
-        <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 12:00</h6></div>
-        <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 14:00</h6></div>
-        <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 16:00</h6></div>
-        <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 18:00</h6></div>
-        <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 20:00</h6></div>
-        <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 22:00</h6></div>
-      </div>
+<div class="container-fluid timesheet-editor" ng-controller="editTimeSheetCtrl" ng-cloak>
+  <nav aria-label="{{'people.timesheet.edit.navigation' | translate}}"><ol class="breadcrumb">
+    <li><a href="#/people/worktime">{{'people.timesheet.edit.worktime' | translate}}</a></li>
+    <li><a ng-href="#/people/worktime/{{employeeId}}">{{'people.timesheet.edit.employee-card' | translate}}</a></li>
+    <li class="active">{{'people.timesheet.edit.day-editor' | translate}}</li>
+  </ol></nav>
+  <header class="ts-header">
+    <div><div class="ts-eyebrow">{{'people.timesheet.edit.eyebrow' | translate}}</div>
+      <h1>{{person.imie || ('people.timesheet.edit.employee' | translate)}} {{person.nazwisko}} <span class="ts-id">#{{employeeId}}</span></h1>
+      <p>{{'people.timesheet.edit.intro' | translate}}</p>
     </div>
-    <div class="col-lg-12 text-nowrap">
-      <div class="progress">
-        <div data-ng-repeat="barPeriod in barPeriods">
-          <div ng-show="barPeriod.percentOfTheDay > 0"
-               ng-class="getBarClass(barPeriod.barType)"
-               role="progressbar" style="width: {{barPeriod.percentOfTheDay}}%">&nbsp;
-          </div>
-        </div>
-      </div>
+    <div class="ts-day-nav">
+      <button type="button" class="btn ts-icon-button" ng-click="navigate(-1)" ng-disabled="busy" aria-label="{{'people.timesheet.edit.previous-day' | translate}}"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+      <label class="sr-only" for="ts-day">{{'people.timesheet.edit.choose-day' | translate}}</label>
+      <input id="ts-day" type="date" class="form-control" ng-model="selectedDay" ng-change="navigate(null)" ng-disabled="busy">
+      <button type="button" class="btn ts-icon-button" ng-click="navigate(1)" ng-disabled="busy" aria-label="{{'people.timesheet.edit.next-day' | translate}}"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
     </div>
-  </div>
-  <div ng-repeat="workPeriod in workPeriods">
-    <div ng-show="workPeriod.endDate">
-      <form name="orderForm" class="form-inline" role="form">
-        <div class="row">
+  </header>
+  <div class="ts-message ts-message-error" role="alert" ng-if="error"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{error | translate}}</div>
+  <div class="ts-message ts-message-success" role="status" ng-if="notice">{{notice | translate}}</div>
+  <div class="ts-message" role="status" ng-if="externalChange">{{'people.timesheet.edit.external-change' | translate}}</div>
+  <div class="ts-message" ng-if="personFailed">{{'people.timesheet.edit.person-load-failed' | translate}}</div>
+  <div class="ts-loading" ng-if="loading" role="status"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i> {{'people.timesheet.edit.loading-periods' | translate}}</div>
 
-          <div class="col-lg-4">
-            <div class="panel panel-success">
-              <div class="panel-body">
-                <div class="form-group">
-                  <input type="text" class="form-control" ng-model="workPeriod.startDate" data-time-format="HH:mm" data-autoclose="0"
-                         bs-timepicker ng-change="save(workPeriod)" data-minute-step="1" data-length="10">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="panel panel-danger">
-              <div class="panel-body">
-                <div class="form-group">
-                  <input type="text" class="form-control" ng-model="workPeriod.endDate" data-time-format="HH:mm" data-autoclose="0"
-                         bs-timepicker ng-change="save(workPeriod)" data-minute-step="1" data-length="10">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3">
-            <div class="panel panel-default">
-              <div class="panel-body">
-                <div class="row">
-                  <div class="col-sm-8 text-left">
-                    <strong>{{countWorkMinutes(workPeriod.endDate,workPeriod.startDate) | minutesToHours}}</strong>
-                  </div>
-                  <div class="col-sm-2 text-right">
-                    <button class="btn btn-danger btn-sm" ng-click="delete(workPeriod.id)"><i class="fa fa-times" aria-hidden="true"></i>
-                      {{'people.timesheet.edit.delete' |
-                      translate}}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+  <div ng-if="!loading && !loadFailed">
+    <section class="ts-stats" aria-label="{{'people.timesheet.edit.summary' | translate}}">
+      <div class="ts-stat"><span class="ts-stat-icon"><i class="fa fa-clock-o" aria-hidden="true"></i></span><div><span>{{'people.timesheet.edit.work-without-breaks' | translate}}</span><strong>{{durationLabel(workMinutes)}}</strong></div></div>
+      <div class="ts-stat"><span class="ts-stat-icon ts-amber"><i class="fa fa-coffee" aria-hidden="true"></i></span><div><span>{{'people.timesheet.edit.breaks' | translate}}</span><strong>{{durationLabel(pauseMinutes)}}</strong></div></div>
+      <div class="ts-stat"><span class="ts-stat-icon"><i class="fa fa-list-ul" aria-hidden="true"></i></span><div><span>{{'people.timesheet.edit.periods' | translate}}</span><strong>{{workPeriods.length}} <small ng-if="openCount">{{'people.timesheet.edit.open-count' | translate:{count: openCount} }}</small></strong></div></div>
+    </section>
+    <p class="ts-caption">{{'people.timesheet.edit.summary-hint' | translate}}</p>
+
+    <section class="ts-card ts-timeline-card" aria-label="{{'people.timesheet.edit.day-timeline' | translate}}">
+      <div class="ts-card-heading"><h2>{{'people.timesheet.edit.day-progress' | translate}} <small>{{dayLabel}}</small></h2><span class="ts-legend"><i></i> {{'people.timesheet.edit.work' | translate}} <i class="ts-legend-open"></i> {{'people.timesheet.edit.in-progress' | translate}}</span></div>
+      <div class="ts-timeline-hours"><span ng-repeat="hour in hours track by $index">{{hour}}:00</span></div>
+      <div class="ts-timeline-track">
+        <div class="ts-timeline-period" ng-repeat="bar in timeline track by bar.id" ng-class="{'ts-timeline-open': bar.open}" ng-style="{left: bar.left + '%', width: bar.width + '%'}" title="{{periodLabel(bar)}}" role="img" ng-attr-aria-label="{{'people.timesheet.edit.period-description' | translate:{range: periodLabel(bar)} }}"></div>
+      </div>
+      <div class="ts-timeline-empty" ng-if="!workPeriods.length">{{'people.timesheet.edit.no-periods' | translate}}</div>
+    </section>
+
+    <section class="ts-card" aria-labelledby="ts-periods-title">
+      <div class="ts-card-heading"><div><h2 id="ts-periods-title">{{'people.timesheet.edit.periods' | translate}}</h2><p>{{'people.timesheet.edit.editing-hint' | translate}}</p></div>
+        <button type="button" class="btn ts-secondary" ng-click="refresh(); externalChange = false" ng-disabled="busy"><i class="fa fa-refresh" aria-hidden="true"></i> {{'people.timesheet.edit.refresh' | translate}}</button></div>
+      <div class="ts-empty" ng-if="!workPeriods.length"><i class="fa fa-calendar-o" aria-hidden="true"></i><h3>{{'people.timesheet.edit.empty-title' | translate}}</h3><p>{{'people.timesheet.edit.empty-hint' | translate}}</p></div>
+      <form class="ts-period" ng-repeat="period in workPeriods track by period.id" ng-submit="save(period)" novalidate>
+        <div class="ts-period-number"><span>{{$index + 1}}</span><small>#{{period.id}}</small></div>
+        <div class="ts-field"><label for="ts-start-{{period.id}}">{{'people.timesheet.edit.start' | translate}}</label><input id="ts-start-{{period.id}}" type="text" inputmode="numeric" placeholder="HH:mm" maxlength="5" class="form-control" ng-model="period.start" ng-disabled="busy || hasOtherChanges(period)" ng-attr-aria-invalid="{{!!validation(period, false)}}" required></div>
+        <div class="ts-field"><label for="ts-end-{{period.id}}">{{'people.timesheet.edit.end' | translate}}</label><input id="ts-end-{{period.id}}" type="text" inputmode="numeric" placeholder="{{'people.timesheet.edit.in-progress' | translate}}" maxlength="5" class="form-control" ng-model="period.end" ng-disabled="busy || hasOtherChanges(period)" ng-attr-aria-invalid="{{!!validation(period, false)}}"></div>
+        <div class="ts-period-duration"><span ng-if="period.duration !== null">{{durationLabel(period.duration)}}</span><span class="ts-live" ng-if="period.duration === null"><i></i> {{'people.timesheet.edit.in-progress' | translate}}</span><small ng-if="isDirty(period)">{{'people.timesheet.edit.unsaved' | translate}}</small></div>
+        <div class="ts-period-actions">
+          <button type="submit" class="btn ts-primary" ng-if="isDirty(period)" ng-disabled="busy || !!validation(period, false)"><i class="fa fa-check" aria-hidden="true"></i> {{'people.timesheet.edit.save' | translate}}</button>
+          <button type="button" class="btn ts-secondary" ng-if="isDirty(period)" ng-click="cancel(period)" ng-disabled="busy">{{'cancel' | translate}}</button>
+          <button type="button" class="btn ts-secondary" ng-if="!period.endDate && !isDirty(period)" ng-click="close(period)" ng-disabled="busy || hasChanges()">{{'people.timesheet.edit.finish-work' | translate}}</button>
+          <button type="button" class="btn ts-delete" ng-click="remove(period)" ng-disabled="busy || hasOtherChanges(period)" ng-attr-aria-label="{{'people.timesheet.edit.delete-period-label' | translate:{number: $index + 1} }}"><i class="fa fa-trash-o" aria-hidden="true"></i> {{'people.timesheet.edit.delete' | translate}}</button>
         </div>
+        <div class="ts-field-error" role="status" ng-if="validation(period, false)">{{validation(period, false) | translate}}</div>
       </form>
-    </div>
-    <!----------------------------------->
-    <div ng-hide="workPeriod.endDate">
-      <form name="orderForm" class="form-inline" role="form">
-        <div class="row">
-          <div class="col-lg-4">
-            <div class="panel panel-success">
-              <div class="panel-body">
-                <div class="form-group">
-                  <input type="text" class="form-control" ng-model="workPeriod.startDate" data-time-format="HH:mm" data-autoclose="0"
-                         bs-timepicker ng-change="save(workPeriod)" data-minute-step="1" data-length="10">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="panel panel-danger">
-              <div class="panel-body">
-                <!--
-                <input text class="form-control"> <input text class="form-control">
--->
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3">
-            <div class="panel panel-default">
-              <div class="panel-body">
-                <div class="row">
-                  <div class="col-lg-4 text-left">
-                    <strong>{{countWorkMinutes(workPeriod.endDate,workPeriod.startDate) | minutesToHours}}</strong>
-                  </div>
-                  <div class="col-lg-4 text-right">
-                    <button class="btn btn-warning btn-sm" ng-click="close(workPeriod.id)"><i class="fa fa-times" aria-hidden="true"></i>
-                      {{'people.timesheet.edit.close' | translate}}
-                    </button>
-                  </div>
-                  <div class="col-lg-4">
-                    <button class="btn btn-danger btn-sm" ng-click="delete(workPeriod.id)"><i class="fa fa-times" aria-hidden="true"></i>
-                      {{'people.timesheet.edit.delete' | translate}}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+    </section>
+
+    <section class="ts-card ts-add-card" aria-labelledby="ts-add-title">
+      <div class="ts-card-heading"><div><h2 id="ts-add-title"><i class="fa fa-plus-circle" aria-hidden="true"></i> {{'people.timesheet.edit.add-title' | translate}}</h2><p>{{'people.timesheet.edit.add-hint' | translate:{day: dayLabel} }}</p></div></div>
+      <form class="ts-add-form" ng-submit="addPeriod()" novalidate>
+        <div class="ts-field"><label for="ts-new-start">{{'people.timesheet.edit.start' | translate}}</label><input id="ts-new-start" type="text" inputmode="numeric" maxlength="5" placeholder="08:00" class="form-control" ng-model="newPeriod.start" ng-change="newPeriod.touched = true" ng-disabled="busy" required></div>
+        <div class="ts-field"><label for="ts-new-end">{{'people.timesheet.edit.end' | translate}}</label><input id="ts-new-end" type="text" inputmode="numeric" maxlength="5" placeholder="16:00" class="form-control" ng-model="newPeriod.end" ng-change="newPeriod.touched = true" ng-disabled="busy" required></div>
+        <button type="submit" class="btn ts-primary" ng-disabled="busy || hasChanges() || !!validation(newPeriod, true)"><i class="fa" ng-class="busy ? 'fa-spinner fa-spin' : 'fa-plus'" aria-hidden="true"></i> {{(busy ? 'people.timesheet.edit.saving' : 'people.timesheet.edit.add-period') | translate}}</button>
       </form>
-    </div>
+      <p class="ts-field-error" ng-if="newPeriod.touched && validation(newPeriod, true)">{{validation(newPeriod, true) | translate}}</p>
+      <p class="ts-caption" ng-if="hasChanges()">{{'people.timesheet.edit.pending-changes-hint' | translate}}</p>
+    </section>
   </div>
-
-  <div class="col-lg-3">
-    <div class="panel panel-success">
-      <div class="panel-body">
-        <div class="form-group">
-          <input type="text" class="form-control" ng-model="newStartTime" data-time-format="HH:mm" data-autoclose="0"
-                 bs-timepicker ng-change="checkIfTimeInExistingPeriod(newStartTime)" data-minute-step="1" data-length="10">
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-3">
-    <div class="panel panel-danger">
-      <div class="panel-body">
-        <div class="form-group">
-          <input type="text" class="form-control" ng-model="newEndTime" data-time-format="HH:mm" data-autoclose="0"
-                 bs-timepicker ng-change="checkIfTimeInExistingPeriod(newEndTime)" data-minute-step="1" data-length="10">
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-3">
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <div class="row">
-          <div class="col-sm-2 text-right">
-            <button class="btn btn-primary btn-sm" ng-click="addPeriod()"><i class="fa fa-plus" aria-hidden="true"></i>
-              {{'people.timesheet.edit.add' |
-              translate}}
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
+  <button ng-if="loadFailed" type="button" class="btn ts-primary" ng-click="refresh()" ng-disabled="loading">{{'people.timesheet.edit.retry' | translate}}</button>
 </div>

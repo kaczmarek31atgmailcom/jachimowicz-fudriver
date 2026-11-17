@@ -1,196 +1,182 @@
-"use strict";
+/* global moment */
+'use strict';
 
 angular.module('frontendApp')
-  .controller('editTimeSheetCtrl', ['$scope', '$route', 'growl', 'timeSheetService', 'EventService','peopleService',
-    function ($scope, $route, growl, timeSheetService, EventService, peopleService) {
-
-      $scope.startTime = {};
+  .controller('editTimeSheetCtrl', ['$scope', '$route', '$http', '$location', '$window', 'EventService', '$translate',
+    function ($scope, $route, $http, $location, $window, EventService, $translate) {
+      var day = moment($route.current.params.theDay, 'YYYY-MM-DD', true);
+      var destroyed = false;
       $scope.employeeId = $route.current.params.employeeId;
-      var theDay = $route.current.params.theDay;
-      $scope.newStartTime = moment(theDay);
-      $scope.newEndTime = moment(theDay);
+      $scope.workPeriods = [];
+      $scope.hours = [0, 4, 8, 12, 16, 20, 24];
+      $scope.selectedDay = day.toDate();
+      $scope.dayLabel = day.format('DD.MM.YYYY');
+      $scope.newPeriod = { start: '08:00', end: '16:00' };
 
-      var init = function () {
-        timeSheetService.getWorkPeriods($scope.employeeId, theDay, theDay, function (workPeriods) {
-          $scope.workPeriods = workPeriods;
-        });
-        timeSheetService.getDayBars(theDay, theDay, $scope.employeeId, function (bars) {
-          $scope.dayBars = bars;
-          countDailyWorkTime();
-          countDailyPauseTime();
-          countDailyBusyTime();
-          createEmptyDayBars($scope.dateFrom,$scope.dateTo,$scope.dayBars);
-          $scope.barPeriods = $scope.dayBars[0].barPeriods;
-        });
-        peopleService.getEmployee($scope.employeeId,function(person){
-          $scope.person = person;
-        })
-      };
-      init();
-
-      $scope.close = function (workPeriodId) {
-        timeSheetService.closePeriod(workPeriodId);
-      };
-
-      $scope.addPeriod = function(){
-        if(($scope.checkIfTimeInExistingPeriod($scope.newStartTime)) || ($scope.checkIfTimeInExistingPeriod($scope.newEndTime))){
-          return false;
+      function errorMessage(response) {
+        if (response.status === 409) { return 'people.timesheet.edit.message.overlap'; }
+        var body = response.data && response.data.body;
+        if (body === 'Start day after end day') { return 'people.timesheet.edit.message.invalid-range'; }
+        if (body === 'Okres pracy musi rozpocząć się i zakończyć tego samego dnia') {
+          return 'people.timesheet.edit.message.same-day-required';
         }
-        if(($scope.startTime === null) || ($scope.endTime === null)){
-          return false;
+        return 'people.timesheet.edit.message.request-failed';
+      }
+
+      function timeOnDay(value) {
+        return /^([01]\d|2[0-3]):[0-5]\d$/.test(value || '') ? moment(day.format('YYYY-MM-DD') + ' ' + value, 'YYYY-MM-DD HH:mm', true) : null;
+      }
+
+      function summarize() {
+        var worked = 0;
+        var pauses = 0;
+        var lastEnd = null;
+        $scope.timeline = [];
+        $scope.workPeriods.forEach(function (period) {
+          var start = moment(period.startDate);
+          var end = period.endDate ? moment(period.endDate) : null;
+          period.start = start.format('HH:mm');
+          period.end = end ? end.format('HH:mm') : '';
+          period.originalStart = period.start;
+          period.originalEnd = period.end;
+          period.duration = end ? Math.max(0, end.diff(start, 'minutes')) : null;
+          if (end) { worked += Math.max(0, end.valueOf() - start.valueOf()); }
+          if (lastEnd && start.isAfter(lastEnd)) { pauses += start.diff(lastEnd); }
+          if (end && (!lastEnd || end.isAfter(lastEnd))) { lastEnd = end; }
+          var displayedEnd = end || (day.isSame(moment(), 'day') ? moment() : day.clone().endOf('day'));
+          var left = Math.max(0, start.diff(day.clone().startOf('day'), 'seconds') / 864);
+          var width = Math.max(0.3, Math.min(100 - left, displayedEnd.diff(start, 'seconds') / 864));
+          $scope.timeline.push({id: period.id, left: left, width: width, open: !end,
+            start: period.start, end: period.end});
+        });
+        $scope.workMinutes = Math.floor(worked / 60000);
+        $scope.pauseMinutes = Math.floor(pauses / 60000);
+        $scope.openCount = $scope.workPeriods.filter(function (p) { return !p.endDate; }).length;
+        if (!$scope.newPeriod.touched && lastEnd && !$scope.openCount) {
+          var suggestedStart = lastEnd.clone().startOf('minute');
+          if (suggestedStart.isBefore(lastEnd)) { suggestedStart.add(1, 'minute'); }
+          var suggestedEnd = moment.min(suggestedStart.clone().add(1, 'hour'), day.clone().hour(23).minute(59).second(0));
+          $scope.newPeriod = suggestedEnd.isAfter(suggestedStart) ? {
+            start: suggestedStart.format('HH:mm'), end: suggestedEnd.format('HH:mm')
+          } : {start: '', end: ''};
         }
-        var command = {};
-        command.personId = $scope.employeeId;
-        command.startTime = $scope.newStartTime;
-        command.endTime = $scope.newEndTime;
-        timeSheetService.saveClosedWorkPeriod(command);
+      }
+
+      function load() {
+        $scope.externalChange = false;
+        if (destroyed) { return; }
+        $scope.loading = true;
+        return $http.get('/fudriver/rest/person/workPeriods', {params: {
+          personId: $scope.employeeId, startDay: day.format('YYYY-MM-DD'), endDay: day.format('YYYY-MM-DD')
+        }}).then(function (response) {
+          $scope.workPeriods = response.data.sort(function (a, b) { return moment(a.startDate).valueOf() - moment(b.startDate).valueOf(); });
+          summarize();
+          $scope.loadFailed = false;
+        }, function (response) {
+          $scope.error = errorMessage(response);
+          $scope.loadFailed = true;
+        }).finally(function () { $scope.loading = false; });
+      }
+
+      $scope.periodLabel = function (period) {
+        return $translate.instant('people.timesheet.edit.period-range', {
+          start: period.start, end: period.end || $translate.instant('people.timesheet.edit.in-progress')
+        });
+      };
+      $scope.durationLabel = function (minutes) {
+        return $translate.instant('people.timesheet.edit.duration', {
+          hours: Math.floor((minutes || 0) / 60), minutes: (minutes || 0) % 60
+        });
+      };
+      $scope.isDirty = function (period) {
+        return period.start !== period.originalStart || period.end !== period.originalEnd;
+      };
+      $scope.hasOtherChanges = function (period) {
+        return $scope.workPeriods.some(function (other) { return other.id !== period.id && $scope.isDirty(other); });
+      };
+      $scope.hasChanges = function () {
+        return $scope.workPeriods.some($scope.isDirty);
+      };
+      $scope.validation = function (period, adding) {
+        var start = timeOnDay(period.start);
+        var end = period.end ? timeOnDay(period.end) : null;
+        if (!start || (period.end && !end) || (adding && !end)) { return 'people.timesheet.edit.message.invalid-time'; }
+        if (!adding && period.endDate && !end) { return 'people.timesheet.edit.message.end-required'; }
+        if (end && !end.isAfter(start)) { return 'people.timesheet.edit.message.invalid-range'; }
+        var collision = $scope.workPeriods.some(function (other) {
+          return other.id !== period.id && (!other.endDate || start.isBefore(moment(other.endDate))) &&
+            (!end || moment(other.startDate).isBefore(end));
+        });
+        return collision ? 'people.timesheet.edit.message.overlapping-times' : '';
       };
 
-      $scope.checkIfTimeInExistingPeriod = function(date){
-          for(var i = 0; i< $scope.workPeriods.length; i++) {
-            if ((moment(date).isSameOrAfter(moment($scope.workPeriods[i].startDate))) && (moment(date).isSameOrBefore(moment($scope.workPeriods[i].endDate)))) {
-              growl.error("people.timesheet.edit.message.invalid.period",{ttl:"5000"});
-              return true;
-            }
-            if ((moment(date).isSameOrAfter(moment($scope.workPeriods[i].startDate))) && ($scope.workPeriods[i].endDate === null)) {
-              growl.error("people.timesheet.edit.message.invalid.period",{ttl:"5000"});
-              return true;
-            }
-          }
-        return false;
+      function mutate(method, url, data, message) {
+        $scope.busy = true;
+        $scope.error = '';
+        $scope.notice = '';
+        return $http({method: method, url: url, data: data,
+          headers: {'Content-Type': 'application/json; charset=UTF-8'}
+        }).then(function () {
+          $scope.notice = message;
+          return load();
+        }, function (response) { $scope.error = errorMessage(response); })
+          .finally(function () { $scope.busy = false; });
+      }
+      $scope.save = function (period) {
+        if ($scope.busy || $scope.hasOtherChanges(period) || $scope.validation(period, false)) { return; }
+        // Preserve seconds in fields that the user did not change.
+        mutate('PUT', '/fudriver/rest/person/workPeriod', {id: period.id,
+          startDate: period.start === period.originalStart ? period.startDate : timeOnDay(period.start).valueOf(),
+          endDate: period.end ? (period.end === period.originalEnd ? period.endDate : timeOnDay(period.end).valueOf()) : null
+        }, 'people.timesheet.edit.message.saved');
       };
-
-      $scope.save = function (workPeriod) {
-        var command = {};
-        command.id = workPeriod.id;
-        command.startDate = workPeriod.startDate;
-        command.endDate = workPeriod.endDate;
-        timeSheetService.saveWorkPeriod(command);
+      $scope.cancel = function (period) { period.start = period.originalStart; period.end = period.originalEnd; };
+      $scope.addPeriod = function () {
+        if ($scope.busy || $scope.validation($scope.newPeriod, true)) { return; }
+        if ($scope.hasChanges()) { $scope.error = 'people.timesheet.edit.message.pending-changes'; return; }
+        mutate('POST', '/fudriver/rest/workTimeRecorder/closed', {personId: Number($scope.employeeId),
+          startTime: timeOnDay($scope.newPeriod.start).valueOf(), endTime: timeOnDay($scope.newPeriod.end).valueOf()
+        }, 'people.timesheet.edit.message.created');
       };
-
-      $scope.event = EventService.getEvents(function (resp) {
-        var response = JSON.parse(resp);
-        var message = response.source;
-        if ((message === 'EMPLOYEE_WORK_STARTED' || message === 'EMPLOYEE_WORK_ENDED') && (parseInt(response.id) === parseInt($scope.employeeId))) {
-          timeSheetService.getWorkPeriods($scope.employeeId, startDay, endDay, function (workPeriods) {
-            $scope.workPeriods = workPeriods;
+      $scope.remove = function (period) {
+        if ($scope.busy || $scope.hasOtherChanges(period) || !$window.confirm($translate.instant('people.timesheet.edit.confirm-delete', {
+          start: period.originalStart, end: period.originalEnd || $translate.instant('people.timesheet.edit.in-progress')
+        }))) { return; }
+        mutate('DELETE', '/fudriver/rest/person/workPeriod', {workPeriodId: period.id}, 'people.timesheet.edit.message.deleted');
+      };
+      $scope.close = function (period) {
+        if ($scope.busy || $scope.hasChanges()) { return; }
+        mutate('PUT', '/fudriver/rest/person/workPeriod/close', period.id, 'people.timesheet.edit.message.closed');
+      };
+      $scope.navigate = function (offset) {
+        if ($scope.busy) { $scope.selectedDay = day.toDate(); return; }
+        var next = offset === null ? moment($scope.selectedDay) : day.clone().add(offset, 'days');
+        if (next.isValid()) { $location.path('/people/worktime/timeSheet/' + $scope.employeeId + '/' + next.format('YYYY-MM-DD')); }
+      };
+      $scope.refresh = function () {
+        if (!$scope.hasChanges() || $window.confirm($translate.instant('people.timesheet.edit.confirm-refresh'))) { $scope.error = ''; $scope.notice = ''; load(); }
+      };
+      var unsubscribe = EventService.getEvents(function (raw) {
+        var event;
+        try { event = JSON.parse(raw); } catch (ignored) { return; }
+        if (String(event.id) === String($scope.employeeId) && /EMPLOYEE_WORK_(STARTED|ENDED)/.test(event.source)) {
+          $scope.$evalAsync(function () {
+            if (destroyed) { return; }
+            if ($scope.busy || $scope.hasChanges()) { $scope.externalChange = true; }
+            else { load(); }
           });
-        init();
         }
       });
-
-      $scope.$on('error', function (event, response) {
-        if (response.data.body == 'Start day after end day') {
-          growl.error('people.timesheet.edit.message.start-after-begining', {ttl: 5000});
-        } else {
-          growl.error('error', {ttl: 4000});
+      $scope.$on('$locationChangeStart', function (event) {
+        if ($scope.busy || ($scope.hasChanges() && !$window.confirm($translate.instant('people.timesheet.edit.confirm-leave')))) {
+          event.preventDefault();
+          $scope.selectedDay = day.toDate();
         }
       });
-
-      $scope.$on('WorkPeriodUpdated', function () {
-        init();
-        growl.success('people.timesheet.edit.message.period-updated', {ttl: 4000})
-      });
-
-      $scope.$on('WorkPeriodClosed', function () {
-        init();
-        growl.success('people.timesheet.edit.message.period-closed', {ttl: 4000})
-      });
-
-      $scope.delete = function (workPeriodId) {
-        var command = {};
-        command.workPeriodId = workPeriodId;
-        timeSheetService.deletePeriod(command);
-      };
-
-
-      $scope.$on('WorkPeriodDeleted', function (event, response) {
-        removeWorkPeriod(response.data.entityId);
-        growl.success('people.timesheet.edit.message.period-deleted', {ttl: 4000});
-        init();
-      });
-
-      $scope.$on('ClosedWorkPeriodCreated',function(event,response){
-        growl.success("people.timesheet.edit.message.period-created",{ttl:3000});
-        init();
-      });
-
-      $scope.countWorkMinutes = function (endDate, startDate) {
-        var result = 0;
-        if (endDate != undefined) {
-          result = parseInt((endDate - startDate) / 1000 / 60);
-        }
-        if (result >= 0) {
-          return result;
-        }
-        return 0;
-      };
-
-      var removeWorkPeriod = function (workPeriodId) {
-        for (var i = $scope.workPeriods.length - 1; i >= 0; i--) {
-          if ($scope.workPeriods[i].id == workPeriodId) {
-            $scope.workPeriods.splice(i, 1);
-          }
-        }
-      };
-
-
-      var createEmptyDayBars = function(startDay,endDay,dayBars){
-        var theDay = moment(startDay);
-        var endDay = moment(endDay);
-        var emptyDays = [];
-        while(theDay.isBefore(endDay)){
-          theDay = theDay.add(1,'days');
-        }
-      };
-
-      var countDailyWorkTime = function(){
-        $scope.dayBars.forEach(function(dayBar){
-          dayBar.workTime = 0;
-          dayBar.barPeriods.forEach(function(barPeriod){
-            if((barPeriod.barType === 'ACTIVE') || (barPeriod.barType === 'PAUSE')){
-              var barWorkTime = barPeriod.endDate - barPeriod.startDate;
-              dayBar.workTime += parseInt((barWorkTime / 1000 / 60));
-            }
-          })
-        })
-      };
-
-      var countDailyBusyTime = function(){
-        $scope.dayBars.forEach(function(dayBar){
-          dayBar.busyTime = 0;
-          dayBar.barPeriods.forEach(function(barPeriod){
-            if(barPeriod.barType === 'ACTIVE'){
-              var barWorkTime = barPeriod.endDate - barPeriod.startDate;
-              dayBar.busyTime += parseInt((barWorkTime / 1000 / 60));
-            }
-          })
-        })
-      };
-
-      var countDailyPauseTime = function(){
-        $scope.dayBars.forEach(function(dayBar){
-          dayBar.pauseTime = 0;
-          dayBar.barPeriods.forEach(function(barPeriod){
-            if(barPeriod.barType === 'PAUSE'){
-              var barWorkTime = barPeriod.endDate - barPeriod.startDate;
-              dayBar.pauseTime += parseInt((barWorkTime / 1000 / 60));
-            }
-          })
-        })
-      };
-
-      $scope.getBarClass = function(barType){
-        if(barType === 'ACTIVE'){
-          return 'progress-bar progress-bar-info progress-bar-striped'
-        }
-        if(barType === 'PAUSE'){
-          return 'progress-bar progress-bar-warning progress-bar-striped'
-        }
-        return 'progress-bar transparent'
-      };
-
-
-
+      $scope.$on('$destroy', function () { destroyed = true; if (unsubscribe) { unsubscribe(); } });
+      if (!day.isValid()) { $scope.error = 'people.timesheet.edit.message.invalid-day'; $scope.loadFailed = true; return; }
+      $http.get('/fudriver/rest/person/' + $scope.employeeId).then(function (response) {
+        $scope.person = response.data;
+      }, function () { $scope.personFailed = true; });
+      load();
     }]);
-

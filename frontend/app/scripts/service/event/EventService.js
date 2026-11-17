@@ -6,9 +6,9 @@ angular.module('frontendApp')
     var source = new EventSource('/fudriver/events/connect');
 
     service.getEvents = function(callback){
-      source.addEventListener("message",function(e){
-        callback(e.data);
-      });
+      var listener = function (e) { callback(e.data); };
+      source.addEventListener("message", listener);
+      return function () { source.removeEventListener("message", listener); };
     };
     return service;
   }]);

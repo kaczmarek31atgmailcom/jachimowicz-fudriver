@@ -1,104 +1,88 @@
-<div class="container-fluid" ng-controller="timeSheetCtrl" ng-init="init()">
-  <ol class="breadcrumb">
-    <li><a href="#/people/worktime">{{'people.worktime.breadcrumb' | translate}}</a></li>
-    <li class="active">{{'people.breadcrumb.timeSheet' | translate}}</li>
-  </ol>
-  <div class="row">
-    <div class="form-group">
-      <div class="col-xs-4">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <ul class="list-unstyled list-inline">
-              <li><strong>{{person.id}}</strong></li>
-              <li><strong>{{person.imie}}</strong></li>
-              <li><strong>{{person.nazwisko}}</strong></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="form-group col-xs-2">
-        <input class="form-control" ng-model="dateFrom" data-max-date="{{dateTo}}" placeholder="{{dateFrom}}" required
-               bs-datepicker autoclose="true" data-date-format="yyyy/MM/dd" ng-change="init()">
-      </div>
-      <div class="form-group col-xs-2">
-        <input type="text" class="form-control" ng-model="dateTo" data-min-date="{{dateFrom}}" placeholder="{{dateTo}}"
-               required bs-datepicker autoclose="true" date-format="yyyy/MM/dd" ng-change="init()">
+<div class="container-fluid timesheet-editor timesheet-card" ng-controller="timeSheetCtrl" ng-cloak>
+  <nav aria-label="{{'people.timesheet.edit.navigation' | translate}}"><ol class="breadcrumb">
+    <li><a href="#/people/worktime">{{'people.timesheet.edit.worktime' | translate}}</a></li>
+    <li class="active">{{'people.timesheet.edit.employee-card' | translate}}</li>
+  </ol></nav>
+  <header class="ts-header">
+    <div>
+      <div class="ts-eyebrow">{{'people.timesheet.edit.eyebrow' | translate}}</div>
+      <h1>{{person.imie || ('people.timesheet.edit.employee' | translate)}} {{person.nazwisko}} <span class="ts-id">#{{employeeId}}</span></h1>
+      <p>{{'people.timesheet.card.intro' | translate}}</p>
+    </div>
+    <div class="tc-employee-meta" ng-if="person.nr || person.groupName">
+      <span ng-if="person.nr">{{'people.timesheet.card.employee-number' | translate:{number: person.nr} }}</span>
+      <span ng-if="person.groupName">{{person.groupName}}</span>
+    </div>
+  </header>
+
+  <section class="ts-card tc-range-card" aria-labelledby="tc-range-heading">
+    <div class="ts-card-heading">
+      <h2 id="tc-range-heading">{{'people.timesheet.card.date-range' | translate}}</h2>
+      <div class="tc-presets">
+        <button type="button" class="btn ts-secondary" ng-click="preset('week')" ng-disabled="loading">{{'people.timesheet.card.last-seven-days' | translate}}</button>
+        <button type="button" class="btn ts-secondary" ng-click="preset('month')" ng-disabled="loading">{{'people.timesheet.card.this-month' | translate}}</button>
       </div>
     </div>
-  </div>
-  <table class="table table-condensed">
-    <thead>
-    <tr>
-      <td class="col-lg-12 text-nowrap" nowrap>
-        <div class="row">
-          <div class="col-sm-2">
-            <span>
-              <Strong>{{'people.timesheet.date'|translate}}</Strong>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-              </span>
-            <span>|</span>
-            <span>
-              <strong>{{'people.timesheet.all'|translate}}</strong>
-              <span>|</span>
-              <strong class="text-primary">{{'people.timesheet.work'|translate}}</strong>
-              <span>|</span>
-              <strong class="text-warning">{{'people.timesheet.pause'|translate}}</strong>
-            </span>
-          </div>
-          <div class="col-sm-10">
-            <div class="row" nowrap>
-              <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 0:00</h6></div>
-              <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 2:00</h6></div>
-              <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 4:00</h6></div>
-              <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 6:00</h6></div>
-              <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 8:00</h6></div>
-              <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 10:00</h6></div>
-              <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 12:00</h6></div>
-              <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 14:00</h6></div>
-              <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 16:00</h6></div>
-              <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 18:00</h6></div>
-              <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 20:00</h6></div>
-              <div class="col-sm-1 text-muted text-left text-nowrap"><h6>| 22:00</h6></div>
-            </div>
-          </div>
-        </div>
-      </td>
-    </thead>
+    <form class="tc-range-form" ng-submit="applyRange()" novalidate>
+      <div class="ts-field"><label for="tc-date-from">{{'people.timesheet.card.date-from' | translate}}</label>
+        <input id="tc-date-from" type="date" class="form-control" ng-model="dateFrom" ng-disabled="loading" required></div>
+      <div class="ts-field"><label for="tc-date-to">{{'people.timesheet.card.date-to' | translate}}</label>
+        <input id="tc-date-to" type="date" class="form-control" ng-model="dateTo" ng-disabled="loading" required></div>
+      <button type="submit" class="btn ts-primary" ng-disabled="loading || !!rangeError()">{{'people.timesheet.card.show-range' | translate}}</button>
+      <p class="tc-range-hint" ng-if="rangeChanged() && !rangeError()">{{'people.timesheet.card.pending-range' | translate}}</p>
+      <p class="ts-field-error" role="status" ng-if="rangeError()">{{rangeError() | translate}}</p>
+    </form>
+  </section>
 
-    <tbody>
-    <tr ng-repeat="day in dayBars">
-      <td class="col-lg-12">
-        <div class="row">
-          <div class="col-sm-2 text-nowrap">
-            <span>
-            {{day.day | date: 'yyyy-MM-dd'}}
-              </span>
-            <span>|</span>
-            <span>
-              <strong> &nbsp; {{day.workTime | minutesToHours}}</strong>
-              <span> &nbsp;|</span>
-              <strong class="text-primary"> &nbsp;{{day.busyTime | minutesToHours}}</strong>
-              <span> &nbsp;|</span>
-              <strong class="text-warning"> &nbsp;{{day.pauseTime | minutesToHours}}</strong>
-            </span>
-            <span class="text-right">
-               &nbsp;
-              <i class="fa fa-pencil-square-o fa-lg text-danger hand-cursor" aria-hidden="true" ng-click="edit(day.day)"></i>
-            </span>
+  <div class="ts-message" role="status" ng-if="personFailed">{{'people.timesheet.edit.person-load-failed' | translate}}</div>
+  <div class="ts-message ts-message-error" role="alert" ng-if="error">{{error | translate}}
+    <button type="button" class="btn ts-secondary" ng-click="refresh()" ng-disabled="loading">{{'people.timesheet.edit.retry' | translate}}</button></div>
+  <div class="ts-loading" role="status" ng-if="loading"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i> {{'people.timesheet.edit.loading-periods' | translate}}</div>
+
+  <div ng-if="loaded && !loading && !error">
+    <div class="tc-summary-heading"><h2>{{'people.timesheet.card.range-summary' | translate}}</h2><span>{{rangeLabel}}</span></div>
+    <section class="ts-stats" aria-label="{{'people.timesheet.card.range-summary' | translate}}">
+      <div class="ts-stat"><span class="ts-stat-icon"><i class="fa fa-clock-o" aria-hidden="true"></i></span><div><span>{{'people.timesheet.edit.work-without-breaks' | translate}}</span><strong>{{durationLabel(total.workMinutes)}}</strong></div></div>
+      <div class="ts-stat"><span class="ts-stat-icon ts-amber"><i class="fa fa-coffee" aria-hidden="true"></i></span><div><span>{{'people.timesheet.edit.breaks' | translate}}</span><strong>{{durationLabel(total.pauseMinutes)}}</strong></div></div>
+      <div class="ts-stat"><span class="ts-stat-icon"><i class="fa fa-calendar-check-o" aria-hidden="true"></i></span><div><span>{{'people.timesheet.card.recorded-days' | translate}}</span><strong>{{total.recordedDays}} <small>{{'people.timesheet.card.of-days' | translate:{count: days.length} }}</small></strong></div></div>
+    </section>
+    <p class="ts-caption">{{'people.timesheet.edit.summary-hint' | translate}}</p>
+    <div class="ts-message" role="status" ng-if="total.openCount">{{'people.timesheet.card.open-periods-hint' | translate:{count: total.openCount} }}</div>
+    <div class="ts-message" role="status" ng-if="hasOverlaps">{{'people.timesheet.card.overlaps-hint' | translate}}</div>
+    <div class="ts-message" role="status" ng-if="externalChange">{{'people.timesheet.card.external-change' | translate}}
+      <button type="button" class="btn ts-secondary" ng-click="refresh()">{{'people.timesheet.edit.refresh' | translate}}</button></div>
+
+    <section class="ts-card" aria-labelledby="tc-days-heading">
+      <div class="ts-card-heading">
+        <div><h2 id="tc-days-heading">{{'people.timesheet.card.days-heading' | translate}}</h2><p>{{'people.timesheet.card.days-hint' | translate}}</p></div>
+        <div class="tc-list-tools">
+          <label class="tc-empty-toggle"><input type="checkbox" ng-model="filters.showEmpty"> {{'people.timesheet.card.show-empty' | translate}}</label>
+          <button type="button" class="btn ts-secondary" ng-click="refresh()" aria-label="{{'people.timesheet.edit.refresh' | translate}}"><i class="fa fa-refresh" aria-hidden="true"></i> {{'people.timesheet.edit.refresh' | translate}}</button>
+        </div>
+      </div>
+      <div class="tc-list-head" aria-hidden="true"><span>{{'people.timesheet.date' | translate}}</span><div class="ts-timeline-hours"><span ng-repeat="hour in hours track by $index">{{hour}}:00</span></div><span>{{'people.timesheet.work' | translate}}</span><span>{{'people.timesheet.pause' | translate}}</span><span></span></div>
+      <div class="ts-empty" ng-if="!filters.showEmpty && !total.recordedDays"><i class="fa fa-calendar-o" aria-hidden="true"></i><h3>{{'people.timesheet.card.no-recorded-days' | translate}}</h3><p>{{'people.timesheet.card.show-empty-hint' | translate}}</p></div>
+      <article class="tc-day" ng-repeat="day in days | filter:visibleDay track by day.key" ng-class="{'tc-day-empty': !day.periodCount, 'tc-day-today': day.today}" aria-label="{{day.dateLabel}}">
+        <div class="tc-day-date"><strong>{{day.dateLabel}}</strong><span>{{day.weekdayKey | translate}} <small class="tc-today" ng-if="day.today">{{'people.timesheet.card.today' | translate}}</small></span></div>
+        <div class="tc-day-activity">
+          <div class="tc-day-detail" ng-if="day.periodCount">
+            <span>{{day.firstTime}} – <span ng-if="!day.openCount">{{day.lastTime}}</span><span class="ts-live" ng-if="day.openCount">{{'people.timesheet.edit.in-progress' | translate}}</span></span>
+            <small>{{'people.timesheet.card.period-count' | translate:{count: day.periodCount} }}</small>
+            <small class="tc-overlap" ng-if="day.overlap">{{'people.timesheet.card.overlap' | translate}}</small>
           </div>
-          <div class="col-lg-10 text-nowrap">
-            <div class="progress">
-              <div data-ng-repeat="barPeriod in day.barPeriods">
-                <div ng-show="barPeriod.percentOfTheDay > 0"
-                     ng-class="getBarClass(barPeriod.barType)"
-                     role="progressbar" style="width: {{barPeriod.percentOfTheDay}}%">&nbsp;
-                </div>
-              </div>
-            </div>
+          <div class="tc-day-detail" ng-if="!day.periodCount"><span>{{'people.timesheet.card.no-periods' | translate}}</span></div>
+          <div class="ts-timeline-track">
+            <div ng-repeat="bar in day.timeline track by $index" class="ts-timeline-period" ng-class="{'tc-timeline-pause': bar.type === 'pause', 'ts-timeline-open': bar.type === 'open'}" ng-style="{left: bar.left + '%', width: bar.width + '%'}" ng-if="bar.width > 0" title="{{barLabel(bar)}}" role="img" aria-label="{{barLabel(bar)}}"></div>
           </div>
         </div>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+        <div class="tc-day-metric"><small>{{'people.timesheet.work' | translate}}</small><strong>{{durationLabel(day.workMinutes)}}</strong></div>
+        <div class="tc-day-metric tc-pause-metric"><small>{{'people.timesheet.pause' | translate}}</small><span>{{durationLabel(day.pauseMinutes)}}</span></div>
+        <button type="button" class="btn ts-secondary tc-edit-day" ng-click="edit(day)" ng-attr-aria-label="{{'people.timesheet.card.edit-day-label' | translate:{day: day.dateLabel} }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> {{'people.timesheet.card.edit-day' | translate}}</button>
+      </article>
+      <footer class="tc-list-footer">
+        <div class="ts-legend"><i></i> {{'people.timesheet.edit.work' | translate}} <i class="tc-legend-pause"></i> {{'people.timesheet.pause' | translate}} <i class="ts-legend-open"></i> {{'people.timesheet.edit.in-progress' | translate}}</div>
+        <div class="tc-range-navigation"><button type="button" class="btn ts-secondary" ng-click="shiftRange(-1)">‹ {{'people.timesheet.card.previous-range' | translate}}</button><button type="button" class="btn ts-secondary" ng-click="shiftRange(1)">{{'people.timesheet.card.next-range' | translate}} ›</button></div>
+      </footer>
+    </section>
+  </div>
 </div>
-<!--ng-class="(barPeriod.barType == 'ACTIVE')? 'progress-bar progress-bar-success' : 'progress-bar transparent'"-->
